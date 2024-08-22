@@ -1,4 +1,4 @@
-package br.com.loto.entity;
+package br.com.loto.domain.entity;
 
 import br.com.loto.enums.TypePhoto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

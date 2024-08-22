@@ -1,8 +1,8 @@
-package br.com.loto.repository;
+package br.com.loto.domain.repository;
 
 import java.util.List;
 
-import br.com.loto.entity.Permission;
+import br.com.loto.domain.entity.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PermissionRepository extends JpaRepository<Permission, Long>{

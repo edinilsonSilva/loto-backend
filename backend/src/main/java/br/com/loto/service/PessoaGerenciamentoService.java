@@ -1,7 +1,7 @@
 package br.com.loto.service;
 
-import br.com.loto.entity.Account;
-import br.com.loto.repository.AccountRepository;
+import br.com.loto.domain.entity.Account;
+import br.com.loto.domain.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

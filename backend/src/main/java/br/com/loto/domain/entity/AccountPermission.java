@@ -1,4 +1,4 @@
-package br.com.loto.entity;
+package br.com.loto.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;

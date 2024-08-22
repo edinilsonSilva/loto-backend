@@ -1,7 +1,5 @@
 package br.com.loto.service;
 
-import br.com.loto.dto.PessoaClienteRequestDTO;
-import br.com.loto.entity.Account;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
-package br.com.loto.security;
+package br.com.loto.config.security;
 
-import br.com.loto.entity.Account;
+import br.com.loto.domain.entity.Account;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;

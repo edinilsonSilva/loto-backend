@@ -1,12 +1,13 @@
 package br.com.loto.service;
 
-import br.com.loto.entity.Account;
-import br.com.loto.entity.AccountPassword;
-import br.com.loto.repository.AccountRepository;
+import br.com.loto.domain.entity.Account;
+import br.com.loto.domain.entity.AccountPassword;
+import br.com.loto.domain.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,7 +22,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor(onConstructor_ = @Lazy)
-public class AccountDetailService implements UserDetailsService{
+public class AccountDetailService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
 
@@ -53,21 +54,18 @@ public class AccountDetailService implements UserDetailsService{
     }
 
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-    public List<GrantedAuthority> getTypeUsers (Account account) {
+    public List<GrantedAuthority> getTypeUsers(Account account) {
 
         List<GrantedAuthority> authorites = new ArrayList<GrantedAuthority>();
 
-//        if (account.getAdminId() != null)
-//            authorites.add(new SimpleGrantedAuthority("ROLE_".concat(Account.TypeUser.ACCOUNT_ADMIN.name())));
-//
-//        if (account.getSimpleId() != null)
-//            authorites.add(new SimpleGrantedAuthority("ROLE_".concat(Account.TypeUser.ACCOUNT_SIMPLE.name())));
-//
-//        if (account.getDeveloperId() != null)
-//            authorites.add(new SimpleGrantedAuthority("ROLE_".concat(Account.TypeUser.ACCOUNT_DEVELOPER.name())));
-//
-//        if (account.getInstanceId() != null)
-//            authorites.add(new SimpleGrantedAuthority("ROLE_".concat(Account.TypeUser.ACCOUNT_INSTANCE.name())));
+        List<String> permissions = account.getPermissions().stream()
+                .map(p -> p.getPermission().getName())
+                .toList();
+
+        authorites.addAll(permissions.stream()
+                .map(p -> new SimpleGrantedAuthority("ROLE_".concat(p)))
+                .toList()
+        );
 
         return authorites;
     }

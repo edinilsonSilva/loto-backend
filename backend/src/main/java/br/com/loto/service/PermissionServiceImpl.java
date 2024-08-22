@@ -1,7 +1,7 @@
 package br.com.loto.service;
 
-import br.com.loto.entity.Permission;
-import br.com.loto.repository.PermissionRepository;
+import br.com.loto.domain.entity.Permission;
+import br.com.loto.domain.repository.PermissionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;

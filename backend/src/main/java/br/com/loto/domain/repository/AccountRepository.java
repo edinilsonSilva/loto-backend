@@ -1,6 +1,6 @@
-package br.com.loto.repository;
+package br.com.loto.domain.repository;
 
-import br.com.loto.entity.Account;
+import br.com.loto.domain.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

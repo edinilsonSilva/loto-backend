@@ -1,4 +1,4 @@
-package br.com.loto.entity;
+package br.com.loto.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

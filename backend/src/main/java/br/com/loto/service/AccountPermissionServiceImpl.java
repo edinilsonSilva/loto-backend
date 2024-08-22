@@ -1,10 +1,10 @@
 package br.com.loto.service;
 
-import br.com.loto.entity.Account;
-import br.com.loto.entity.AccountPermission;
-import br.com.loto.entity.Permission;
-import br.com.loto.repository.AccountPermissionRepository;
-import br.com.loto.repository.PermissionRepository;
+import br.com.loto.domain.entity.Account;
+import br.com.loto.domain.entity.AccountPermission;
+import br.com.loto.domain.entity.Permission;
+import br.com.loto.domain.repository.AccountPermissionRepository;
+import br.com.loto.domain.repository.PermissionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;

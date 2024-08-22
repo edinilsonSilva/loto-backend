@@ -1,6 +1,6 @@
-package br.com.loto.dto;
+package br.com.loto.api.dto;
 
-import br.com.loto.entity.Account;
+import br.com.loto.domain.entity.Account;
 import org.springframework.beans.BeanUtils;
 
 import lombok.Data;

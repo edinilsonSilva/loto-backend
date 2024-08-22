@@ -1,9 +1,9 @@
-package br.com.loto.controller;
+package br.com.loto.api.controller;
 
 import java.util.List;
 
 
-import br.com.loto.entity.Account;
+import br.com.loto.domain.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.loto.service.AccountServiceImpl;
 
 @RestController
-@RequestMapping("/api/pessoa")
+@RequestMapping("/api/accounts")
 @CrossOrigin
 public class AccountController {
     

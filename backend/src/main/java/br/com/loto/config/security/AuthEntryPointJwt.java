@@ -1,4 +1,4 @@
-package br.com.loto.security;
+package br.com.loto.config.security;
 
 import java.io.IOException;
 import java.util.HashMap;
