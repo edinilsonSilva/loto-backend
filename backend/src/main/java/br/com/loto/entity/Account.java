@@ -35,7 +35,13 @@ public class Account {
 
     private String username;
 
-    private boolean active;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "personal_id", referencedColumnName = "id")
+    private AccountPersonal personal;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "config_id", referencedColumnName = "id")
+    private AccountConfig config;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "account", fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonIgnoreProperties("account")
@@ -50,5 +56,10 @@ public class Account {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "account", fetch = FetchType.EAGER, orphanRemoval = true)
     @Setter(value = AccessLevel.NONE)
     private List<AccountPermission> permissions;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "account", fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonIgnoreProperties("account")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<AccountPhoto> photos;
 
 }

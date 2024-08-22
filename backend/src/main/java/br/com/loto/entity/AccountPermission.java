@@ -1,19 +1,17 @@
 package br.com.loto.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
-@Table(name = "permissao_pessoa")
+@Table(name = "accounts_permissions")
 @Data
-public class AccountPermission implements GrantedAuthority{
+public class AccountPermission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,17 +28,13 @@ public class AccountPermission implements GrantedAuthority{
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "idPessoa")
-    @JsonIgnore
-    private Account account;
-
-    @ManyToOne
-    @JoinColumn(name = "idPermissao")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "permission_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("photos")
     private Permission permission;
 
-    @Override
-    public String getAuthority() {        
-        return permission.getName();
-    }
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("permissions")
+    private Account account;
 }

@@ -1,11 +1,10 @@
 package br.com.loto.entity;
 
+import br.com.loto.enums.TypePhoto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,14 +13,12 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "accounts_passwords")
-public class AccountPassword implements Serializable {
+@Table(name = "accounts_photos")
+@ToString
+public class AccountPhoto implements Serializable {
 
-	private static final long serialVersionUID = 3647125436201199490L;
-	
+	private static final long serialVersionUID = 4049150557660462734L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -37,25 +34,31 @@ public class AccountPassword implements Serializable {
 	@Column(name = "deleted_at")
 	private LocalDateTime deletedAt;
 
-	@Column(name = "expired_at")
-	private LocalDateTime expiredAt;
-	
-	private boolean active;
-	
-	@Column(name = "create_password_next_login")
-	private boolean createPasswordNextLogin;
-	
-	@Column(name = "same_password_limit")
-	private Long samePasswordLimit;
-	
-	private String password;
-	
-	@Column(name = "token_forget_password")
-	private String tokenForgetPassword;
+	@Column(name = "base_64", length = 10000000)
+	private String base64;
 
+	@Column(name = "name")
+	private String name;
+
+	@Column(name = "description")
+	private String description;
+
+	@Column(name = "content_type")
+	private String contentType;
+	
+	@Column(name = "path")
+	private String path;
+	
+	@Column(name = "size")
+	private Long size;
+
+	@Column(name = "type_photo")
+	@Enumerated(EnumType.STRING)
+	private TypePhoto typePhoto;
+	
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "account_id", referencedColumnName = "id")
-	@JsonIgnoreProperties("passwords")
+	@JsonIgnoreProperties("photos")
 	private Account account;
 
 }

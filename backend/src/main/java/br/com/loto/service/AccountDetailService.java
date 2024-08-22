@@ -37,9 +37,12 @@ public class AccountDetailService implements UserDetailsService{
                 .findFirst();
 
         if (!pass.isPresent())
-            throw new BadCredentialsException("Não há sendddha ativa. contacte com o administrador do sistema.");
+            throw new BadCredentialsException("Não há senha ativa. contacte com o administrador do sistema.");
 
-        if (account.isActive() == false)
+        if (account.getConfig() == null)
+            throw new BadCredentialsException("Sua conta não possui configurações. contacte com o administrador do sistema.");
+
+        if (!account.getConfig().isActive())
             throw new BadCredentialsException("Sua conta foi desativada pela administração.");
 
         return new User(

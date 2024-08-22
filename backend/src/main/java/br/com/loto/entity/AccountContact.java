@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "fyd_accounts_contacts")
+@Table(name = "accounts_contacts")
 public class AccountContact implements Serializable {
 
     private static final long serialVersionUID = 3647125436201199490L;
