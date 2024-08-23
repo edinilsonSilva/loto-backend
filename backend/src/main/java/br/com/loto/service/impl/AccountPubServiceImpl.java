@@ -1,12 +1,15 @@
-package br.com.loto.service;
+package br.com.loto.service.impl;
 
+import br.com.loto.api.dto.requests.CreateAccountRequest;
 import br.com.loto.domain.entity.Account;
-import br.com.loto.domain.repository.AccountRepository;
+import br.com.loto.exceptions.CustomResponse;
+import br.com.loto.service.IAccountPubService;
+import br.com.loto.service.IAccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,15 +17,14 @@ import java.util.Date;
 
 @Service
 @AllArgsConstructor(onConstructor_ = @Lazy)
-public class PessoaGerenciamentoService {
+public class AccountPubServiceImpl implements IAccountPubService {
 
-    private final AccountRepository accountRepository;
+    private final IAccountService accountService;
 
     final PasswordEncoder passwordEncoder;
 
     public String solicitarCodigo(String username) {
-        Account account = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Pessoa não encontrada pelo email"));
+        Account account = accountService.findByUsernameWithThrow(username);
 
 //        account.setCodigoRecuperacaoSenha(getCodigoRecuperacaoSenha(account.getId()));
 //        account.setDataEnvioCodigo(new Date());
@@ -59,4 +61,14 @@ public class PessoaGerenciamentoService {
         return format.format(new Date()) + id;
     }
 
+    @Override
+    @Transactional
+    public CustomResponse<Account> create(CreateAccountRequest request) {
+        Account account = accountService.saveAndFlush(null);
+        return CustomResponse.<Account>builder()
+                .status(201)
+                .message("Conta cadastrada com sucesso.")
+                .data(account)
+                .build();
+    }
 }

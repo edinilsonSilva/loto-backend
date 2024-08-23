@@ -1,19 +1,25 @@
 package br.com.loto.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "permissions")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "permissions")
 public class Permission {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @CreationTimestamp
@@ -28,5 +34,7 @@ public class Permission {
     private LocalDateTime deletedAt;
 
     private String name;
+
+    private String description;
 
 }

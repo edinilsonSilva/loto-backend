@@ -1,8 +1,8 @@
-package br.com.loto.service;
+package br.com.loto.service.impl;
 
 import br.com.loto.domain.entity.Account;
 import br.com.loto.domain.entity.AccountPassword;
-import br.com.loto.domain.repository.AccountRepository;
+import br.com.loto.domain.repository.IAccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,7 +24,7 @@ import java.util.Optional;
 @AllArgsConstructor(onConstructor_ = @Lazy)
 public class AccountDetailService implements UserDetailsService {
 
-    private final AccountRepository accountRepository;
+    private final IAccountRepository accountRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

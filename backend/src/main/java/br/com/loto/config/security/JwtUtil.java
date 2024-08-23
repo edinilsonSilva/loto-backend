@@ -11,34 +11,37 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    
+
     private String chaveSecreta = "chaveSecretaParaGerarToken";
-    private int validadeToken=900000;
-    private static final Logger logger= LoggerFactory.getLogger(JwtUtil.class);
+    private int validadeToken = 900000;
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-    public String gerarTokenUsername(Account account){
+    public String generateTokenUsername(Account account) {
         return Jwts.builder().setSubject(account.getUsername()).
-        setIssuedAt(new Date()).
-        setExpiration(new Date(new Date().getTime()+validadeToken)).
-        signWith(SignatureAlgorithm.HS512, chaveSecreta).compact();
+                setIssuedAt(new Date()).
+                setExpiration(new Date(new Date().getTime() + validadeToken)).
+                signWith(SignatureAlgorithm.HS512, chaveSecreta).compact();
     }
 
-    public String getEmailToken(String token){
-       return Jwts.parser().setSigningKey(chaveSecreta).parseClaimsJws(token).getBody().getSubject();
+    public String getUsername(String token) {
+        return Jwts.parser()
+                .setSigningKey(chaveSecreta)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
-    public boolean validarToken(String token, HttpServletRequest request){
+    public boolean validateToken(String token, HttpServletRequest request) {
         try {
             Jwts.parser().setSigningKey(chaveSecreta).parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
             logger.error("Assinatura Inválida", e.getMessage());
-        }catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             logger.error("Token expirado", e.getMessage());
             request.setAttribute("validacaoToken", "Token expirado");
-        }catch (UnsupportedJwtException e){
+        } catch (UnsupportedJwtException e) {
             logger.error("Token não suportado", e.getMessage());
-
         }
         return false;
     }

@@ -5,7 +5,7 @@ import java.util.List;
 import br.com.loto.domain.entity.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PermissionRepository extends JpaRepository<Permission, Long>{
+public interface IPermissionRepository extends JpaRepository<Permission, Long>{
     
     List<Permission> findByName(String nome);
 }
