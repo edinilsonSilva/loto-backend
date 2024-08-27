@@ -8,12 +8,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-@Table(name = "accounts_configs")
-@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"term", "termDocument", "account"})
+@Entity
+@Table(name = "accounts_configs")
 public class AccountConfig implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -1,7 +1,3 @@
-INSERT INTO public.permissions
-    (created_at, name, description)
-VALUES (now(), 'ADMIN', 'Administrador');
-
 INSERT INTO public.accounts_configs
     (created_at, active)
 VALUES (now(), true);
@@ -20,8 +16,8 @@ VALUES (now(), now(), 'EMAIL', 'bateraed@gmail.com', 1);
 
 INSERT INTO public.accounts_passwords
 (created_at, active, create_password_next_login,same_password_limit, password, account_id)
-VALUES (now(), true, false, 0, '$2a$10$yfQhPlgEX8Yuc.SxUWKTl.tpGQtnWXAylMoK.0UfhZ8lNFxyJ9hTy', 1);
+VALUES (now(), true, false, 0, '$2a$10$MbL1Qe6dZGY6xoE2Pd3kYu/vZQN.1jo./28tOVkW2OQkMQnIezL6a', 1);
 
-INSERT INTO public.accounts_permissions
-    (created_at, permission_id, account_id)
-VALUES (now(), 1, 1);
+INSERT INTO public.accounts_roles
+    (created_at, type_role, account_id)
+VALUES (now(), 'ROLE_ADMINISTRATOR', 1);

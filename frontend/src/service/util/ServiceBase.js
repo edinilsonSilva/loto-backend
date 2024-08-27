@@ -1,19 +1,18 @@
 import axios from 'axios';
 import { config } from 'react-transition-group';
-import { LoginService } from '../util/LoginService';
+import { LoginService } from '../LoginService';
 
 export class ServiceBase {
 
-
     constructor(urlBase) {
         this.url = urlBase + '/';
-        this.inicializarAxios();
-        this.tratamentoErro401();
+        this.initAxios();
+        this.handlerError401();
     }
 
-    inicializarAxios() {
+    initAxios() {
         this.axiosInstance = axios.create({
-            baseURL: process.env.REACT_APP_URL_API,
+            baseURL: process.env.REACT_APP_URL_API_V1,
         });
 
         this.axiosInstance.interceptors.request.use((config) => {
@@ -26,13 +25,13 @@ export class ServiceBase {
         );
     }
 
-    tratamentoErro401() {
+    handlerError401() {
         this.axiosInstance.interceptors.response.use((response) => {
             return response;
         }, (erro) => {
             console.log(erro.response.status);
             if (erro.response.status == 401) {
-                if (!erro.request.response.includes("pessoa-gerenciamento/login")) {
+                if (!erro.request.response.includes("auth/login")) {
                     new LoginService().sair();
                     window.location.href = "/";
                 }

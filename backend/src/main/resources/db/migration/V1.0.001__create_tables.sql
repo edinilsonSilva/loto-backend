@@ -19,17 +19,6 @@ CREATE TABLE IF NOT EXISTS public.accounts_personal
     CONSTRAINT accounts_personal_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS public.permissions
-(
-    id          SERIAL NOT NULL,
-    created_at  timestamp(30) NULL,
-    deleted_at  timestamp(30) NULL,
-    updated_at  timestamp(30) NULL,
-    name        varchar(255) NULL,
-    description varchar(255) NULL,
-    CONSTRAINT permissions_pkey PRIMARY KEY (id)
-);
-
 CREATE TABLE IF NOT EXISTS public.accounts
 (
     id          SERIAL NOT NULL,
@@ -79,16 +68,15 @@ CREATE TABLE IF NOT EXISTS public.accounts_passwords
     CONSTRAINT password_accounts_fkey FOREIGN KEY (account_id) REFERENCES public.accounts (id)
 );
 
-CREATE TABLE IF NOT EXISTS public.accounts_permissions
+CREATE TABLE IF NOT EXISTS public.accounts_roles
 (
     id            SERIAL NOT NULL,
     created_at    timestamp(30) NULL,
     updated_at    timestamp(30) NULL,
     deleted_at    timestamp(30) NULL,
-    permission_id int8 NULL,
+    type_role     varchar(100) NULL,
     account_id    int8 NULL,
-    CONSTRAINT accounts_permissions_pkey PRIMARY KEY (id),
-    CONSTRAINT permission_accounts_permission_fkey FOREIGN KEY (permission_id) REFERENCES public.permissions (id),
+    CONSTRAINT accounts_roles_pkey PRIMARY KEY (id),
     CONSTRAINT permission_account_fkey FOREIGN KEY (account_id) REFERENCES public.accounts (id)
 );
 

@@ -3,8 +3,7 @@ package br.com.loto.domain.entity;
 import br.com.loto.enums.TypePhoto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,9 +11,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "accounts_photos")
-@ToString
 public class AccountPhoto implements Serializable {
 
 	private static final long serialVersionUID = 4049150557660462734L;

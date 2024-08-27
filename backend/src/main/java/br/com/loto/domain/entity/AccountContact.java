@@ -14,10 +14,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "accounts_contacts")
 public class AccountContact implements Serializable {
 

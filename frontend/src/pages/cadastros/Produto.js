@@ -8,8 +8,6 @@ import { Toolbar } from 'primereact/toolbar';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { ProdutoService } from '../../service/cadastros/ProdutoService';
-import { MarcaService } from '../../service/cadastros/MarcaService';
-import { CategoriaService } from '../../service/cadastros/CategoriaService';
 import { Dropdown } from 'primereact/dropdown';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { InputNumber } from 'primereact/inputnumber';
@@ -38,21 +36,6 @@ const Produto = () => {
     const toast = useRef(null);
     const dt = useRef(null);
     const objetoService = new ProdutoService();
-    const marcaService = new MarcaService();
-    const categoriaService = new CategoriaService();
-
-    useEffect(() => {
-
-        marcaService.listarTodos().then(res => {
-            setMarcas(res.data)
-
-        });
-        categoriaService.listarTodos().then(res => {
-            setCategorias(res.data)
-
-        });
-
-    }, []);
 
     useEffect(() => {
         if (objetos == null) {

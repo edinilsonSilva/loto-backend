@@ -1,60 +1,88 @@
 package br.com.loto.config.security;
 
-import br.com.loto.service.impl.AccountDetailService;
+import br.com.loto.domain.entity.Account;
+import br.com.loto.exceptions.TokenException;
+import br.com.loto.service.IAccountService;
+import br.com.loto.service.impl.userDetails.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.util.StringUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
+@Component
+@RequiredArgsConstructor
 public class AuthFilterToken extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    private AccountDetailService accountDetailService;
+    private final IAccountService accountService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
 
-            String jwt = getToken(request);
+        // Verifica se o endpoint requer autenticação antes de processar a requisição
+        if (checkIfEndpointIsNotPublic(request)) {
 
-            if (jwt != null && jwtUtil.validateToken(jwt, request)) {
+            // Recupera o token do cabeçalho Authorization da requisição
+            String token = recoveryToken(request);
 
-                UserDetails userDetails = accountDetailService.loadUserByUsername(jwtUtil.getUsername(jwt));
+            if (token == null)
+                throw new TokenException("O token está ausente.");
 
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            String subject = jwtUtil.getUsername(token);
+            Account account = accountService.findByUsernameWithThrow(subject);
+            UserDetailsImpl userDetails = new UserDetailsImpl(account);
 
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            }
-
-        } catch (Exception e) {
-            System.out.println("Não foi possível setar a autenticação do usuário" + e.getMessage());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response); // Continua o processamento da requisição
     }
 
-    private String getToken(HttpServletRequest request) {
+    // Recupera o token do cabeçalho Authorization da requisição
+    private String recoveryToken(HttpServletRequest request) {
 
-        String headerToken = request.getHeader("Authorization");
+        String authorizationHeader = request.getHeader("Authorization");
 
-        if (StringUtils.hasText(headerToken) && headerToken.startsWith("Bearer "))
-            return headerToken.replace("Bearer ", "");
+        if (authorizationHeader != null)
+            return authorizationHeader.replace("Bearer ", "");
 
         return null;
     }
 
+    // Verifica se o endpoint requer autenticação antes de processar a requisição
+    private boolean checkIfEndpointIsNotPublic(HttpServletRequest request) {
+
+        boolean isNotPublic = true;
+        String uriCurrent = request.getRequestURI();
+
+        for (String uri : Arrays.stream(WebSecurityConfig.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).toList()) {
+
+            String uriC = removeEnd(uri);
+
+            if (uriCurrent.startsWith(uriC)) {
+                isNotPublic = false;
+                break;
+            }
+        }
+
+        return isNotPublic;
+    }
+
+    private String removeEnd(String uri) {
+
+        if (uri.endsWith("/**"))
+            return uri.substring(0, uri.length() - 2);
+        return uri;
+    }
 }

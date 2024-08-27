@@ -13,10 +13,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "accounts_passwords")
 public class AccountPassword implements Serializable {
 

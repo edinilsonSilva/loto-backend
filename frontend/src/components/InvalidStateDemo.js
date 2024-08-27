@@ -9,7 +9,6 @@ import { Chips } from 'primereact/chips';
 import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import { Password } from 'primereact/password';
-import { CountryService } from '../service/CountryService';
 
 const InvalidStateDemo = () => {
     const [countries, setCountries] = useState([]);
@@ -32,13 +31,6 @@ const InvalidStateDemo = () => {
         { name: 'Istanbul', code: 'IST' },
         { name: 'Paris', code: 'PRS' },
     ];
-
-    useEffect(() => {
-        const countryService = new CountryService();
-        countryService.getCountries().then((countries) => {
-            setCountries(countries);
-        });
-    }, []);
 
     const searchCountry = (event) => {
         // in a real application, make a request to a remote url with the query and

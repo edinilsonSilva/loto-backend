@@ -2,9 +2,10 @@ package br.com.loto.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -13,9 +14,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "accounts")
-@Data
 public class Account {
 
     @Id
@@ -54,8 +58,9 @@ public class Account {
     private List<AccountPassword> passwords;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "account", fetch = FetchType.EAGER, orphanRemoval = true)
-    @Setter(value = AccessLevel.NONE)
-    private List<AccountPermission> permissions;
+    @JsonIgnoreProperties("account")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<AccountRole> roles;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "account", fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonIgnoreProperties("account")

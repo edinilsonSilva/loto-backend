@@ -3,8 +3,6 @@ import { Carousel } from 'primereact/carousel';
 import { Galleria } from 'primereact/galleria';
 import { Button } from 'primereact/button';
 import { Image } from "primereact/image";
-import { ProductService } from '../service/ProductService';
-import { PhotoService } from '../service/PhotoService';
 
 const MediaDemo = () => {
     const [products, setProducts] = useState([]);
@@ -44,14 +42,6 @@ const MediaDemo = () => {
             numScroll: 1,
         },
     ];
-
-    useEffect(() => {
-        const productService = new ProductService();
-        productService.getProductsSmall().then((products) => setProducts(products));
-
-        const photoService = new PhotoService();
-        photoService.getImages().then((images) => setImages(images));
-    }, []);
 
     const carouselItemTemplate = (product) => {
         return (

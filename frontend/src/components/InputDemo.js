@@ -19,8 +19,6 @@ import { TreeSelect } from 'primereact/treeselect';
 import { SelectButton } from 'primereact/selectbutton';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
-import { CountryService } from '../service/CountryService';
-import { NodeService } from '../service/NodeService';
 
 export const InputDemo = () => {
     const [floatValue, setFloatValue] = useState('');
@@ -87,13 +85,6 @@ export const InputDemo = () => {
         { name: 'Option 2', code: 'O2' },
         { name: 'Option 3', code: 'O3' },
     ];
-
-    useEffect(() => {
-        const countryService = new CountryService();
-        const nodeService = new NodeService();
-        countryService.getCountries().then(data => setAutoValue(data));
-        nodeService.getTreeNodes().then(data => setTreeSelectNodes(data));
-    }, []);
 
     const searchCountry = (event) => {
         setTimeout(() => {

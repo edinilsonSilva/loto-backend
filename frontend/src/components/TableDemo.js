@@ -13,8 +13,6 @@ import { Slider } from 'primereact/slider';
 import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import { ToggleButton } from 'primereact/togglebutton';
 import { Rating } from 'primereact/rating';
-import { CustomerService } from '../service/CustomerService';
-import { ProductService } from '../service/ProductService';
 
 const TableDemo = () => {
     const [customers1, setCustomers1] = useState(null);
@@ -43,20 +41,6 @@ const TableDemo = () => {
     const statuses = [
         'unqualified', 'qualified', 'new', 'negotiation', 'renewal', 'proposal'
     ];
-
-    const customerService = new CustomerService();
-    const productService = new ProductService();
-
-    useEffect(() => {
-        setLoading2(true);
-
-        customerService.getCustomersLarge().then(data => { setCustomers1(getCustomers(data)); setLoading1(false) });
-        customerService.getCustomersLarge().then(data => { setCustomers2(getCustomers(data)); setLoading2(false); });
-        customerService.getCustomersMedium().then(data => setCustomers3(data));
-        productService.getProductsWithOrdersSmall().then(data => setProducts(data));
-
-        initFilters1();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const balanceTemplate = (rowData) => {
         return (

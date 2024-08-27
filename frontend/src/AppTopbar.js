@@ -1,7 +1,7 @@
 import React  from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { LoginService } from './service/util/LoginService';
+import { LoginService } from './service/LoginService';
 
 export const AppTopbar = (props) => {
 

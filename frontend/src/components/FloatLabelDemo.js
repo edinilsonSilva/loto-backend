@@ -8,7 +8,6 @@ import {Calendar} from 'primereact/calendar';
 import {Chips} from 'primereact/chips';
 import {Dropdown} from 'primereact/dropdown';
 import {MultiSelect} from 'primereact/multiselect';
-import {CountryService} from '../service/CountryService';
 
 const FloatLabelDemo = () => {
     const [countries, setCountries] = useState([]);
@@ -32,12 +31,6 @@ const FloatLabelDemo = () => {
         {name: 'Paris', code: 'PRS'},
     ];
 
-    useEffect(() => {
-        const countryService = new CountryService();
-        countryService.getCountries().then((countries) => {
-            setCountries(countries);
-        });
-    }, []);
 
     const searchCountry = (event) => {
         // in a real application, make a request to a remote url with the query and

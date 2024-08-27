@@ -9,8 +9,6 @@ import { Toolbar } from 'primereact/toolbar';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { PessoaService } from '../../service/cadastros/PessoaService';
-import { CidadeService } from '../../service/cadastros/CidadeService';
-import { PermissaoService } from '../../service/cadastros/PermissaoService';
 import { Dropdown } from 'primereact/dropdown';
 import { InputMask } from 'primereact/inputmask';
 import { MultiSelect } from 'primereact/multiselect';
@@ -41,10 +39,6 @@ const Pessoa = () => {
     const toast = useRef(null);
     const dt = useRef(null);
     const objetoService = new PessoaService();
-    const cidadeService = new CidadeService();
-    const permissaoService = new PermissaoService();
-
-
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -71,21 +65,6 @@ const Pessoa = () => {
             formik.resetForm();
         }
     });
-
-    useEffect(() => {
-        cidadeService.listarTodos().then(res => {
-            setCidades(res.data)
-
-        });
-
-        permissaoService.listarTodos().then(res => {
-            let permissoesTemporarias = [];
-            res.data.forEach(element => {
-                permissoesTemporarias.push({ permissao: element });
-            });
-            setPermissoes(permissoesTemporarias);
-        });
-    }, []);
 
     useEffect(() => {
         if (objetos == null) {

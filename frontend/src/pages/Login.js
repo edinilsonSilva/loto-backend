@@ -3,23 +3,23 @@ import { Checkbox } from 'primereact/checkbox';
 import { InputText } from 'primereact/inputtext';
 import { Toast } from 'primereact/toast';
 import React, { useRef, useState } from 'react';
-import { LoginService } from '../service/util/LoginService';
+import { LoginService } from '../service/LoginService';
 
 const Login = () => {
 
-    const [email, setEmail] =  useState("");
-    const [senha, setSenha] = useState("");
+    const [username, setUsername] =  useState("");
+    const [password, setPassword] = useState("");
     const loginService = new LoginService();
     const toast = useRef(null);
 
-const fazerLogin = () =>{
-    loginService.login(email, senha, mostrarMensagemErro);
-}
+    const fazerLogin = () =>{
+        loginService.login(username, password, mostrarMensagemErro);
+    }
 
-const mostrarMensagemErro = (erro) =>{
-    toast.current.show({ severity: 'error', summary: 'Erro', detail: erro, life: 3000 });
+    const mostrarMensagemErro = (erro) =>{
+        toast.current.show({ severity: 'error', summary: 'Erro', detail: erro, life: 3000 });
 
-}
+    }
 
     return (
         <div className="surface-ground px-4 py-8 md:px-6 lg:px-8 flex align-items-center justify-content-center">
@@ -34,10 +34,10 @@ const mostrarMensagemErro = (erro) =>{
 
             <div>
                 <label htmlFor="email1" className="block text-900 font-medium mb-2">Email</label>
-                <InputText id="email1" type="text" className="w-full mb-3" onChange={(e)=>setEmail(e.target.value)}/>
+                <InputText id="email1" type="text" className="w-full mb-3" onChange={(e)=>setUsername(e.target.value)}/>
 
                 <label htmlFor="password1" className="block text-900 font-medium mb-2">Password</label>
-                <InputText id="password1" type="password" className="w-full mb-3" onChange={(e)=>setSenha(e.target.value)}/>
+                <InputText id="password1" type="password" className="w-full mb-3" onChange={(e)=>setPassword(e.target.value)}/>
 
                 <div className="flex align-items-center justify-content-between mb-6">
                     <div className="flex align-items-center">

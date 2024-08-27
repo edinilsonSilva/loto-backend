@@ -1,48 +1,57 @@
 package br.com.loto.config.security;
 
-import br.com.loto.domain.entity.Account;
-import io.jsonwebtoken.*;
-import jakarta.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import br.com.loto.service.impl.userDetails.UserDetailsImpl;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Component
 public class JwtUtil {
 
-    private String chaveSecreta = "chaveSecretaParaGerarToken";
-    private int validadeToken = 900000;
-    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+    private static final String SECRET_KEY = "4Z^XrroxR@dWxqf$mTTKwW$!@#qGr4P"; // Chave secreta utilizada para gerar e verificar o token
 
-    public String generateTokenUsername(Account account) {
-        return Jwts.builder().setSubject(account.getUsername()).
-                setIssuedAt(new Date()).
-                setExpiration(new Date(new Date().getTime() + validadeToken)).
-                signWith(SignatureAlgorithm.HS512, chaveSecreta).compact();
+    private static final String ISSUER = "pizzurg-api"; // Emissor do token
+
+    public String generateToken(UserDetailsImpl user) {
+        try {
+            // Define o algoritmo HMAC SHA256 para criar a assinatura do token passando a chave secreta definida
+            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+            return JWT.create()
+                    .withIssuer(ISSUER) // Define o emissor do token
+                    .withIssuedAt(creationDate()) // Define a data de emissão do token
+                    .withExpiresAt(expirationDate()) // Define a data de expiração do token
+                    .withSubject(user.getUsername()) // Define o assunto do token (neste caso, o nome de usuário)
+                    .sign(algorithm); // Assina o token usando o algoritmo especificado
+        } catch (JWTCreationException exception){
+            throw new JWTCreationException("Erro ao gerar token.", exception);
+        }
     }
 
     public String getUsername(String token) {
-        return Jwts.parser()
-                .setSigningKey(chaveSecreta)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        try {
+            // Define o algoritmo HMAC SHA256 para verificar a assinatura do token passando a chave secreta definida
+            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+            return JWT.require(algorithm)
+                    .withIssuer(ISSUER) // Define o emissor do token
+                    .build()
+                    .verify(token) // Verifica a validade do token
+                    .getSubject(); // Obtém o assunto (neste caso, o nome de usuário) do token
+        } catch (JWTVerificationException exception){
+            throw new JWTVerificationException("Token inválido ou expirado.");
+        }
     }
 
-    public boolean validateToken(String token, HttpServletRequest request) {
-        try {
-            Jwts.parser().setSigningKey(chaveSecreta).parseClaimsJws(token);
-            return true;
-        } catch (SignatureException e) {
-            logger.error("Assinatura Inválida", e.getMessage());
-        } catch (ExpiredJwtException e) {
-            logger.error("Token expirado", e.getMessage());
-            request.setAttribute("validacaoToken", "Token expirado");
-        } catch (UnsupportedJwtException e) {
-            logger.error("Token não suportado", e.getMessage());
-        }
-        return false;
+    private Instant creationDate() {
+        return ZonedDateTime.now(ZoneId.of("America/Fortaleza")).toInstant();
+    }
+
+    private Instant expirationDate() {
+        return ZonedDateTime.now(ZoneId.of("America/Fortaleza")).plusHours(4).toInstant();
     }
 }

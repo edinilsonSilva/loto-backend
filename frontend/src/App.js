@@ -36,14 +36,7 @@ import TimelineDemo from './pages/TimelineDemo';
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
 
-import Estado from './pages/cadastros/Estado';
-import Cidade from './pages/cadastros/Cidade';
 import Pessoa from './pages/cadastros/Pessoa';
-import Permissao from './pages/cadastros/Permissao';
-import Produto from './pages/cadastros/Produto';
-import Categoria from './pages/cadastros/Categoria';
-import Marca from './pages/cadastros/Marca';
-
 
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
@@ -55,7 +48,7 @@ import './assets/layout/layout.scss';
 import './App.scss';
 import ProdutoImagens from './pages/cadastros/ProdutoImagens';
 import Login from './pages/Login';
-import { LoginService } from './service/util/LoginService';
+import { LoginService } from './service/LoginService';
 
 
 const App = () => {
@@ -179,24 +172,6 @@ const App = () => {
         {
             label: 'Cadastros',
             items: [{
-                label: 'Estados', icon: 'pi pi-fw pi-home', to: '/estados'
-            },
-            {
-                label: 'Cidades', icon: 'pi pi-fw pi-home', to: '/cidades'
-            },
-            {
-                label: 'Marcas', icon: 'pi pi-fw pi-home', to: '/marcas'
-            },
-            {
-                label: 'Categorias', icon: 'pi pi-fw pi-home', to: '/categorias'
-            },
-            {
-                label: 'Produtos', icon: 'pi pi-fw pi-home', to: '/produtos'
-            },
-            {
-                label: 'Permissões', icon: 'pi pi-fw pi-home', to: '/permissoes'
-            },
-            {
                 label: 'Pessoas', icon: 'pi pi-fw pi-home', to: '/pessoas'
             }]
         },
@@ -358,12 +333,6 @@ const App = () => {
                         <Route path="/crud" component={Crud} />
                         <Route path="/empty" component={EmptyPage} />
                         <Route path="/documentation" component={Documentation} />
-                        <Route path="/estados" component={Estado} />
-                        <Route path="/cidades" component={Cidade} />
-                        <Route path="/marcas" component={Marca} />
-                        <Route path="/categorias" component={Categoria} />
-                        <Route path="/produtos" component={Produto} />
-                        <Route path="/permissoes" component={Permissao} />
                         <Route path="/pessoas" component={Pessoa} />
                         <Route path="/produtoImagens/:id" component={ProdutoImagens} />
                         <Route path="/login" component={Login} />

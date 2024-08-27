@@ -1,4 +1,4 @@
-import { ServiceBase } from './ServiceBase';
+import { ServiceBase } from '../util/ServiceBase';
 
 export class ProdutoImagensService extends ServiceBase {
 

@@ -1,17 +1,24 @@
 package br.com.loto.domain.entity;
 
+import br.com.loto.enums.TypeRole;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "accounts_permissions")
 @Data
-public class AccountPermission {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "accounts_roles")
+public class AccountRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +35,9 @@ public class AccountPermission {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "permission_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("photos")
-    private Permission permission;
+    @Column(name = "type_role")
+    @Enumerated(EnumType.STRING)
+    private TypeRole typeRole;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
