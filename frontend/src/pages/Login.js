@@ -37,7 +37,7 @@ const Login = () => {
                 <InputText id="email1" type="text" className="w-full mb-3" onChange={(e)=>setUsername(e.target.value)}/>
 
                 <label htmlFor="password1" className="block text-900 font-medium mb-2">Password</label>
-                <InputText id="password1" type="password" className="w-full mb-3" onChange={(e)=>setPassword(e.target.value)}/>
+                <InputText id="password1" type="password" className="w-full mb-3" onChange={(e)=>setPassword (e.target.value)}/>
 
                 <div className="flex align-items-center justify-content-between mb-6">
                     <div className="flex align-items-center">
