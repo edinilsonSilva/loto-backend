@@ -6,10 +6,13 @@
 * Created: 2021-06-19 19:14:01
 *------------------------------------------------------- */
 
+import React from 'react';
 // import PropTypes from 'prop-types';
 
 // import classes from './style.less';
 
+import { html } from '../../../README.md';
+import { Card } from 'antd';
 
 const propTypes = {
 	// classes: PropTypes.object.isRequired,
@@ -24,6 +27,9 @@ const Index = (props) => {
 
 	return (
 		<div className="">
+			<Card >
+				<div dangerouslySetInnerHTML={{ __html: html }} />
+			</Card>
 		</div>
 	);
 };

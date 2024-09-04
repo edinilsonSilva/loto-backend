@@ -1,10 +1,3 @@
-/* --------------------------------------------------------
-* Author Trần Đức Tiến
-* Email tientran0019@gmail.com
-* Phone 0972970075
-*
-* Created: 2020-02-22 17:12:38
-*------------------------------------------------------- */
 import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 

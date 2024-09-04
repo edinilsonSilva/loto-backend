@@ -51,9 +51,9 @@ const CookieAlert = (props) => {
 				message={
 					<div className="container d-block d-md-flex text-center text-md-left justify-content-between align-items-center">
 						<div className="mr-0 mr-md-2 fs-sm mb-2 mb-md-0 flex-1">
-							We use cookies to make interactions with our websites and services easy and meaningful, to better understand how they are used and to tailor advertising. You can read more and make your cookie choices <Link href="/cookie-policy">here</Link>. By continuing to use this site you are giving us your consent to do this.
+							Usamos cookies para tornar as interações com nossos sites e serviços fáceis e significativas, para entender melhor como eles são utilizados e para personalizar a publicidade. Você pode ler mais e fazer suas escolhas de cookies [aqui](Link href="/cookie-policy"). Ao continuar a usar este site, você está nos dando seu consentimento para fazer isso.
 						</div>
-						<Button type="primary" size="small" onClick={() => { CookieSettings.accepted = true; setShow(false); }}>Accept</Button>
+						<Button type="primary" size="small" onClick={() => { CookieSettings.accepted = true; setShow(false); }}>Aceitar</Button>
 					</div>
 				}
 			/>

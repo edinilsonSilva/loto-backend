@@ -1,11 +1,3 @@
-/* --------------------------------------------------------
-* Author Trần Đức Tiến
-* Email tientran0019@gmail.com
-* Phone 0972970075
-*
-* Created: 2020-03-01 17:08:34
-*------------------------------------------------------- */
-
 import React from 'react';
 // import PropTypes from 'prop-types';
 

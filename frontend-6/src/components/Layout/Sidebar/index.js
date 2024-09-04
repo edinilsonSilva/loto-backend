@@ -56,9 +56,19 @@ const Sidebar = () => {
 				marginLeft: 20,
 			}}
 		>
-			<Menu.Item key="/contas" onClick={() => router.push('/contas')} icon={<AntDesignOutlined />}>
-				<span>Contas</span>
+			<Menu.Item key="/boloes" onClick={() => router.push('/boloes')}>
+				<span>Bolões</span>
 			</Menu.Item>
+
+			<Menu.Item key="/loterias" onClick={() => router.push('/loterias')}>
+				<span>Loterias</span>
+			</Menu.Item>
+
+			<Menu.Item key="/ajuda" onClick={() => router.push('/ajuda')}>
+				<span>Ajuda</span>
+			</Menu.Item>
+
+
 		</Menu>
 	);
 };

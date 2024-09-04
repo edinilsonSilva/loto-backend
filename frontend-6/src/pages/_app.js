@@ -15,7 +15,7 @@ import Loading from 'src/components/Loading';
 
 import AuthStorage from 'src/utils/auth-storage';
 
-import 'antd/dist/antd.css';
+//import 'antd/dist/antd.css';
 
 require('src/styles/index.less');
 

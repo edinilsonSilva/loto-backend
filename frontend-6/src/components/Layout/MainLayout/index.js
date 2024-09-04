@@ -1,12 +1,3 @@
-/* eslint-disable no-nested-ternary */
-/* --------------------------------------------------------
-* Author Trần Đức Tiến
-* Email tientran0019@gmail.com
-* Phone 0972970075
-*
-* Created: 2020-03-01 17:38:42
-*------------------------------------------------------- */
-
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
@@ -20,14 +11,14 @@ import AvatarDropDown from 'src/components/AvatarDropDown';
 import Footer from 'src/components/Layout/Footer';
 import Header from 'src/components/Layout/Header';
 import Sidebar from 'src/components/Layout/Sidebar';
-import Notifications from 'src/components/Notifications';
 
 import CookieAlert from 'src/components/CookieAlert';
 
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import LoginModal from 'src/containers/Auth/LoginModal';
+import { LoginService } from 'src/service/LoginService';
 import BreadcrumbDn from '../BreadcrumbDn';
 import classes from './style.module.less';
-import { LoginService } from 'src/service/LoginService';
-import LoginModal from 'src/containers/Auth/LoginModal';
 
 const { Content, Sider } = Layout;
 
@@ -94,12 +85,12 @@ const MainLayout = (props) => {
 					<Link href="/" className={classes.headerLeft}>
 						<div className={classes.logoCenter}>
 							<Image
-								src="/images/logo.png"
+								src="/images/sorte.png"
 								alt="Logo"
-								width={35}
+								width={55}
 								height={35}
 							/>
-							<span>LOTERIA</span>
+							<span>Loteria da Sorte</span>
 						</div>
 					</Link>
 
@@ -108,14 +99,21 @@ const MainLayout = (props) => {
 					{loginService.autenticado() ?
 						<div className={classes.headerRight}>
 							<AvatarDropDown />
-							<Notifications />
+							<Link href="/meu-carrinho" passHref>
+								<Button icon={<ShoppingCartOutlined />} shape="round" style={{ marginLeft: 10 }} />
+							</Link>
+
 						</div>
 						:
 						<div className={classes.headerRight}>
+							<Button onClick={showLoginModal} shape="round">Entrar</Button>
 
-							<Button onClick={showLoginModal}>Entrar</Button>
+							<Link href="/meu-carrinho" passHref>
+								<Button icon={<ShoppingCartOutlined />} shape="round" style={{ marginLeft: 10 }} />
+							</Link>
 						</div>
 					}
+
 				</Header>
 
 				<Content

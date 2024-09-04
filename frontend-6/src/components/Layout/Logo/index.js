@@ -1,11 +1,3 @@
-/* --------------------------------------------------------
-* Author Trần Đức Tiến
-* Email tientran0019@gmail.com
-* Phone 0972970075
-*
-* Created: 2021-01-13 22:57:59
-*------------------------------------------------------- */
-
 import React from 'react';
 // import PropTypes from 'prop-types';
 
@@ -27,7 +19,7 @@ const Logo = (props) => {
 			width={120}
 			height={120}
 			{...attrs}
-			src="/images/logo.png"
+			src="/images/sorte.png"
 			alt="Logo"
 		/>
 	);
