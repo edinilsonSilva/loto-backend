@@ -1,6 +1,7 @@
 package br.com.loto.api.controller;
 
 import br.com.loto.api.dto.requests.LoginRequest;
+import br.com.loto.api.dto.responses.AccountResponse;
 import br.com.loto.api.dto.responses.LoginResponse;
 import br.com.loto.service.IAccountAuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,4 +39,16 @@ public class AccountAuthController {
         return new ResponseEntity<>(authService.login(request), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Consultar conta pelo token jwt")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AccountResponse.class))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
+    @PostMapping(value = "/get-account", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<AccountResponse> getAccount() {
+        return new ResponseEntity<>(authService.getAccount(), HttpStatus.OK);
+    }
 }

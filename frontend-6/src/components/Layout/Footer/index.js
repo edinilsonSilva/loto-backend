@@ -9,13 +9,13 @@ const Footer = (props) => {
 	return (
 		<footer className={classes.footer}>
 			<div>
-				<strong className="text-primary">Boilerplate</strong>
-				<span> 2021 © All Rights Reserved.</span>
+				<strong className="text-primary">Loteria da Sorte</strong>
+				<span> 2024 © Todos os direitos reservados.</span>
 			</div>
-			<div className="ml-auto">
+			{/* <div className="ml-auto">
 				<span>Powered by </span>
 				<strong className="text-primary">Tien Tran</strong>
-			</div>
+			</div> */}
 		</footer>
 	);
 };

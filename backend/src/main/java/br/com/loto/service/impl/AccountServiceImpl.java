@@ -1,17 +1,24 @@
 package br.com.loto.service.impl;
 
 import br.com.loto.api.dto.query.AccountQuery;
+import br.com.loto.config.security.JwtUtil;
 import br.com.loto.domain.entity.Account;
 import br.com.loto.domain.repository.IAccountRepository;
 import br.com.loto.domain.specification.AccountSpecification;
 import br.com.loto.service.IAccountService;
+import br.com.loto.service.impl.userDetails.UserDetailsImpl;
+import com.auth0.jwt.JWT;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -19,6 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountServiceImpl implements IAccountService {
 
     private final IAccountRepository accountRepository;
+
+    private final JwtUtil jwtUtil;
+    private final HttpServletRequest httpRequest;
 
     @Override
     @Transactional
@@ -36,6 +46,12 @@ public class AccountServiceImpl implements IAccountService {
     public Account findByIdWithThrow(Long accountId) {
         return accountRepository.findById(accountId)
                 .orElseThrow(() -> new BadCredentialsException("Conta não encontrada"));
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    public Account findUserCurrent() {
+        return findByUsernameWithThrow(jwtUtil.getUsername(httpRequest.getHeader("authorization")));
     }
 
     @Override

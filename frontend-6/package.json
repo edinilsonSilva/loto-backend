@@ -1,21 +1,15 @@
 {
-  "name": "boilerplate-nextjs-antd-less",
+  "name": "loteria-da-sorte",
   "version": "3.1.0",
-  "description": "A boilerplate for Reactjs app using nextjs, redux, redux-thunk, antd, less",
+  "description": "Sistema de loteria",
   "repository": {
     "type": "git",
     "url": "git@github.com:tientran0019/boilerplate-nextjs-antd-less.git"
   },
-  "author": "Tien Tran <tientran0019@gmail.com>",
-  "license": "MIT",
+  "author": "bateraed@gmail.com",
   "private": false,
   "keywords": [
-    "reactjs",
-    "boilerplate",
-    "redux",
-    "nextjs",
-    "antd",
-    "less"
+    "loteria"
   ],
   "scripts": {
     "clean": "rimraf .next/ out/",
@@ -32,6 +26,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@reduxjs/toolkit": "^2.2.7",
     "antd": "^4.24.2",
     "axios": "^1.7.7",
     "classnames": "^2.3.2",
@@ -40,7 +35,6 @@
     "lodash": "^4.17.21",
     "next": "13.5.4",
     "next-compose-plugins": "^2.2.1",
-    "next-redux-wrapper": "^8.0.0",
     "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
     "prop-types": "^15.8.1",
@@ -50,12 +44,9 @@
     "react-cookies": "^0.1.1",
     "react-dom": "18.2.0",
     "react-icons": "^4.6.0",
-    "react-redux": "^7.2.6",
+    "react-redux": "^9.1.2",
     "react-use": "^17.4.0",
-    "redux": "^4.2.0",
-    "redux-logger": "^3.0.6",
-    "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.4.2"
+    "redux-logger": "^3.0.6"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.0.3",

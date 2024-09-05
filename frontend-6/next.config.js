@@ -65,4 +65,13 @@ const nextConfig = withBundleAnalyzer(withAntdLess({
 	},
 }));
 
+module.exports = {
+	webpack(config, { dev }) {
+	  if (dev) {
+		config.devtool = 'source-map';
+	  }
+	  return config;
+	},
+  };
+
 module.exports = nextConfig;

@@ -10,14 +10,20 @@ import { AccountPbService } from 'src/service/AccountPbService';
 import { LoginService } from 'src/service/LoginService';
 import classes from './style.module.less';
 
+import { useSelector, useDispatch } from 'react-redux';
+import store from '../../../redux/store';
+
 const LoginModal = ({ visible, onClose }) => {
 
+	const dispatch = useDispatch();
+	//const account = useSelector((state) => state.account);
+	
 	const [loading, setLoading] = React.useState(false);
 
 	const [loginForm] = useForm();
 	const [newAccountForm] = useForm();
 
-	const loginService = new LoginService();
+	const loginService = new LoginService(dispatch, () => store.getState());
 	const accountPbService = new AccountPbService();
 
 	const [enabledCreateNewAccount, setEnabledCreateNewAccount] = useState(false);

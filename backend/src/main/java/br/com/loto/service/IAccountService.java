@@ -14,5 +14,7 @@ public interface IAccountService {
 
     Account findByIdWithThrow (Long accountId);
 
+    Account findUserCurrent();
+
     Page<Account> findAllByParams (AccountQuery query);
 }

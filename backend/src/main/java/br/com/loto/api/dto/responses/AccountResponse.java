@@ -5,18 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse {
+public class AccountResponse {
 
-    private String token;
+    private String username;
 
-    private AccountResponse content;
+    private String name;
 
-    private List<String> permissions;
+    private String cpf;
+
+    private String contact;
+
 }
