@@ -1,10 +1,11 @@
 package br.com.loto.service.impl;
 
-import br.com.loto.api.dto.requests.ChangePasswordRequest;
+import br.com.loto.api.dto.requests.ChangePasswordPubRequest;
 import br.com.loto.api.dto.requests.CreateAccountContactRequest;
 import br.com.loto.api.dto.requests.CreateAccountRequest;
 import br.com.loto.domain.entity.*;
-import br.com.loto.enums.TypeRole;
+import br.com.loto.enums.LotteryPermission;
+import br.com.loto.enums.TypeCurrency;
 import br.com.loto.exceptions.CustomResponse;
 import br.com.loto.service.*;
 import lombok.AllArgsConstructor;
@@ -13,21 +14,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.HashSet;
+
 @Service
 @AllArgsConstructor(onConstructor_ = @Lazy)
 public class AccountPubServiceImpl implements IAccountPubService {
 
     private final IAccountService accountService;
-    private final IAccountPersonalService personalService;
     private final IAccountConfigService configService;
+    private final IAccountLotteryService accountLotteryService;
+    private final IAccountLotteryWalletService accountLotteryWalletService;
     private final IAccountContactService contactService;
     private final IAccountPasswordService passwordService;
-    private final IAccountRoleService roleService;
 
     final PasswordEncoder passwordEncoder;
 
     @Override
-    public CustomResponse<Void> changePassword(ChangePasswordRequest request) {
+    public CustomResponse<Void> changePassword(ChangePasswordPubRequest request) {
 
         //        Account accountBanco = pessoaRepository.findByEmailAndCodigoRecuperacaoSenha(account.getEmail(),
 //                account.getCodigoRecuperacaoSenha());
@@ -56,19 +61,25 @@ public class AccountPubServiceImpl implements IAccountPubService {
     @Transactional
     public CustomResponse<Account> create(CreateAccountRequest request) {
 
-        AccountPersonal personal = personalService.saveAndFlush(AccountPersonal.builder()
-                .name(request.getName())
-                .cpf(request.getCpf())
-                .build());
-
         AccountConfig config = configService.saveAndFlush(AccountConfig.builder()
                 .active(true)
                 .build());
 
+        AccountLottery lottery = accountLotteryService.saveAndFlush(AccountLottery.builder()
+                .permissions(new HashSet<>(Arrays.asList(LotteryPermission.ALLOW_CREATE_BETTING)))
+                .build());
+
+        accountLotteryWalletService.saveAndFlush(AccountLotteryWallet.builder()
+                .balance(BigDecimal.valueOf(0))
+                .typeCurrency(TypeCurrency.BRL)
+                .accountLottery(lottery)
+                .build());
+
         Account account = accountService.saveAndFlush(Account.builder()
-                .username(request.getUsername())
-                .personal(personal)
+                .name(request.getName())
+                .cpf(request.getCpf())
                 .config(config)
+                .accountLottery(lottery)
                 .build());
 
         for (CreateAccountContactRequest req : request.getContacts())
@@ -79,11 +90,6 @@ public class AccountPubServiceImpl implements IAccountPubService {
                     .build());
 
         passwordService.create(request.getPassword(), account);
-
-        roleService.saveAndFlush(AccountRole.builder()
-                .typeRole(TypeRole.ROLE_CUSTOMER)
-                .account(account)
-                .build());
 
         return CustomResponse.<Account>builder()
                 .status(201)

@@ -39,7 +39,7 @@ public class AuthFilterToken extends OncePerRequestFilter {
                 throw new TokenException("O token está ausente.");
 
             String subject = jwtUtil.getUsername(token);
-            Account account = accountService.findByUsernameWithThrow(subject);
+            Account account = accountService.findByCpfWithThrow(subject);
             UserDetailsImpl userDetails = new UserDetailsImpl(account);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());

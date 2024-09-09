@@ -1,25 +1,20 @@
 /* eslint-disable no-console */
-import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import React from "react";
 
-import { Menu, Dropdown, Modal, Row, Col } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
+import { Col, Dropdown, Menu, Modal, Row } from "antd";
+import { useSelector } from "react-redux";
 
-import Router from 'next/router';
-import Link from 'next/link';
+import Link from "next/link";
 
-import { BiKey } from 'react-icons/bi';
-import { AiOutlineLogout } from 'react-icons/ai';
+import { AiOutlineLogout } from "react-icons/ai";
+import { BiKey } from "react-icons/bi";
 
-import {
-	ExclamationCircleOutlined,
-	UserOutlined,
-} from '@ant-design/icons';
+import { DownOutlined, ExclamationCircleOutlined, UserOutlined } from "@ant-design/icons";
 
-import Avatar from 'src/components/Avatar';
-
-import classes from './style.module.less';
-import { LoginService } from 'src/service/LoginService';
+import { LoginService } from "src/service/LoginService";
+import classes from "./style.module.less";
+import { useRouter } from 'next/router'; 
 
 const propTypes = {
 	style: PropTypes.object,
@@ -33,20 +28,26 @@ const AvatarDropDown = (props) => {
 
 	const loginService = new LoginService();
 
+	const account = loginService.getAccount();
+
+	const router = useRouter();
+
 	const { style } = props;
 
-	const auth = {}
+	const auth = {};
 
-	const paid = {}
+	const paid = {};
 
 	const handleLogout = React.useCallback(async () => {
 		Modal.confirm({
-			title: 'Are you sure?',
+			title: "Are you sure?",
 			icon: <ExclamationCircleOutlined />,
 			// content: 'Are you sure?',
-			onOk: async () => { loginService.doLogout() },
+			onOk: async () => {
+				loginService.doLogout(router);
+			},
 			onCancel() {
-				console.log('Cancel');
+				console.log("Cancel");
 			},
 		});
 	}, []);
@@ -78,19 +79,26 @@ const AvatarDropDown = (props) => {
 				<Col>
 					<div>
 						<p>Ola!</p>
-						<p>Edinilson Silva</p>
+						<p>{account?.name}</p>
 					</div>
 				</Col>
 				<Col>
-					<Dropdown style={style} overlay={menu} trigger={['click']} placement="bottomRight">
-						<div style={{ lineHeight: '50px' }}>
-							<Avatar
+					<Dropdown
+						style={style}
+						overlay={menu}
+						trigger={["click"]}
+						placement="bottomRight"
+					>
+						<div style={{  justifyContent: 'center', marginTop: '10px'  }}>
+							{/* <Avatar
 								size={30}
 								src={auth.avatar}
 								fullName={auth.fullName}
 								className={classes.avatar}
 								vip={paid}
-							/>
+							/> */}
+
+							<DownOutlined style={{ fontSize: 22, fontWeight: 'bold'}}/>
 						</div>
 					</Dropdown>
 				</Col>

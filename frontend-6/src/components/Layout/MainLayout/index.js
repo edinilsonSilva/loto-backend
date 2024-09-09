@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Router from 'next/router';
 
-import { BackTop, Button, Layout } from 'antd';
+import { BackTop, Button, Drawer, Layout, Menu } from 'antd';
 
 import AvatarDropDown from 'src/components/AvatarDropDown';
 import Footer from 'src/components/Layout/Footer';
@@ -14,11 +14,11 @@ import Sidebar from 'src/components/Layout/Sidebar';
 
 import CookieAlert from 'src/components/CookieAlert';
 
-import { ShoppingCartOutlined } from '@ant-design/icons';
+import { MenuOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import LoginModal from 'src/containers/Auth/LoginModal';
 import { LoginService } from 'src/service/LoginService';
 import BreadcrumbDn from '../BreadcrumbDn';
-import classes from './style.module.less';
+import styles from './style.module.less';
 
 const { Content, Sider } = Layout;
 
@@ -69,21 +69,33 @@ const MainLayout = (props) => {
 		setModalVisible(false);
 	};
 
+
+	const [visible, setVisible] = useState(false);
+
+	const showDrawer = () => {
+		setVisible(true);
+	};
+
+	const closeDrawer = () => {
+		setVisible(false);
+	};
+
+
 	return (
 		<>
 			<Layout
 				style={{
 					minHeight: '100vh',
 				}}
-				className={classes.root}
+				className={styles.root}
 			>
 				<Header
 					style={{
 						left: 0,
 					}}
 				>
-					<Link href="/" className={classes.headerLeft}>
-						<div className={classes.logoCenter}>
+					<Link href="/" className={styles.headerLeft}>
+						<div className={styles.logoCenter}>
 							<Image
 								src="/images/sorte.png"
 								alt="Logo"
@@ -94,10 +106,10 @@ const MainLayout = (props) => {
 						</div>
 					</Link>
 
-					<Sidebar />
+					<Sidebar mode="horizontal" className={styles.menuDesktop} />
 
 					{loginService.autenticado() ?
-						<div className={classes.headerRight}>
+						<div className={styles.headerRight}>
 							<AvatarDropDown />
 							<Link href="/meu-carrinho" passHref>
 								<Button icon={<ShoppingCartOutlined />} shape="round" style={{ marginLeft: 10 }} />
@@ -105,7 +117,7 @@ const MainLayout = (props) => {
 
 						</div>
 						:
-						<div className={classes.headerRight}>
+						<div className={styles.headerRight}>
 							<Button onClick={showLoginModal} shape="round">Entrar</Button>
 
 							<Link href="/meu-carrinho" passHref>
@@ -114,6 +126,25 @@ const MainLayout = (props) => {
 						</div>
 					}
 
+
+					{/* Button to open drawer on smaller screens */}
+					<Button
+						className={styles.menuMobileBtn}
+						type="primary"
+						icon={<MenuOutlined />}
+						onClick={showDrawer}
+					/>
+
+					{/* Drawer for mobile screens */}
+					<Drawer
+						title="Menu"
+						placement="right"
+						onClose={closeDrawer}
+						visible={visible}
+					>
+						<Sidebar mode="vertical" className={styles.menuMobile} />
+
+					</Drawer>
 				</Header>
 
 				<Content
@@ -124,9 +155,9 @@ const MainLayout = (props) => {
 
 					<BreadcrumbDn />
 
-					<Layout className={classes.siteLayout}>
+					<Layout className={styles.siteLayout}>
 
-						{mobiShow && broken && <div className={classes.overlay} onClick={() => setMobiShow(false)} />}
+						{mobiShow && broken && <div className={styles.overlay} onClick={() => setMobiShow(false)} />}
 
 						<Content style={{ margin: 20, }}>
 							{children}

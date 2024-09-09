@@ -9,9 +9,7 @@ import { useRouter } from 'next/router';
 
 import MainLayout from 'src/components/Layout/MainLayout';
 import Loading from 'src/components/Loading';
-
-import { Provider } from 'react-redux';
-import store from '../redux/store';
+import { Providers } from 'src/redux/provider';
 
 //import 'antd/dist/antd.css';
 
@@ -52,15 +50,15 @@ const MyApp = (props) => {
 	//	}, [AuthStorage.loggedIn]);
 
 	return (
-		<Provider store={store}>
-			<Layout>
+		<Providers >
+			<MainLayout>
 				<Head>
 					<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, height=device-height, user-scalable=0" />
 				</Head>
 				<Component {...pageProps} router={router} />
 				<Loading fullScreen loading={awaitLoading} />
-			</Layout>
-		</Provider>
+			</MainLayout>
+		</Providers>
 	);
 };
 

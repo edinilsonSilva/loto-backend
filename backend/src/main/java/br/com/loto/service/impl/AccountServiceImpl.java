@@ -37,8 +37,8 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
-    public Account findByUsernameWithThrow(String username) {
-        return accountRepository.findByUsername(username)
+    public Account findByCpfWithThrow(String username) {
+        return accountRepository.findByCpf(username)
                 .orElseThrow(() -> new BadCredentialsException("Conta não encontrada"));
     }
 
@@ -51,7 +51,7 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public Account findUserCurrent() {
-        return findByUsernameWithThrow(jwtUtil.getUsername(httpRequest.getHeader("authorization")));
+        return findByCpfWithThrow(jwtUtil.getUsername(httpRequest.getHeader("authorization")));
     }
 
     @Override

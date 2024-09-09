@@ -2,6 +2,7 @@ package br.com.loto.api.controller;
 
 import br.com.loto.api.dto.query.AccountQuery;
 import br.com.loto.api.dto.requests.ChangePasswordRequest;
+import br.com.loto.api.dto.requests.CreateAccountRequest;
 import br.com.loto.domain.entity.Account;
 import br.com.loto.exceptions.CustomResponse;
 import br.com.loto.service.IAccountService;
@@ -23,14 +24,14 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/accounts")
-@Tag(name = "Rotas para o gerenciamento das contas")
-public class AccountController {
+@RequestMapping("/api/v1/admins/accounts")
+@Tag(name = "Rotas para o gerenciamento das contas administrativas")
+public class AccountAdminController {
 
     private final IAccountService accountService;
 
     @Operation(
-            summary = "Lista todas as contas",
+            summary = "Lista todas as contas admins",
             description = "É possível utilizar 3 parametros simutâneos sendo o [name],[cpf] e [active]")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -59,5 +60,44 @@ public class AccountController {
                 .build();
 
         return new ResponseEntity<>(accountService.findAllByParams(accountQuery), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Cadastrar uma nova conta admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CustomResponse.class))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
+    @PostMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<CustomResponse<Account>> create(@RequestBody @Valid CreateAccountRequest request) {
+        return new ResponseEntity<>(CustomResponse.<Account>builder().build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Atualizar conta admin senha")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CustomResponse.class))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
+    @PutMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<CustomResponse<Void>> update(@RequestBody @Valid ChangePasswordRequest request) {
+        return new ResponseEntity<>(CustomResponse.<Void>builder().build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Remover conta admin senha")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CustomResponse.class))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
+    @DeleteMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<CustomResponse<Void>> delete(@PathVariable Long id) {
+        return new ResponseEntity<>(CustomResponse.<Void>builder().build(), HttpStatus.OK);
     }
 }

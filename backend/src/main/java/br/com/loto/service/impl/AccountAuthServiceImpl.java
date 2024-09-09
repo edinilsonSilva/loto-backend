@@ -35,10 +35,7 @@ public class AccountAuthServiceImpl implements IAccountAuthService {
 
         return LoginResponse.builder()
                 .token("Bearer ".concat(jwtUtil.generateToken(userDetails)))
-                .content(accountMapper.convertEntityToResponse(accountService.findByUsernameWithThrow(userDetails.getUsername())))
-                .permissions(userDetails.getAuthorities().stream()
-                        .map(a -> a.getAuthority())
-                        .toList())
+                .content(accountMapper.convertEntityToResponse(accountService.findByCpfWithThrow(userDetails.getUsername())))
                 .build();
     }
 

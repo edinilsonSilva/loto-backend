@@ -1,7 +1,6 @@
 package br.com.loto.service.impl;
 
 import br.com.loto.domain.entity.AccountConfig;
-import br.com.loto.domain.entity.AccountRole;
 import br.com.loto.domain.repository.IAccountConfigRepository;
 import br.com.loto.service.IAccountConfigService;
 import lombok.AllArgsConstructor;

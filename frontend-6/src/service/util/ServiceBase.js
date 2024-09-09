@@ -1,69 +1,69 @@
-import axios from 'axios';
-import { LoginService } from '../LoginService';
+"use client";
+import axios from "axios";
+import { LoginService } from "../LoginService";
 
 export class ServiceBase {
+	constructor(urlBase) {
+		this.url = urlBase + "/";
+		this.axiosInstance = axios.create({
+			baseURL: process.env.NEXT_PUBLIC_URL_API_V1,
+		});
+		this.initAxios();
+	}
 
-    constructor(urlBase) {
-        if (typeof window !== "undefined") {
+	initAxios() {
+		this.axiosInstance.interceptors.request.use(
+			(config) => {
+				const token = new LoginService().getToken();
 
-            this.url = urlBase + '/';
-            this.axiosInstance = axios.create({
-                baseURL: process.env.NEXT_PUBLIC_URL_API_V1,
-            });
-            this.initAxios();
+				if (token) {
+					config.headers.Authorization = `Bearer ${token}`;
+				}
 
-        } else {
-            console.error("window is not defined on the server side.");
-        }
-    }
+				return config;
+			},
+			(error) => Promise.reject(error)
+		);
 
-    initAxios() {
-        this.axiosInstance.interceptors.request.use((config) => {
+		this.handlerError401();
+	}
 
-            const token = new LoginService().getToken();
+	handlerError401() {
+		this.axiosInstance.interceptors.response.use(
+			(response) => response,
+			(error) => {
+				if (
+					error.response &&
+					error.response.status === 401 &&
+					typeof window !== "undefined"
+				) {
+					if (!error.request.response.includes("auth/login")) {
+						new LoginService().sair();
+						window.location.href = "/";
+					}
+				}
+				return Promise.reject(error);
+			}
+		);
+	}
 
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
+	listarTodos() {
+		return this.axiosInstance.get(this.url);
+	}
 
-            return config;
-        }, error => Promise.reject(error));
+	buscarId(id) {
+		return this.axiosInstance.get(`${this.url}${id}`);
+	}
 
-        this.handlerError401();
-    }
+	inserir(objeto) {
+		return this.axiosInstance.post(this.url, objeto);
+	}
 
-    handlerError401() {
-        this.axiosInstance.interceptors.response.use(
-            response => response,
-            error => {
-                if (error.response && error.response.status === 401 && typeof window !== 'undefined') {
-                    if (!error.request.response.includes("auth/login")) {
-                        new LoginService().sair();
-                        window.location.href = "/";
-                    }
-                }
-                return Promise.reject(error);
-            }
-        );
-    }
+	alterar(objeto) {
+		return this.axiosInstance.put(this.url, objeto);
+	}
 
-    listarTodos() {
-        return this.axiosInstance.get(this.url);
-    }
-
-    buscarId(id) {
-        return this.axiosInstance.get(`${this.url}${id}`);
-    }
-
-    inserir(objeto) {
-        return this.axiosInstance.post(this.url, objeto);
-    }
-
-    alterar(objeto) {
-        return this.axiosInstance.put(this.url, objeto);
-    }
-
-    excluir(id) {
-        return this.axiosInstance.delete(this.url + id);
-    }
+	excluir(id) {
+		return this.axiosInstance.delete(this.url + id);
+	}
 }

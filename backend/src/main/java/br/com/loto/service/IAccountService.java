@@ -10,7 +10,7 @@ public interface IAccountService {
 
     Account saveAndFlush(Account account);
 
-    Account findByUsernameWithThrow (String username);
+    Account findByCpfWithThrow (String username);
 
     Account findByIdWithThrow (Long accountId);
 

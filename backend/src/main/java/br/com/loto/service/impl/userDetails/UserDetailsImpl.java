@@ -7,7 +7,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 public class UserDetailsImpl implements UserDetails {
@@ -20,10 +22,22 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return account.getRoles()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getTypeRole().name()))
-                .toList();
+
+        List<SimpleGrantedAuthority> permissions = new ArrayList<>();
+
+        if (account.getAccountAdmin() != null)
+            permissions.addAll(account.getAccountAdmin().getPermissions()
+                    .stream()
+                    .map(permission -> new SimpleGrantedAuthority(permission.name()))
+                    .toList());
+
+        if (account.getAccountLottery() != null)
+            permissions.addAll(account.getAccountLottery().getPermissions()
+                    .stream()
+                    .map(permission -> new SimpleGrantedAuthority(permission.name()))
+                    .toList());
+
+        return permissions;
     }
 
     @Override
@@ -37,7 +51,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return account.getUsername();
+        return account.getCpf();
     }
 
     @Override

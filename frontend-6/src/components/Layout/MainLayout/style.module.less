@@ -14,8 +14,8 @@
 	background: #050505;
 	color: #fff;
 	font-weight: 600;
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 	font-size: 18px;
 	padding-left: 24px;
 
@@ -23,11 +23,12 @@
 		margin-left: 10px;
 	}
 }
+
 .logoCenter {
 	font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	font-size: 16px;
 	line-height: normal;
 
@@ -64,13 +65,13 @@
 }
 
 .sidebar {
-	box-shadow: 0 2px 2px 0 rgba(60,75,100,.14), 0 3px 1px -2px rgba(60,75,100,.12), 0 1px 5px 0 rgba(60,75,100,.2);
+	box-shadow: 0 2px 2px 0 rgba(60, 75, 100, .14), 0 3px 1px -2px rgba(60, 75, 100, .12), 0 1px 5px 0 rgba(60, 75, 100, .2);
 	// background-color: #303c54;
 	position: fixed !important;
-    height: 100vh;
-    overflow: auto;
-    left: 0;
-    top: 0;
+	height: 100vh;
+	overflow: auto;
+	left: 0;
+	top: 0;
 	bottom: 0;
 	z-index: 99;
 
@@ -89,8 +90,8 @@
 .headerRight {
 	padding: 0 250px;
 	height: 50px;
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .headerLeft {
@@ -106,4 +107,55 @@
 	background: rgba(0, 0, 0, 0.42);
 	z-index: 98;
 	cursor: pointer;
+}
+
+
+
+
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #f0f0f0;
+	padding: 0 20px;
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+}
+
+.logoText {
+	margin-left: 10px;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.menuDesktop {
+	display: none;
+}
+
+.menuMobileBtn {
+	display: block;
+}
+
+/* Mostrar menu desktop para telas maiores */
+@media (min-width: 768px) {
+	.menuDesktop {
+		display: flex;
+	}
+
+	.menuMobileBtn {
+		display: none;
+	}
+}
+
+/* Ajustar drawer para telas pequenas */
+.menuMobile {
+	padding: 10px;
+	background-color: white;
+}
+
+.antDrawerBody {
+	padding: 0;
 }

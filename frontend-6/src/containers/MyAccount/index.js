@@ -1,10 +1,13 @@
-import PropTypes from 'prop-types';
+"use client";
 
-import { withRouter } from 'next/router';
-import { Card, Col, Row } from 'antd';
-import styles from "./style.module.less"
-import { UserOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
+import PropTypes from "prop-types";
+
+import { withRouter } from "next/router";
+import { Card, Col, Row } from "antd";
+import styles from "./style.module.less";
+import { UserOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import { LoginService } from "src/service/LoginService";
 
 const propTypes = {
 	router: PropTypes.object.isRequired,
@@ -14,9 +17,18 @@ const defaultProps = {
 	router: {},
 };
 
-const MyAccount = (props) => {
+const validateCurrency = (value) => {
+	if (value === 'BRL') {
+		return "R$ ";
+	} else if (value === 'USD') {
+		return "U$ ";
+	} else if (value === 'EUR') {
+		return "E$ ";
+	}
+}
 
-	const account = useSelector((state) => state.account);
+const MyAccount = (props) => {
+	const account = new LoginService().getAccount();
 
 	const { router, userList = [] } = props;
 
@@ -24,26 +36,37 @@ const MyAccount = (props) => {
 		<Card className={styles.card}>
 			<span className={styles.cardTitle}>Minha Conta</span>
 
-			<div className={styles.infoaccount} >
+			<div className={styles.infoaccount}>
 				<Row>
 					<Col span={24}>
-						<span className={styles.nameAccount}>{JSON.stringify(account)}</span>
+						<span className={styles.nameAccount}>
+							{account?.name}
+						</span>
 					</Col>
 
-					<Row style={{ width: '100%', padding: '15px', background: 'white', color: 'black'}}>
+					<Row
+						style={{
+							width: "100%",
+							padding: "15px",
+							background: "white",
+							color: "black",
+						}}
+					>
 						<Col span={8} className={styles.mywallet}>
-							<span>Minha Carteira</span>
+							<span>Minha(s) Carteira(s) </span>
 						</Col>
 
-						<Col span={15} className={styles.valuemoney}>
-							<span>R$ 200</span>
-						</Col>
+						{account?.wallets?.map((w) => (
+							<Col span={15} className={styles.valuemoney}>
+								<span>{validateCurrency(w?.currency) + w.balance}</span>
+							</Col>
+						))}
 					</Row>
 				</Row>
 			</div>
 
 			<div
-				onClick={() => alert("Meus dados clicado!")}
+				onClick={() => router.push(router.asPath + "/meus-dados")}
 				className={styles.buttonDiv}
 			>
 				<Row>
@@ -53,7 +76,9 @@ const MyAccount = (props) => {
 
 					<Col span={20}>
 						<span className={styles.title}>Meus dados</span>
-						<span className={styles.subtitle}>Atualize aqui seu cadastro</span>
+						<span className={styles.subtitle}>
+							Atualize aqui seu cadastro
+						</span>
 					</Col>
 				</Row>
 			</div>
@@ -69,11 +94,12 @@ const MyAccount = (props) => {
 
 					<Col span={20}>
 						<span className={styles.title}>Meus pedidos</span>
-						<span className={styles.subtitle}>Acompanhe aqui todos os seus pedidos</span>
+						<span className={styles.subtitle}>
+							Acompanhe aqui todos os seus pedidos
+						</span>
 					</Col>
 				</Row>
 			</div>
-
 		</Card>
 	);
 };

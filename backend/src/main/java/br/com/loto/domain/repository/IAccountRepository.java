@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface IAccountRepository extends PagingAndSortingRepository<Account, Long>, JpaSpecificationExecutor<Account>, JpaRepository<Account, Long> {
 
-    Optional<Account> findByUsername(String username);
+    Optional<Account> findByCpf(String cpf);
 }

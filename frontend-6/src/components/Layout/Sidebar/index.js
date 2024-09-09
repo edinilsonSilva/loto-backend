@@ -23,7 +23,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-const Sidebar = () => {
+const Sidebar = ({ mode }) => {
 	// const { } = props;
 
 	const router = useRouter();
@@ -47,7 +47,7 @@ const Sidebar = () => {
 			defaultSelectedKeys={['/']}
 			selectedKeys={['/' + (sub && sub !== '[id]' ? sub : root)]}
 			defaultOpenKeys={['/' + root]}
-			mode="horizontal"
+			mode={mode}
 			theme="light"
 			style={{
 				padding: '15px 0',

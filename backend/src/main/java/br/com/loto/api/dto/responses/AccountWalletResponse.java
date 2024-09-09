@@ -5,16 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse {
+public class AccountWalletResponse {
 
-    private String token;
+    private Long id;
 
-    private AccountResponse content;
+    private BigDecimal balance;
+
+    private String currency;
+
 }

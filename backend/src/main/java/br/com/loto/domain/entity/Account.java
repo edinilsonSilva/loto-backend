@@ -37,11 +37,20 @@ public class Account {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    private String username;
+    @Column(name = "activated_at")
+    private LocalDateTime activatedAt;
+
+    private String name;
+
+    private String cpf;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "personal_id", referencedColumnName = "id")
-    private AccountPersonal personal;
+    @JoinColumn(name = "admin_id", referencedColumnName = "id")
+    private AccountAdmin accountAdmin;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "lottery_id", referencedColumnName = "id")
+    private AccountLottery accountLottery;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "config_id", referencedColumnName = "id")
@@ -56,11 +65,6 @@ public class Account {
     @JsonIgnoreProperties("account")
     @Fetch(FetchMode.SUBSELECT)
     private List<AccountPassword> passwords;
-
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "account", fetch = FetchType.EAGER, orphanRemoval = true)
-    @JsonIgnoreProperties("account")
-    @Fetch(FetchMode.SUBSELECT)
-    private List<AccountRole> roles;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "account", fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonIgnoreProperties("account")
