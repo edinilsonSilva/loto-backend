@@ -2,8 +2,8 @@ package br.com.loto.config.security;
 
 import br.com.loto.domain.entity.Account;
 import br.com.loto.exceptions.TokenException;
-import br.com.loto.service.IAccountService;
-import br.com.loto.service.impl.userDetails.UserDetailsImpl;
+import br.com.loto.service.account.IAccountService;
+import br.com.loto.service.userDetails.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

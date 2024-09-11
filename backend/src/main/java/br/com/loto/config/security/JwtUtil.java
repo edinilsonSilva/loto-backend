@@ -1,6 +1,6 @@
 package br.com.loto.config.security;
 
-import br.com.loto.service.impl.userDetails.UserDetailsImpl;
+import br.com.loto.service.userDetails.UserDetailsImpl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;

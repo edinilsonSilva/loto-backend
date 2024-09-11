@@ -1,6 +1,6 @@
 package br.com.loto.domain.specification;
 
-import br.com.loto.api.dto.query.AccountQuery;
+import br.com.loto.api.dto.account.query.AccountQuery;
 import br.com.loto.domain.entity.Account;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;

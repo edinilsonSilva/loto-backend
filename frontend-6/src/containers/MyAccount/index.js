@@ -18,14 +18,14 @@ const defaultProps = {
 };
 
 const validateCurrency = (value) => {
-	if (value === 'BRL') {
+	if (value === "BRL") {
 		return "R$ ";
-	} else if (value === 'USD') {
+	} else if (value === "USD") {
 		return "U$ ";
-	} else if (value === 'EUR') {
+	} else if (value === "EUR") {
 		return "E$ ";
 	}
-}
+};
 
 const MyAccount = (props) => {
 	const account = new LoginService().getAccount();
@@ -58,7 +58,9 @@ const MyAccount = (props) => {
 
 						{account?.wallets?.map((w) => (
 							<Col span={15} className={styles.valuemoney}>
-								<span>{validateCurrency(w?.currency) + w.balance}</span>
+								<span>
+									{validateCurrency(w?.currency) + w.balance}
+								</span>
 							</Col>
 						))}
 					</Row>
@@ -96,6 +98,42 @@ const MyAccount = (props) => {
 						<span className={styles.title}>Meus pedidos</span>
 						<span className={styles.subtitle}>
 							Acompanhe aqui todos os seus pedidos
+						</span>
+					</Col>
+				</Row>
+			</div>
+
+			<div
+				onClick={() => router.push(router.asPath + "/cadastrar-jogo")}
+				className={styles.buttonDiv}
+			>
+				<Row>
+					<Col span={4} className={styles.icon}>
+						<UserOutlined style={{ fontSize: 24 }} />
+					</Col>
+
+					<Col span={20}>
+						<span className={styles.title}>Novo Jogo</span>
+						<span className={styles.subtitle}>
+							Cadastre um Jogo
+						</span>
+					</Col>
+				</Row>
+			</div>
+
+			<div
+				onClick={() => router.push(router.asPath + "/cadastrar-bolao")}
+				className={styles.buttonDiv}
+			>
+				<Row>
+					<Col span={4} className={styles.icon}>
+						<UserOutlined style={{ fontSize: 24 }} />
+					</Col>
+
+					<Col span={20}>
+						<span className={styles.title}>Novo bolão</span>
+						<span className={styles.subtitle}>
+							Cadastre um Bolao
 						</span>
 					</Col>
 				</Row>

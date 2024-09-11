@@ -9,5 +9,5 @@ public class CustomResponse<T> {
 
     private int status;
     private String message;
-    private T data;
+    private T content;
 }

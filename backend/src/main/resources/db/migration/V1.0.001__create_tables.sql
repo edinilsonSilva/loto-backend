@@ -123,3 +123,103 @@ CREATE TABLE IF NOT EXISTS public.accounts_lotteries_wallets
     CONSTRAINT accounts_lotteries_wallets_pkey PRIMARY KEY (id),
     CONSTRAINT accounts_lotteries_wallets_fkey FOREIGN KEY (lottery_id) REFERENCES public.accounts_lotteries (id)
 );
+
+
+CREATE TABLE IF NOT EXISTS public.draws (
+      id SERIAL NOT NULL,
+      draw_date timestamp(6) NULL,
+      CONSTRAINT draws_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE public.winning_numbers (
+        numero int4 NULL,
+        draw_id int8 NOT NULL,
+        CONSTRAINT fk_winning_numbers_draw FOREIGN KEY (draw_id) REFERENCES public.draws(id)
+);
+
+CREATE TABLE IF NOT EXISTS public.games (
+      id SERIAL NOT NULL,
+      max_number_value int4 NULL,
+      max_numbers int4 NULL,
+      min_numbers int4 NULL,
+      created_at timestamp(6) NULL,
+      created_by int8 NULL,
+      updated_at timestamp(6) NULL,
+      "name" varchar(255) NULL,
+      CONSTRAINT games_pkey PRIMARY KEY (id),
+      CONSTRAINT fk_game_account_id FOREIGN KEY (created_by) REFERENCES public.accounts(id)
+);
+
+CREATE TABLE public.pools (
+      number_of_draws int4 NOT NULL,
+      total_amount numeric(38, 2) NULL,
+      created_at timestamp(6) NULL,
+      created_by int8 NULL,
+      game_id int8 NULL,
+      id bigserial NOT NULL,
+      updated_at timestamp(6) NULL,
+      "name" varchar(255) NULL,
+      status varchar(255) NULL,
+      CONSTRAINT pools_pkey PRIMARY KEY (id),
+      CONSTRAINT pools_status_check CHECK (((status)::text = ANY ((ARRAY['ABERTO'::character varying, 'FECHADO'::character varying, 'FINALIZADO'::character varying])::text[]))),
+	CONSTRAINT fk_pool_game_id FOREIGN KEY (game_id) REFERENCES public.games(id),
+	CONSTRAINT fk_pool_account_id FOREIGN KEY (created_by) REFERENCES public.accounts(id)
+);
+
+CREATE TABLE public.participants (
+         created_at timestamp(6) NULL,
+         created_by int8 NULL,
+         id bigserial NOT NULL,
+         pool_id int8 NULL,
+         CONSTRAINT participants_pkey PRIMARY KEY (id),
+         CONSTRAINT fk_participant_pool_id FOREIGN KEY (pool_id) REFERENCES public.pools(id),
+         CONSTRAINT fk_participant_account_id FOREIGN KEY (created_by) REFERENCES public.accounts(id)
+);
+
+CREATE TABLE public.proprietary_bets (
+         amount numeric(38, 2) NULL,
+         created_at timestamp(6) NULL,
+         created_by int8 NULL,
+         game_id int8 NULL,
+         id bigserial NOT NULL,
+         participant_id int8 NULL,
+         pool_id int8 NULL,
+         CONSTRAINT proprietary_bets_pkey PRIMARY KEY (id),
+         CONSTRAINT fk_propietary_bet_game_id FOREIGN KEY (game_id) REFERENCES public.games(id),
+         CONSTRAINT fk_propietary_bet_account_id FOREIGN KEY (created_by) REFERENCES public.accounts(id),
+         CONSTRAINT fk_propietary_bet_pool_id FOREIGN KEY (pool_id) REFERENCES public.pools(id),
+         CONSTRAINT fk_propietary_bet_participant_id FOREIGN KEY (participant_id) REFERENCES public.participants(id)
+);
+
+CREATE TABLE public.bets (
+         amount numeric(38, 2) NULL,
+         id bigserial NOT NULL,
+         participant_id int8 NULL,
+         pool_id int8 NULL,
+         CONSTRAINT bets_pkey PRIMARY KEY (id),
+         CONSTRAINT fk_bet_participant_id FOREIGN KEY (participant_id) REFERENCES public.participants(id),
+         CONSTRAINT fk_bet_pool_id FOREIGN KEY (pool_id) REFERENCES public.pools(id)
+);
+
+CREATE TABLE public.proprietary_bet_chosen_numbers (
+       chosen_numbers int4 NULL,
+       proprietary_bet_id int8 NOT NULL,
+       CONSTRAINT fk_proprietry_bet_chosen_number_id FOREIGN KEY (proprietary_bet_id) REFERENCES public.proprietary_bets(id)
+);
+
+CREATE TABLE public.awards (
+       number_of_matches int4 NOT NULL,
+       value numeric(38, 2) NULL,
+       bet_id int8 NULL,
+       draw_id int8 NULL,
+       id bigserial NOT NULL,
+       CONSTRAINT awards_pkey PRIMARY KEY (id),
+       CONSTRAINT fk_award_bet_id FOREIGN KEY (bet_id) REFERENCES public.bets(id),
+       CONSTRAINT fk_award_draw_id FOREIGN KEY (draw_id) REFERENCES public.draws(id)
+);
+
+CREATE TABLE public.bet_chosen_numbers (
+       chosen_numbers int4 NULL,
+       bet_id int8 NOT NULL,
+       CONSTRAINT fk_bet_chosen_number_bet_id FOREIGN KEY (bet_id) REFERENCES public.bets(id)
+);

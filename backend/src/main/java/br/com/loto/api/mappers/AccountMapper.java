@@ -1,7 +1,7 @@
 package br.com.loto.api.mappers;
 
-import br.com.loto.api.dto.responses.AccountResponse;
-import br.com.loto.api.dto.responses.AccountWalletResponse;
+import br.com.loto.api.dto.account.responses.AccountResponse;
+import br.com.loto.api.dto.account.responses.AccountWalletResponse;
 import br.com.loto.domain.entity.Account;
 import br.com.loto.enums.TypeContact;
 import lombok.AllArgsConstructor;

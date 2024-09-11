@@ -1,11 +1,10 @@
 package br.com.loto.api.controller;
 
-import br.com.loto.api.dto.requests.ChangePasswordPubRequest;
-import br.com.loto.api.dto.requests.ChangePasswordRequest;
-import br.com.loto.api.dto.requests.CreateAccountRequest;
+import br.com.loto.api.dto.account.requests.ChangePasswordPubRequest;
+import br.com.loto.api.dto.account.requests.CreateAccountRequest;
 import br.com.loto.domain.entity.Account;
 import br.com.loto.exceptions.CustomResponse;
-import br.com.loto.service.IAccountPubService;
+import br.com.loto.service.account.IAccountPubService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

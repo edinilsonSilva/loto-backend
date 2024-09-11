@@ -1,9 +1,9 @@
 package br.com.loto.api.controller;
 
-import br.com.loto.api.dto.requests.LoginRequest;
-import br.com.loto.api.dto.responses.AccountResponse;
-import br.com.loto.api.dto.responses.LoginResponse;
-import br.com.loto.service.IAccountAuthService;
+import br.com.loto.api.dto.account.requests.LoginRequest;
+import br.com.loto.api.dto.account.responses.AccountResponse;
+import br.com.loto.api.dto.account.responses.LoginResponse;
+import br.com.loto.service.account.IAccountAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
