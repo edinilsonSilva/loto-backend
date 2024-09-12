@@ -18,9 +18,6 @@ import java.util.List;
 public class CreateAccountRequest {
 
     @NotBlank
-    private String username;
-
-    @NotBlank
     private String password;
 
     @NotBlank

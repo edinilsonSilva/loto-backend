@@ -7,7 +7,7 @@ export class AccountPbService extends ServiceBase {
     }
 
     async postCreateAccountPb(request) {
-        return this.axiosInstance.post(`${this.url}create-account`, request)
+        return this.axiosInstance.post(`${this.url}/create-account`, request)
             .then(res => res.data)
     }
 

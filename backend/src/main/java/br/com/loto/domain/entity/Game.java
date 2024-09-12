@@ -1,7 +1,10 @@
 package br.com.loto.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,9 +25,11 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
@@ -32,7 +37,7 @@ public class Game {
     @JoinColumn(name = "created_by")
     private Account createdBy;
 
-    private String name; // Nome do jogo (Mega-Sena, Lotofácil, etc.)
+    private String name;
 
     @Column(name = "min_numbers")
     private int minNumbers; // Quantidade mínima de números que podem ser escolhidos
@@ -43,6 +48,7 @@ public class Game {
     @Column(name = "max_number_value")
     private int maxNumberValue; // Valor máximo do número (ex: 60 para Mega-Sena)
 
-    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    private List<Pool> pools;
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("game")
+    private List<Contest> contests;
 }

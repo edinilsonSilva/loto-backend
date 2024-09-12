@@ -12,6 +12,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -41,7 +46,13 @@ public class WebSecurityConfig {
 
     // Endpoints que requerem autenticação para serem acessados
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
-            "/users/test"
+            "/api/v1/accounts/**",
+            "/api/v1/pools",
+            "/api/v1/pools/**",
+            "/api/v1/games",
+            "/api/v1/games/**",
+            "/api/v1/admins/accounts",
+            "/api/v1/admins/accounts/**"
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de cliente
@@ -51,7 +62,11 @@ public class WebSecurityConfig {
 
     // Endpoints que só podem ser acessador por usuários com permissão de administrador
     public static final String[] ENDPOINTS_ADMIN = {
-            "/api/v1/accounts/**"
+            "/api/v1/accounts/**",
+            "/api/v1/games",
+            "/api/v1/games/**",
+            "/api/v1/pools",
+            "/api/v1/pools/**"
     };
 
     @Bean
@@ -66,7 +81,9 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf().disable() // Desativa a proteção contra CSRF
+        return httpSecurity
+                .cors().and()
+                .csrf().disable() // Desativa a proteção contra CSRF
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.authenticationEntryPoint(unauthorizedHandler) // Configura o ponto de entrada para autenticação não autorizada
                 )
@@ -80,5 +97,18 @@ public class WebSecurityConfig {
                 // Adiciona o filtro de autenticação de usuário que criamos, antes do filtro de segurança padrão do Spring Security
                 .and().addFilterBefore(authFilterToken, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Adicione suas origens permitidas
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // Métodos permitidos
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // Cabeçalhos permitidos
+        configuration.setAllowCredentials(true); // Permite credenciais (cookies, headers de autorização)
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // Aplica a configuração CORS para todas as rotas
+        return source;
     }
 }

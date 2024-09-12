@@ -6,7 +6,9 @@ import br.com.loto.domain.entity.Pool;
 import br.com.loto.domain.repository.IBetRepository;
 import br.com.loto.domain.repository.IParticipantRepository;
 import br.com.loto.domain.repository.IPoolRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor(onConstructor_ = @Lazy)
 public class BetServiceImpl {
 
     private final IBetRepository betRepository;

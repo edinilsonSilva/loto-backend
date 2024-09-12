@@ -4,7 +4,7 @@ import { LoginService } from "../LoginService";
 
 export class ServiceBase {
 	constructor(urlBase) {
-		this.url = urlBase + "/";
+		this.url = urlBase;
 		this.axiosInstance = axios.create({
 			baseURL: process.env.NEXT_PUBLIC_URL_API_V1,
 		});

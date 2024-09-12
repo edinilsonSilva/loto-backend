@@ -1,225 +1,603 @@
-CREATE TABLE IF NOT EXISTS public.accounts_configs
-(
-    id         SERIAL NOT NULL,
-    created_at timestamp(30) NULL,
-    deleted_at timestamp(30) NULL,
-    updated_at timestamp(30) NULL,
-    active     bool   NOT NULL DEFAULT TRUE,
-    CONSTRAINT accounts_configs_pkey PRIMARY KEY (id)
+-- CREATE TABLE IF NOT EXISTS public.accounts_configs
+-- (
+--     id         SERIAL NOT NULL,
+--     created_at timestamp(30) NULL,
+--     deleted_at timestamp(30) NULL,
+--     updated_at timestamp(30) NULL,
+--     active     bool   NOT NULL DEFAULT TRUE,
+--     CONSTRAINT accounts_configs_pkey PRIMARY KEY (id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS public.accounts_admins
+-- (
+--     id SERIAL NOT NULL,
+--     created_at timestamp with time zone NOT NULL,
+--     updated_at timestamp with time zone,
+--     deleted_at timestamp with time zone,
+--     CONSTRAINT pk_accounts_admins PRIMARY KEY (id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS public.accounts_admins_permissions
+-- (
+--     account_admin_id bigint NOT NULL,
+--     permission text NOT NULL,
+--     CONSTRAINT fk_accounts_admins_permissions FOREIGN KEY (account_admin_id) REFERENCES public.accounts_admins (id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS public.accounts_lotteries
+-- (
+--     id SERIAL NOT NULL,
+--     created_at timestamp with time zone NOT NULL,
+--     updated_at timestamp with time zone,
+--     deleted_at timestamp with time zone,
+--     CONSTRAINT pk_accounts_lotteries PRIMARY KEY (id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS public.accounts_lotteries_permissions
+-- (
+--     account_lottery_id bigint NOT NULL,
+--     permission text NOT NULL,
+--     CONSTRAINT fk_accounts_lottery_permissions FOREIGN KEY (account_lottery_id) REFERENCES public.accounts_lotteries (id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS public.accounts
+-- (
+--     id              SERIAL NOT NULL,
+--     created_at      timestamp(30) NULL,
+--     deleted_at      timestamp(30) NULL,
+--     updated_at      timestamp(30) NULL,
+--     activated_at    timestamp with time zone,
+--     status          character varying (50),
+--     name            character varying (255),
+--     cpf             character varying (20),
+--     config_id       int8 NULL,
+--     admin_id        int8 NULL,
+--     lottery_id      int8 NULL,
+--     CONSTRAINT accounts_pkey PRIMARY KEY (id),
+--     CONSTRAINT accounts_cpf_unique_key UNIQUE (cpf),
+--     CONSTRAINT accounts_admin_fkey FOREIGN KEY (admin_id) REFERENCES public.accounts_admins (id),
+--     CONSTRAINT accounts_lottery_fkey FOREIGN KEY (lottery_id) REFERENCES public.accounts_lotteries (id),
+--     CONSTRAINT accounts_configs_fkey FOREIGN KEY (config_id) REFERENCES public.accounts_configs (id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS public.accounts_contacts
+-- (
+--     id           SERIAL NOT NULL,
+--     created_at   timestamp(30) NULL,
+--     deleted_at   timestamp(30) NULL,
+--     expired_at   timestamp(30) NULL,
+--     updated_at   timestamp(30) NULL,
+--     validated_at timestamp(30) NULL,
+--     code         varchar(255) NULL,
+--     type         varchar(255) NULL,
+--     value        varchar(255) NULL,
+--     account_id   int8 NULL,
+--     CONSTRAINT accounts_contacts_pkey PRIMARY KEY (id),
+--     CONSTRAINT contacts_accounts_fkey FOREIGN KEY (account_id) REFERENCES public.accounts (id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS public.accounts_passwords
+-- (
+--     id                         SERIAL NOT NULL,
+--     created_at                 timestamp(30) NULL,
+--     updated_at                 timestamp(30) NULL,
+--     deleted_at                 timestamp(30) NULL,
+--     expired_at                 timestamp(30) NULL,
+--     active                     bool   NOT NULL,
+--     password                   varchar(255) NULL,
+--     create_password_next_login bool NULL,
+--     same_password_limit        int8 NULL,
+--     token_forget_password      varchar(255) NULL,
+--     account_id                 int8 NULL,
+--     CONSTRAINT accounts_passwords_pkey PRIMARY KEY (id),
+--     CONSTRAINT password_accounts_fkey FOREIGN KEY (account_id) REFERENCES public.accounts (id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS public.accounts_photos
+-- (
+--     id           SERIAL NOT NULL,
+--     created_at   timestamp(30) NULL,
+--     updated_at   timestamp(30) NULL,
+--     deleted_at   timestamp(30) NULL,
+--     name         varchar(255) NULL,
+--     description  varchar(255) NULL,
+--     path         varchar(255) NULL,
+--     content_type varchar(255) NULL,
+--     size         int8 NULL,
+--     base_64      varchar(10000000) NULL,
+--     type_photo   varchar(255) NULL,
+--     account_id   int8 NULL,
+--     CONSTRAINT accounts_photos_pkey PRIMARY KEY (id),
+--     CONSTRAINT photo_accounts_fkey FOREIGN KEY (account_id) REFERENCES public.accounts (id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS public.accounts_lotteries_wallets
+-- (
+--     id              SERIAL NOT NULL,
+--     created_at      timestamp(30) NULL,
+--     deleted_at      timestamp(30) NULL,
+--     updated_at      timestamp(30) NULL,
+--     balance         NUMERIC(19, 4) NOT NULL DEFAULT 0,
+--     type_currency   character varying (4),
+--     lottery_id      int8 NULL,
+--     CONSTRAINT accounts_lotteries_wallets_pkey PRIMARY KEY (id),
+--     CONSTRAINT accounts_lotteries_wallets_fkey FOREIGN KEY (lottery_id) REFERENCES public.accounts_lotteries (id)
+-- );
+--
+--
+-- CREATE TABLE IF NOT EXISTS public.draws (
+--       id SERIAL NOT NULL,
+--       draw_date timestamp(6) NULL,
+--       CONSTRAINT draws_pkey PRIMARY KEY (id)
+-- );
+--
+-- CREATE TABLE public.winning_numbers (
+--         numero int4 NULL,
+--         draw_id int8 NOT NULL,
+--         CONSTRAINT fk_winning_numbers_draw FOREIGN KEY (draw_id) REFERENCES public.draws(id)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS public.games (
+--       id SERIAL NOT NULL,
+--       max_number_value int4 NULL,
+--       max_numbers int4 NULL,
+--       min_numbers int4 NULL,
+--       created_at timestamp(6) NULL,
+--       created_by int8 NULL,
+--       updated_at timestamp(6) NULL,
+--       "name" varchar(255) NULL,
+--       CONSTRAINT games_pkey PRIMARY KEY (id),
+--       CONSTRAINT fk_game_account_id FOREIGN KEY (created_by) REFERENCES public.accounts(id)
+-- );
+--
+-- CREATE TABLE public.pools (
+--       number_of_draws int4 NOT NULL,
+--       total_amount numeric(38, 2) NULL,
+--       created_at timestamp(6) NULL,
+--       created_by int8 NULL,
+--       game_id int8 NULL,
+--       id bigserial NOT NULL,
+--       updated_at timestamp(6) NULL,
+--       "name" varchar(255) NULL,
+--       status varchar(255) NULL,
+--       CONSTRAINT pools_pkey PRIMARY KEY (id),
+--       CONSTRAINT pools_status_check CHECK (((status)::text = ANY ((ARRAY['ABERTO'::character varying, 'FECHADO'::character varying, 'FINALIZADO'::character varying])::text[]))),
+-- 	CONSTRAINT fk_pool_game_id FOREIGN KEY (game_id) REFERENCES public.games(id),
+-- 	CONSTRAINT fk_pool_account_id FOREIGN KEY (created_by) REFERENCES public.accounts(id)
+-- );
+--
+-- CREATE TABLE public.participants (
+--          created_at timestamp(6) NULL,
+--          created_by int8 NULL,
+--          id bigserial NOT NULL,
+--          pool_id int8 NULL,
+--          CONSTRAINT participants_pkey PRIMARY KEY (id),
+--          CONSTRAINT fk_participant_pool_id FOREIGN KEY (pool_id) REFERENCES public.pools(id),
+--          CONSTRAINT fk_participant_account_id FOREIGN KEY (created_by) REFERENCES public.accounts(id)
+-- );
+--
+-- CREATE TABLE public.proprietary_bets (
+--          amount numeric(38, 2) NULL,
+--          created_at timestamp(6) NULL,
+--          created_by int8 NULL,
+--          game_id int8 NULL,
+--          id bigserial NOT NULL,
+--          participant_id int8 NULL,
+--          pool_id int8 NULL,
+--          CONSTRAINT proprietary_bets_pkey PRIMARY KEY (id),
+--          CONSTRAINT fk_propietary_bet_game_id FOREIGN KEY (game_id) REFERENCES public.games(id),
+--          CONSTRAINT fk_propietary_bet_account_id FOREIGN KEY (created_by) REFERENCES public.accounts(id),
+--          CONSTRAINT fk_propietary_bet_pool_id FOREIGN KEY (pool_id) REFERENCES public.pools(id),
+--          CONSTRAINT fk_propietary_bet_participant_id FOREIGN KEY (participant_id) REFERENCES public.participants(id)
+-- );
+--
+-- CREATE TABLE public.bets (
+--          amount numeric(38, 2) NULL,
+--          id bigserial NOT NULL,
+--          participant_id int8 NULL,
+--          pool_id int8 NULL,
+--          CONSTRAINT bets_pkey PRIMARY KEY (id),
+--          CONSTRAINT fk_bet_participant_id FOREIGN KEY (participant_id) REFERENCES public.participants(id),
+--          CONSTRAINT fk_bet_pool_id FOREIGN KEY (pool_id) REFERENCES public.pools(id)
+-- );
+--
+-- CREATE TABLE public.proprietary_bet_chosen_numbers (
+--        chosen_numbers int4 NULL,
+--        proprietary_bet_id int8 NOT NULL,
+--        CONSTRAINT fk_proprietry_bet_chosen_number_id FOREIGN KEY (proprietary_bet_id) REFERENCES public.proprietary_bets(id)
+-- );
+--
+-- CREATE TABLE public.awards (
+--        number_of_matches int4 NOT NULL,
+--        value numeric(38, 2) NULL,
+--        bet_id int8 NULL,
+--        draw_id int8 NULL,
+--        id bigserial NOT NULL,
+--        CONSTRAINT awards_pkey PRIMARY KEY (id),
+--        CONSTRAINT fk_award_bet_id FOREIGN KEY (bet_id) REFERENCES public.bets(id),
+--        CONSTRAINT fk_award_draw_id FOREIGN KEY (draw_id) REFERENCES public.draws(id)
+-- );
+--
+-- CREATE TABLE public.bet_chosen_numbers (
+--        chosen_numbers int4 NULL,
+--        bet_id int8 NOT NULL,
+--        CONSTRAINT fk_bet_chosen_number_bet_id FOREIGN KEY (bet_id) REFERENCES public.bets(id)
+-- );
+
+-- public.accounts_admins definition
+
+-- Drop table
+
+-- DROP TABLE public.accounts_admins;
+
+CREATE TABLE public.accounts_admins (
+                                        created_at timestamp(6) NULL,
+                                        deleted_at timestamp(6) NULL,
+                                        id bigserial NOT NULL,
+                                        updated_at timestamp(6) NULL,
+                                        CONSTRAINT accounts_admins_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS public.accounts_admins
-(
-    id SERIAL NOT NULL,
-    created_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone,
-    deleted_at timestamp with time zone,
-    CONSTRAINT pk_accounts_admins PRIMARY KEY (id)
-);
 
-CREATE TABLE IF NOT EXISTS public.accounts_admins_permissions
-(
-    account_admin_id bigint NOT NULL,
-    permission text NOT NULL,
-    CONSTRAINT fk_accounts_admins_permissions FOREIGN KEY (account_admin_id) REFERENCES public.accounts_admins (id)
-);
+-- public.accounts_configs definition
 
-CREATE TABLE IF NOT EXISTS public.accounts_lotteries
-(
-    id SERIAL NOT NULL,
-    created_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone,
-    deleted_at timestamp with time zone,
-    CONSTRAINT pk_accounts_lotteries PRIMARY KEY (id)
-);
+-- Drop table
 
-CREATE TABLE IF NOT EXISTS public.accounts_lotteries_permissions
-(
-    account_lottery_id bigint NOT NULL,
-    permission text NOT NULL,
-    CONSTRAINT fk_accounts_lottery_permissions FOREIGN KEY (account_lottery_id) REFERENCES public.accounts_lotteries (id)
-);
+-- DROP TABLE public.accounts_configs;
 
-CREATE TABLE IF NOT EXISTS public.accounts
-(
-    id              SERIAL NOT NULL,
-    created_at      timestamp(30) NULL,
-    deleted_at      timestamp(30) NULL,
-    updated_at      timestamp(30) NULL,
-    activated_at    timestamp with time zone,
-    status          character varying (50),
-    name            character varying (255),
-    cpf             character varying (20),
-    config_id       int8 NULL,
-    admin_id        int8 NULL,
-    lottery_id      int8 NULL,
-    CONSTRAINT accounts_pkey PRIMARY KEY (id),
-    CONSTRAINT accounts_cpf_unique_key UNIQUE (cpf),
-    CONSTRAINT accounts_admin_fkey FOREIGN KEY (admin_id) REFERENCES public.accounts_admins (id),
-    CONSTRAINT accounts_lottery_fkey FOREIGN KEY (lottery_id) REFERENCES public.accounts_lotteries (id),
-    CONSTRAINT accounts_configs_fkey FOREIGN KEY (config_id) REFERENCES public.accounts_configs (id)
-);
-
-CREATE TABLE IF NOT EXISTS public.accounts_contacts
-(
-    id           SERIAL NOT NULL,
-    created_at   timestamp(30) NULL,
-    deleted_at   timestamp(30) NULL,
-    expired_at   timestamp(30) NULL,
-    updated_at   timestamp(30) NULL,
-    validated_at timestamp(30) NULL,
-    code         varchar(255) NULL,
-    type         varchar(255) NULL,
-    value        varchar(255) NULL,
-    account_id   int8 NULL,
-    CONSTRAINT accounts_contacts_pkey PRIMARY KEY (id),
-    CONSTRAINT contacts_accounts_fkey FOREIGN KEY (account_id) REFERENCES public.accounts (id)
-);
-
-CREATE TABLE IF NOT EXISTS public.accounts_passwords
-(
-    id                         SERIAL NOT NULL,
-    created_at                 timestamp(30) NULL,
-    updated_at                 timestamp(30) NULL,
-    deleted_at                 timestamp(30) NULL,
-    expired_at                 timestamp(30) NULL,
-    active                     bool   NOT NULL,
-    password                   varchar(255) NULL,
-    create_password_next_login bool NULL,
-    same_password_limit        int8 NULL,
-    token_forget_password      varchar(255) NULL,
-    account_id                 int8 NULL,
-    CONSTRAINT accounts_passwords_pkey PRIMARY KEY (id),
-    CONSTRAINT password_accounts_fkey FOREIGN KEY (account_id) REFERENCES public.accounts (id)
-);
-
-CREATE TABLE IF NOT EXISTS public.accounts_photos
-(
-    id           SERIAL NOT NULL,
-    created_at   timestamp(30) NULL,
-    updated_at   timestamp(30) NULL,
-    deleted_at   timestamp(30) NULL,
-    name         varchar(255) NULL,
-    description  varchar(255) NULL,
-    path         varchar(255) NULL,
-    content_type varchar(255) NULL,
-    size         int8 NULL,
-    base_64      varchar(10000000) NULL,
-    type_photo   varchar(255) NULL,
-    account_id   int8 NULL,
-    CONSTRAINT accounts_photos_pkey PRIMARY KEY (id),
-    CONSTRAINT photo_accounts_fkey FOREIGN KEY (account_id) REFERENCES public.accounts (id)
-);
-
-CREATE TABLE IF NOT EXISTS public.accounts_lotteries_wallets
-(
-    id              SERIAL NOT NULL,
-    created_at      timestamp(30) NULL,
-    deleted_at      timestamp(30) NULL,
-    updated_at      timestamp(30) NULL,
-    balance         NUMERIC(19, 4) NOT NULL DEFAULT 0,
-    type_currency   character varying (4),
-    lottery_id      int8 NULL,
-    CONSTRAINT accounts_lotteries_wallets_pkey PRIMARY KEY (id),
-    CONSTRAINT accounts_lotteries_wallets_fkey FOREIGN KEY (lottery_id) REFERENCES public.accounts_lotteries (id)
+CREATE TABLE public.accounts_configs (
+                                         active bool NOT NULL,
+                                         created_at timestamp(6) NULL,
+                                         deleted_at timestamp(6) NULL,
+                                         id bigserial NOT NULL,
+                                         updated_at timestamp(6) NULL,
+                                         CONSTRAINT accounts_configs_pkey PRIMARY KEY (id)
 );
 
 
-CREATE TABLE IF NOT EXISTS public.draws (
-      id SERIAL NOT NULL,
-      draw_date timestamp(6) NULL,
-      CONSTRAINT draws_pkey PRIMARY KEY (id)
+-- public.accounts_lotteries definition
+
+-- Drop table
+
+-- DROP TABLE public.accounts_lotteries;
+
+CREATE TABLE public.accounts_lotteries (
+                                           created_at timestamp(6) NULL,
+                                           deleted_at timestamp(6) NULL,
+                                           id bigserial NOT NULL,
+                                           updated_at timestamp(6) NULL,
+                                           CONSTRAINT accounts_lotteries_pkey PRIMARY KEY (id)
 );
+
+
+-- public.draws definition
+
+-- Drop table
+
+-- DROP TABLE public.draws;
+
+CREATE TABLE public.draws (
+                              draw_date timestamp(6) NULL,
+                              id bigserial NOT NULL,
+                              CONSTRAINT draws_pkey PRIMARY KEY (id)
+);
+
+
+-- public.accounts definition
+
+-- Drop table
+
+-- DROP TABLE public.accounts;
+
+CREATE TABLE public.accounts (
+                                 activated_at timestamp(6) NULL,
+                                 admin_id int8 NULL,
+                                 config_id int8 NULL,
+                                 created_at timestamp(6) NULL,
+                                 deleted_at timestamp(6) NULL,
+                                 id bigserial NOT NULL,
+                                 lottery_id int8 NULL,
+                                 updated_at timestamp(6) NULL,
+                                 cpf varchar(255) NULL,
+                                 "name" varchar(255) NULL,
+                                 CONSTRAINT accounts_admin_id_key UNIQUE (admin_id),
+                                 CONSTRAINT accounts_config_id_key UNIQUE (config_id),
+                                 CONSTRAINT accounts_lottery_id_key UNIQUE (lottery_id),
+                                 CONSTRAINT accounts_pkey PRIMARY KEY (id),
+                                 CONSTRAINT fk9r005fs8vnh9bbj08dfxfhi6a FOREIGN KEY (lottery_id) REFERENCES public.accounts_lotteries(id),
+                                 CONSTRAINT fklnbshkmiby2osh4ctwanjv6oo FOREIGN KEY (config_id) REFERENCES public.accounts_configs(id),
+                                 CONSTRAINT fkrc27qp4eb2ub8y81w81ocw5p FOREIGN KEY (admin_id) REFERENCES public.accounts_admins(id)
+);
+
+
+-- public.accounts_admins_permissions definition
+
+-- Drop table
+
+-- DROP TABLE public.accounts_admins_permissions;
+
+CREATE TABLE public.accounts_admins_permissions (
+                                                    account_admin_id int8 NOT NULL,
+                                                    "permission" varchar(255) NULL,
+                                                    CONSTRAINT accounts_admins_permissions_permission_check CHECK (((permission)::text = ANY ((ARRAY['ALLOW_CREATE_ACCOUNT_ADMIN'::character varying, 'ALLOW_UPDATE_ACCOUNT_ADMIN'::character varying, 'ALLOW_DELETE_ACCOUNT_ADMIN'::character varying, 'ALLOW_VIEW_ACCOUNT_ADMIN'::character varying])::text[]))),
+	CONSTRAINT fknjgf8wfme5xuaxldpr4ldvbq5 FOREIGN KEY (account_admin_id) REFERENCES public.accounts_admins(id)
+);
+
+
+-- public.accounts_contacts definition
+
+-- Drop table
+
+-- DROP TABLE public.accounts_contacts;
+
+CREATE TABLE public.accounts_contacts (
+                                          account_id int8 NULL,
+                                          created_at timestamp(6) NULL,
+                                          deleted_at timestamp(6) NULL,
+                                          expired_at timestamp(6) NULL,
+                                          id bigserial NOT NULL,
+                                          updated_at timestamp(6) NULL,
+                                          validated_at timestamp(6) NULL,
+                                          code varchar(255) NULL,
+                                          "type" varchar(255) NULL,
+                                          value varchar(255) NULL,
+                                          CONSTRAINT accounts_contacts_pkey PRIMARY KEY (id),
+                                          CONSTRAINT accounts_contacts_type_check CHECK (((type)::text = ANY ((ARRAY['EMAIL'::character varying, 'MOBILE_PHONE'::character varying])::text[]))),
+	CONSTRAINT fknr4ev7amk3xfkk7fbp3y7ekr7 FOREIGN KEY (account_id) REFERENCES public.accounts(id)
+);
+
+
+-- public.accounts_lotteries_permissions definition
+
+-- Drop table
+
+-- DROP TABLE public.accounts_lotteries_permissions;
+
+CREATE TABLE public.accounts_lotteries_permissions (
+                                                       account_lottery_id int8 NOT NULL,
+                                                       "permission" varchar(255) NULL,
+                                                       CONSTRAINT accounts_lotteries_permissions_permission_check CHECK (((permission)::text = 'ALLOW_CREATE_BETTING'::text)),
+	CONSTRAINT fkn2jyywla047jrhrmgna5scn4v FOREIGN KEY (account_lottery_id) REFERENCES public.accounts_lotteries(id)
+);
+
+
+-- public.accounts_lotteries_wallets definition
+
+-- Drop table
+
+-- DROP TABLE public.accounts_lotteries_wallets;
+
+CREATE TABLE public.accounts_lotteries_wallets (
+                                                   balance numeric(19, 4) NULL,
+                                                   created_at timestamp(6) NULL,
+                                                   deleted_at timestamp(6) NULL,
+                                                   id bigserial NOT NULL,
+                                                   lottery_id int8 NULL,
+                                                   updated_at timestamp(6) NULL,
+                                                   type_currency varchar(255) NULL,
+                                                   CONSTRAINT accounts_lotteries_wallets_pkey PRIMARY KEY (id),
+                                                   CONSTRAINT accounts_lotteries_wallets_type_currency_check CHECK (((type_currency)::text = ANY ((ARRAY['BRL'::character varying, 'USD'::character varying, 'EUR'::character varying])::text[]))),
+	CONSTRAINT fk3nn640somhsu0yqmyf3k0jq8t FOREIGN KEY (lottery_id) REFERENCES public.accounts_lotteries(id)
+);
+
+
+-- public.accounts_passwords definition
+
+-- Drop table
+
+-- DROP TABLE public.accounts_passwords;
+
+CREATE TABLE public.accounts_passwords (
+                                           active bool NOT NULL,
+                                           create_password_next_login bool NULL,
+                                           account_id int8 NULL,
+                                           created_at timestamp(6) NULL,
+                                           deleted_at timestamp(6) NULL,
+                                           expired_at timestamp(6) NULL,
+                                           id bigserial NOT NULL,
+                                           same_password_limit int8 NULL,
+                                           updated_at timestamp(6) NULL,
+                                           "password" varchar(255) NULL,
+                                           token_forget_password varchar(255) NULL,
+                                           CONSTRAINT accounts_passwords_pkey PRIMARY KEY (id),
+                                           CONSTRAINT fkbu6rgg5t1pmxxnbapjwbwyxpf FOREIGN KEY (account_id) REFERENCES public.accounts(id)
+);
+
+
+-- public.accounts_photos definition
+
+-- Drop table
+
+-- DROP TABLE public.accounts_photos;
+
+CREATE TABLE public.accounts_photos (
+                                        account_id int8 NULL,
+                                        created_at timestamp(6) NULL,
+                                        deleted_at timestamp(6) NULL,
+                                        id bigserial NOT NULL,
+                                        "size" int8 NULL,
+                                        updated_at timestamp(6) NULL,
+                                        base_64 varchar(10000000) NULL,
+                                        content_type varchar(255) NULL,
+                                        description varchar(255) NULL,
+                                        "name" varchar(255) NULL,
+                                        "path" varchar(255) NULL,
+                                        type_photo varchar(255) NULL,
+                                        CONSTRAINT accounts_photos_pkey PRIMARY KEY (id),
+                                        CONSTRAINT accounts_photos_type_photo_check CHECK (((type_photo)::text = ANY ((ARRAY['LOGO_SMALL'::character varying, 'LOGO_LARGE'::character varying, 'PROFILE'::character varying, 'FACIAL'::character varying])::text[]))),
+	CONSTRAINT fklrs62mo3j34c4l3plb80wingc FOREIGN KEY (account_id) REFERENCES public.accounts(id)
+);
+
+
+-- public.games definition
+
+-- Drop table
+
+-- DROP TABLE public.games;
+
+CREATE TABLE public.games (
+                              max_number_value int4 NULL,
+                              max_numbers int4 NULL,
+                              min_numbers int4 NULL,
+                              created_at timestamp(6) NULL,
+                              created_by int8 NULL,
+                              id bigserial NOT NULL,
+                              updated_at timestamp(6) NULL,
+                              "name" varchar(255) NULL,
+                              CONSTRAINT games_pkey PRIMARY KEY (id),
+                              CONSTRAINT fkmfc68qyjx949fdj0fv4yfr4l5 FOREIGN KEY (created_by) REFERENCES public.accounts(id)
+);
+
+
+-- public.winning_numbers definition
+
+-- Drop table
+
+-- DROP TABLE public.winning_numbers;
 
 CREATE TABLE public.winning_numbers (
-        numero int4 NULL,
-        draw_id int8 NOT NULL,
-        CONSTRAINT fk_winning_numbers_draw FOREIGN KEY (draw_id) REFERENCES public.draws(id)
+                                        numero int4 NULL,
+                                        draw_id int8 NOT NULL,
+                                        CONSTRAINT fk6dhciagr57blax88b87i5r0c6 FOREIGN KEY (draw_id) REFERENCES public.draws(id)
 );
 
-CREATE TABLE IF NOT EXISTS public.games (
-      id SERIAL NOT NULL,
-      max_number_value int4 NULL,
-      max_numbers int4 NULL,
-      min_numbers int4 NULL,
-      created_at timestamp(6) NULL,
-      created_by int8 NULL,
-      updated_at timestamp(6) NULL,
-      "name" varchar(255) NULL,
-      CONSTRAINT games_pkey PRIMARY KEY (id),
-      CONSTRAINT fk_game_account_id FOREIGN KEY (created_by) REFERENCES public.accounts(id)
+
+-- public.contests definition
+
+-- Drop table
+
+-- DROP TABLE public.contests;
+
+CREATE TABLE public.contests (
+                                 contest_number int4 NOT NULL,
+                                 draw_date date NOT NULL,
+                                 prize_amount numeric(38, 2) NOT NULL,
+                                 created_at timestamp(6) NULL,
+                                 game_id int8 NOT NULL,
+                                 id bigserial NOT NULL,
+                                 updated_at timestamp(6) NULL,
+                                 CONSTRAINT contests_pkey PRIMARY KEY (id),
+                                 CONSTRAINT fkhbcdynfuetucyl8vdxcvhhsj4 FOREIGN KEY (game_id) REFERENCES public.games(id)
 );
+
+
+-- public.pools definition
+
+-- Drop table
+
+-- DROP TABLE public.pools;
 
 CREATE TABLE public.pools (
-      number_of_draws int4 NOT NULL,
-      total_amount numeric(38, 2) NULL,
-      created_at timestamp(6) NULL,
-      created_by int8 NULL,
-      game_id int8 NULL,
-      id bigserial NOT NULL,
-      updated_at timestamp(6) NULL,
-      "name" varchar(255) NULL,
-      status varchar(255) NULL,
-      CONSTRAINT pools_pkey PRIMARY KEY (id),
-      CONSTRAINT pools_status_check CHECK (((status)::text = ANY ((ARRAY['ABERTO'::character varying, 'FECHADO'::character varying, 'FINALIZADO'::character varying])::text[]))),
-	CONSTRAINT fk_pool_game_id FOREIGN KEY (game_id) REFERENCES public.games(id),
-	CONSTRAINT fk_pool_account_id FOREIGN KEY (created_by) REFERENCES public.accounts(id)
+                              entry_fee numeric(38, 2) NOT NULL,
+                              contest_id int8 NOT NULL,
+                              created_at timestamp(6) NULL,
+                              created_by int8 NULL,
+                              id bigserial NOT NULL,
+                              updated_at timestamp(6) NULL,
+                              "name" varchar(255) NULL,
+                              status varchar(255) NULL,
+                              CONSTRAINT pools_pkey PRIMARY KEY (id),
+                              CONSTRAINT pools_status_check CHECK (((status)::text = ANY ((ARRAY['ABERTO'::character varying, 'FECHADO'::character varying, 'FINALIZADO'::character varying])::text[]))),
+	CONSTRAINT fkic5agscmyvnyvep8b7qs67a0t FOREIGN KEY (created_by) REFERENCES public.accounts(id),
+	CONSTRAINT fkj2yfev9wclky8b4kqx2akjsd6 FOREIGN KEY (contest_id) REFERENCES public.contests(id)
 );
+
+
+-- public.participants definition
+
+-- Drop table
+
+-- DROP TABLE public.participants;
 
 CREATE TABLE public.participants (
-         created_at timestamp(6) NULL,
-         created_by int8 NULL,
-         id bigserial NOT NULL,
-         pool_id int8 NULL,
-         CONSTRAINT participants_pkey PRIMARY KEY (id),
-         CONSTRAINT fk_participant_pool_id FOREIGN KEY (pool_id) REFERENCES public.pools(id),
-         CONSTRAINT fk_participant_account_id FOREIGN KEY (created_by) REFERENCES public.accounts(id)
+                                     created_at timestamp(6) NULL,
+                                     created_by int8 NULL,
+                                     id bigserial NOT NULL,
+                                     pool_id int8 NULL,
+                                     CONSTRAINT participants_pkey PRIMARY KEY (id),
+                                     CONSTRAINT fk8svu2muxfijnoyjyracidkmsy FOREIGN KEY (pool_id) REFERENCES public.pools(id),
+                                     CONSTRAINT fkfw729p1w952usx47x98545s9q FOREIGN KEY (created_by) REFERENCES public.accounts(id)
 );
+
+
+-- public.proprietary_bets definition
+
+-- Drop table
+
+-- DROP TABLE public.proprietary_bets;
 
 CREATE TABLE public.proprietary_bets (
-         amount numeric(38, 2) NULL,
-         created_at timestamp(6) NULL,
-         created_by int8 NULL,
-         game_id int8 NULL,
-         id bigserial NOT NULL,
-         participant_id int8 NULL,
-         pool_id int8 NULL,
-         CONSTRAINT proprietary_bets_pkey PRIMARY KEY (id),
-         CONSTRAINT fk_propietary_bet_game_id FOREIGN KEY (game_id) REFERENCES public.games(id),
-         CONSTRAINT fk_propietary_bet_account_id FOREIGN KEY (created_by) REFERENCES public.accounts(id),
-         CONSTRAINT fk_propietary_bet_pool_id FOREIGN KEY (pool_id) REFERENCES public.pools(id),
-         CONSTRAINT fk_propietary_bet_participant_id FOREIGN KEY (participant_id) REFERENCES public.participants(id)
+                                         amount numeric(38, 2) NULL,
+                                         created_at timestamp(6) NULL,
+                                         created_by int8 NULL,
+                                         game_id int8 NULL,
+                                         id bigserial NOT NULL,
+                                         participant_id int8 NULL,
+                                         pool_id int8 NULL,
+                                         CONSTRAINT proprietary_bets_pkey PRIMARY KEY (id),
+                                         CONSTRAINT fkann35e9b24561n1wdupd5yf6u FOREIGN KEY (game_id) REFERENCES public.games(id),
+                                         CONSTRAINT fkbo3akp9pujcn8yx0gcnaj62ur FOREIGN KEY (created_by) REFERENCES public.accounts(id),
+                                         CONSTRAINT fkf39t0vvnusiuvf8ss38j639gs FOREIGN KEY (pool_id) REFERENCES public.pools(id),
+                                         CONSTRAINT fksm9lbryjgwnl6rvgkdh7xmry FOREIGN KEY (participant_id) REFERENCES public.participants(id)
 );
+
+
+-- public.bets definition
+
+-- Drop table
+
+-- DROP TABLE public.bets;
 
 CREATE TABLE public.bets (
-         amount numeric(38, 2) NULL,
-         id bigserial NOT NULL,
-         participant_id int8 NULL,
-         pool_id int8 NULL,
-         CONSTRAINT bets_pkey PRIMARY KEY (id),
-         CONSTRAINT fk_bet_participant_id FOREIGN KEY (participant_id) REFERENCES public.participants(id),
-         CONSTRAINT fk_bet_pool_id FOREIGN KEY (pool_id) REFERENCES public.pools(id)
+                             amount numeric(38, 2) NULL,
+                             id bigserial NOT NULL,
+                             participant_id int8 NULL,
+                             pool_id int8 NULL,
+                             CONSTRAINT bets_pkey PRIMARY KEY (id),
+                             CONSTRAINT fk1o6eb8gscphekpd0v2vjgjjak FOREIGN KEY (participant_id) REFERENCES public.participants(id),
+                             CONSTRAINT fkmpoo4ulrs8o3uhmtcfr3u7qdl FOREIGN KEY (pool_id) REFERENCES public.pools(id)
 );
+
+
+-- public.proprietary_bet_chosen_numbers definition
+
+-- Drop table
+
+-- DROP TABLE public.proprietary_bet_chosen_numbers;
 
 CREATE TABLE public.proprietary_bet_chosen_numbers (
-       chosen_numbers int4 NULL,
-       proprietary_bet_id int8 NOT NULL,
-       CONSTRAINT fk_proprietry_bet_chosen_number_id FOREIGN KEY (proprietary_bet_id) REFERENCES public.proprietary_bets(id)
+                                                       chosen_numbers int4 NULL,
+                                                       proprietary_bet_id int8 NOT NULL,
+                                                       CONSTRAINT fkfttphm2wf6sjjfffbeb0apnuc FOREIGN KEY (proprietary_bet_id) REFERENCES public.proprietary_bets(id)
 );
+
+
+-- public.awards definition
+
+-- Drop table
+
+-- DROP TABLE public.awards;
 
 CREATE TABLE public.awards (
-       number_of_matches int4 NOT NULL,
-       value numeric(38, 2) NULL,
-       bet_id int8 NULL,
-       draw_id int8 NULL,
-       id bigserial NOT NULL,
-       CONSTRAINT awards_pkey PRIMARY KEY (id),
-       CONSTRAINT fk_award_bet_id FOREIGN KEY (bet_id) REFERENCES public.bets(id),
-       CONSTRAINT fk_award_draw_id FOREIGN KEY (draw_id) REFERENCES public.draws(id)
+                               number_of_matches int4 NOT NULL,
+                               value numeric(38, 2) NULL,
+                               bet_id int8 NULL,
+                               draw_id int8 NULL,
+                               id bigserial NOT NULL,
+                               CONSTRAINT awards_pkey PRIMARY KEY (id),
+                               CONSTRAINT fkf27kxra9prp2wu0xwi2mutfnu FOREIGN KEY (bet_id) REFERENCES public.bets(id),
+                               CONSTRAINT fkq4spl39dsnrokx2ohbbhde574 FOREIGN KEY (draw_id) REFERENCES public.draws(id)
 );
 
+
+-- public.bet_chosen_numbers definition
+
+-- Drop table
+
+-- DROP TABLE public.bet_chosen_numbers;
+
 CREATE TABLE public.bet_chosen_numbers (
-       chosen_numbers int4 NULL,
-       bet_id int8 NOT NULL,
-       CONSTRAINT fk_bet_chosen_number_bet_id FOREIGN KEY (bet_id) REFERENCES public.bets(id)
+                                           chosen_numbers int4 NULL,
+                                           bet_id int8 NOT NULL,
+                                           CONSTRAINT fkln082nti6juol9db12qalkqf1 FOREIGN KEY (bet_id) REFERENCES public.bets(id)
 );

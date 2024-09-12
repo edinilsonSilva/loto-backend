@@ -104,7 +104,7 @@ const MyAccount = (props) => {
 			</div>
 
 			<div
-				onClick={() => router.push(router.asPath + "/cadastrar-jogo")}
+				onClick={() => router.push(router.asPath + "/jogos")}
 				className={styles.buttonDiv}
 			>
 				<Row>
@@ -113,9 +113,9 @@ const MyAccount = (props) => {
 					</Col>
 
 					<Col span={20}>
-						<span className={styles.title}>Novo Jogo</span>
+						<span className={styles.title}>Jogos</span>
 						<span className={styles.subtitle}>
-							Cadastre um Jogo
+							Gerencie os jogos da plataforma
 						</span>
 					</Col>
 				</Row>

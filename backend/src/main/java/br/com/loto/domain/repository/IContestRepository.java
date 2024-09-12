@@ -1,10 +1,10 @@
 package br.com.loto.domain.repository;
 
-import br.com.loto.domain.entity.Pool;
+import br.com.loto.domain.entity.Contest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface IPoolRepository extends PagingAndSortingRepository<Pool, Long>, JpaSpecificationExecutor<Pool>, JpaRepository<Pool, Long> {
+public interface IContestRepository extends PagingAndSortingRepository<Contest, Long>, JpaSpecificationExecutor<Contest>, JpaRepository<Contest, Long> {
 
 }

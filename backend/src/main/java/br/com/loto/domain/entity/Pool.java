@@ -3,6 +3,8 @@ package br.com.loto.domain.entity;
 import br.com.loto.enums.PoolStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,9 +26,11 @@ public class Pool {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
@@ -36,22 +40,19 @@ public class Pool {
 
     private String name;
 
-    @JoinColumn(name = "total_amount")
-    private BigDecimal totalAmount; // Total arrecadado
-
     @Enumerated(EnumType.STRING)
     private PoolStatus status; // Status do bolão (ABERTO, FECHADO, FINALIZADO)
 
-    @JoinColumn(name = "number_of_draws")
-    private int numberOfDraws; // Número de sorteios que este bolão participará
+    @Column(nullable = false)
+    private BigDecimal entryFee;  // Valor da entrada no bolão
 
-    @OneToMany(mappedBy = "pool")
+    @OneToMany(mappedBy = "pool", fetch = FetchType.EAGER)
     private List<Participant> participants;
 
-    @OneToMany(mappedBy = "pool")
+    @OneToMany(mappedBy = "pool", fetch = FetchType.EAGER)
     private List<Bet> bets;
 
     @ManyToOne
-    @JoinColumn(name = "game_id")
-    private Game game;
+    @JoinColumn(name = "contest_id", nullable = false)
+    private Contest contest;
 }

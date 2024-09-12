@@ -29,13 +29,15 @@ public class AccountMapper {
 
         response.setName(account.getName());
         response.setCpf(account.getCpf());
-        response.setEmail(account.getContacts().stream().filter(c -> c.getValidatedAt() != null)
+        response.setEmail(account.getContacts().stream()
+                //.filter(c -> c.getValidatedAt() != null)
                 .filter(c -> c.getType().equals(TypeContact.EMAIL))
                 .map(c -> c.getValue())
                 .findFirst()
                 .orElse(null));
 
-        response.setPhone(account.getContacts().stream().filter(c -> c.getValidatedAt() != null)
+        response.setPhone(account.getContacts().stream()
+                //.filter(c -> c.getValidatedAt() != null)
                 .filter(c -> c.getType().equals(TypeContact.MOBILE_PHONE))
                 .map(c -> c.getValue())
                 .findFirst()

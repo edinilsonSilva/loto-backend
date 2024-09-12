@@ -11,12 +11,16 @@ public class CreateGameRequest {
 
     private String name;
 
-    private BigDecimal totalAmount;
-
     private int maxNumber;
 
     private int minNumber;
 
     private int maxNumberValue;
+
+    private Integer contestNumber;
+
+    private BigDecimal prizeAmount;
+
+    private String drawDate;
 
 }

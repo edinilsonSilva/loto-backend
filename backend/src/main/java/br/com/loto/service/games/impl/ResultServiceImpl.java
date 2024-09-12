@@ -6,13 +6,15 @@ import br.com.loto.domain.entity.Draw;
 import br.com.loto.domain.repository.IAwardRepository;
 import br.com.loto.domain.repository.IBetRepository;
 import br.com.loto.domain.repository.IDrawRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor(onConstructor_ = @Lazy)
 public class ResultServiceImpl {
 
     private final IAwardRepository awardRepository;

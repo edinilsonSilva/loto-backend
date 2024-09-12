@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // import PropTypes from 'prop-types';
 
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { CreditCardOutlined, LockOutlined, MailOutlined, PhoneFilled, PhoneOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, message, Modal } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import Logo from "src/components/Layout/Logo";
@@ -33,10 +33,11 @@ const LoginModal = ({ visible, onClose }) => {
 		setLoading(true);
 
 		let request = {
-			username: loginForm.getFieldValue("username"),
+			username: loginForm.getFieldValue("cpf"),
 			password: loginForm.getFieldValue("password"),
 		};
 
+		loginForm.resetFields();
 		loginService.doLogin(request, dispatch, router);
 		setLoading(false);
 		onClose();
@@ -44,14 +45,17 @@ const LoginModal = ({ visible, onClose }) => {
 
 	const createAccount = () => {
 		let request = {
-			username: newAccountForm.getFieldValue("username"),
 			password: newAccountForm.getFieldValue("password"),
 			name: newAccountForm.getFieldValue("name"),
 			cpf: newAccountForm.getFieldValue("cpf"),
 			contacts: [
 				{
 					type: "EMAIL",
-					value: newAccountForm.getFieldValue("contact"),
+					value: newAccountForm.getFieldValue("email"),
+				},
+				{
+					type: "MOBILE_PHONE	",
+					value: newAccountForm.getFieldValue("phone"),
 				},
 			],
 		};
@@ -62,15 +66,17 @@ const LoginModal = ({ visible, onClose }) => {
 				console.log(data);
 
 				let loginRequest = {
-					username: request?.username,
+					username: request?.cpf,
 					password: request?.password,
 				};
 
-				loginService.doLogin(loginRequest);
+				newAccountForm.resetFields();
+				loginForm.resetFields();
+				loginService.doLogin(loginRequest, dispatch, router);
+				onClose();
 			})
 			.catch((error) => {
-				const errorMessage =
-					error.response?.data?.message || "Erro desconhecido";
+				const errorMessage = error.response?.data?.message || "Erro desconhecido";
 				console.error(error);
 				showMessageError(errorMessage);
 			});
@@ -137,11 +143,11 @@ const LoginModal = ({ visible, onClose }) => {
 						<Logo width={150} height={150} />
 					</div>
 					<Form.Item
-						name="username"
+						name="cpf"
 						rules={[
 							{
 								required: true,
-								message: "Digite seu Usuário",
+								message: "Digite seu CPF",
 							},
 						]}
 					>
@@ -149,7 +155,7 @@ const LoginModal = ({ visible, onClose }) => {
 							prefix={
 								<UserOutlined className="site-form-item-icon" />
 							}
-							placeholder="Username"
+							placeholder="CPF"
 						/>
 					</Form.Item>
 
@@ -167,7 +173,7 @@ const LoginModal = ({ visible, onClose }) => {
 								<LockOutlined className="site-form-item-icon" />
 							}
 							type="password"
-							placeholder="Password"
+							placeholder="Senha"
 						/>
 					</Form.Item>
 
@@ -225,24 +231,6 @@ const LoginModal = ({ visible, onClose }) => {
 					</div>
 
 					<Form.Item
-						name="username"
-						rules={[
-							{
-								required: true,
-								message: "Digite seu Usuário",
-							},
-						]}
-					>
-						<Input
-							maxLength={20}
-							prefix={
-								<UserOutlined className="site-form-item-icon" />
-							}
-							placeholder="Nome do Usuário"
-						/>
-					</Form.Item>
-
-					<Form.Item
 						name="name"
 						rules={[
 							{
@@ -272,14 +260,14 @@ const LoginModal = ({ visible, onClose }) => {
 						<Input
 							maxLength={14}
 							prefix={
-								<UserOutlined className="site-form-item-icon" />
+								<CreditCardOutlined className="site-form-item-icon" />
 							}
 							placeholder="CPF"
 						/>
 					</Form.Item>
 
 					<Form.Item
-						name="contact"
+						name="email"
 						rules={[
 							{
 								type: "email",
@@ -294,9 +282,27 @@ const LoginModal = ({ visible, onClose }) => {
 						<Input
 							maxLength={200}
 							prefix={
-								<UserOutlined className="site-form-item-icon" />
+								<MailOutlined className="site-form-item-icon" />
 							}
 							placeholder="E-mail"
+						/>
+					</Form.Item>
+
+					<Form.Item
+						name="phone"
+						rules={[
+							{
+								required: true,
+								message: "Digite seu Telefone",
+							},
+						]}
+					>
+						<Input
+							maxLength={200}
+							prefix={
+								<PhoneOutlined className="site-form-item-icon" />
+							}
+							placeholder="Telefone"
 						/>
 					</Form.Item>
 

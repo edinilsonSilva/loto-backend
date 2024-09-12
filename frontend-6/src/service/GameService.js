@@ -12,7 +12,7 @@ export class GameService extends ServiceBase {
     }
 
     async getSearch() {
-        return this.axiosInstance.get(`${this.url}search`)
+        return this.axiosInstance.get(`${this.url}/search`)
             .then(res => res.data)
     }
 }

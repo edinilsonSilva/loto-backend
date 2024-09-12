@@ -13,6 +13,6 @@ public class CreatePoolRequest {
 
     private BigDecimal totalAmount;
 
-    private Long gameId;
+    private Long contestId;
 
 }

@@ -2,10 +2,7 @@
 
 import PropTypes from "prop-types";
 
-import {
-	PhoneOutlined,
-	UserOutlined
-} from "@ant-design/icons";
+import { PhoneOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Card, Form, Input, message } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { withRouter } from "next/router";
@@ -28,16 +25,17 @@ const MyAccount = (props) => {
 	const createGame = () => {
 		let request = {
 			name: gameForm.getFieldValue("name"),
-			totalAmount: gameForm.getFieldValue("totalAmount"),
 			minNumber: gameForm.getFieldValue("minNumber"),
 			maxNumber: gameForm.getFieldValue("maxNumber"),
 			maxNumberValue: gameForm.getFieldValue("maxNumberValue"),
+			contestNumber: gameForm.getFieldValue("contestNumber"),
+			prizeAmount: gameForm.getFieldValue("prizeAmount"),
+			drawDate: gameForm.getFieldValue("drawDate"),
 		};
 
 		gameService
 			.postCreateGame(request)
 			.then((data) => {
-
 				message.success(data?.message);
 				gameForm.resetFields();
 			})
@@ -51,7 +49,7 @@ const MyAccount = (props) => {
 
 	return (
 		<Card className={styles.card}>
-			<span className={styles.cardTitle}>Minha Conta</span>
+			<span className={styles.cardTitle}>Novo jogo</span>
 
 			<Form
 				name="gameForm"
@@ -71,7 +69,7 @@ const MyAccount = (props) => {
 				size="large"
 			>
 				<div style={{ textAlign: "center" }}>
-					<h3>Dados do Jogo</h3>
+					<h3>Crie aqui um novo jogo</h3>
 				</div>
 
 				<Form.Item
@@ -83,31 +81,7 @@ const MyAccount = (props) => {
 						},
 					]}
 				>
-					<Input
-						maxLength={250}
-						prefix={
-							<UserOutlined className="site-form-item-icon" />
-						}
-						placeholder="Nome do Jogo"
-					/>
-				</Form.Item>
-
-				<Form.Item
-					name="totalAmount"
-					rules={[
-						{
-							required: true,
-							message: "Este campo é obrigatório",
-						},
-					]}
-				>
-					<Input
-						maxLength={200}
-						prefix={
-							<PhoneOutlined className="site-form-item-icon" />
-						}
-						placeholder="Valor total"
-					/>
+					<Input maxLength={250} placeholder="Nome do Jogo" />
 				</Form.Item>
 
 				<Form.Item
@@ -121,9 +95,6 @@ const MyAccount = (props) => {
 				>
 					<Input
 						maxLength={200}
-						prefix={
-							<PhoneOutlined className="site-form-item-icon" />
-						}
 						placeholder="Quantidade minima de escolhas"
 					/>
 				</Form.Item>
@@ -139,9 +110,6 @@ const MyAccount = (props) => {
 				>
 					<Input
 						maxLength={200}
-						prefix={
-							<PhoneOutlined className="site-form-item-icon" />
-						}
 						placeholder="Quantidade máxima de escolhas"
 					/>
 				</Form.Item>
@@ -157,16 +125,58 @@ const MyAccount = (props) => {
 				>
 					<Input
 						maxLength={200}
-						prefix={
-							<PhoneOutlined className="site-form-item-icon" />
-						}
 						placeholder="Número máximo do jogo"
+					/>
+				</Form.Item>
+
+				<Form.Item
+					name="contestNumber"
+					rules={[
+						{
+							required: true,
+							message: "Este campo é obrigatório",
+						},
+					]}
+				>
+					<Input
+						maxLength={200}
+						placeholder="Número do concurso"
+					/>
+				</Form.Item>
+
+				<Form.Item
+					name="prizeAmount"
+					rules={[
+						{
+							required: true,
+							message: "Este campo é obrigatório",
+						},
+					]}
+				>
+					<Input
+						maxLength={200}
+						placeholder="Valor acumulado"
+					/>
+				</Form.Item>
+
+				<Form.Item
+					name="drawDate"
+					rules={[
+						{
+							required: true,
+							message: "Este campo é obrigatório",
+						},
+					]}
+				>
+					<Input
+						maxLength={200}
+						placeholder="Data do concurso"
 					/>
 				</Form.Item>
 
 				<Form.Item>
 					<div className="text-center">
-						<Button htmlType="submit">Atualizar dados</Button>
+						<Button htmlType="submit">Cadastrar</Button>
 					</div>
 				</Form.Item>
 			</Form>

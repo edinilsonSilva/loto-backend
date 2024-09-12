@@ -17,7 +17,7 @@ const CreateGamePage = (props) => {
 
 	return (
 		<>
-			<Head title="Cadastrar Jogo" />
+			<Head title="Jogos | Cadastrar" />
 			<CreateGame />
 		</>
 	);

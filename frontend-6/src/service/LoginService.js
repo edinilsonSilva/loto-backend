@@ -6,23 +6,21 @@ import { useSelector } from "react-redux";
 import { setAccount } from "../redux/accountSlice";
 
 export class LoginService extends ServiceBase {
-
 	KEY_TOKEN = "@tkloto";
-    KEY_PERSIST_ACCOUNT_CURRENT = "persist:account-current";
+	KEY_PERSIST_ACCOUNT_CURRENT = "persist:account-current";
 
 	constructor() {
 		super("/auth");
 	}
 
 	getAccount() {
-		return useSelector((state) => state.account)
+		return useSelector((state) => state.account);
 	}
 
 	doLogin(request, dispatch, router) {
 		this.axiosInstance
-			.post(`${this.url}login`, request)
+			.post(`${this.url}/login`, request)
 			.then((res) => {
-
 				const accountData = {
 					name: res.data?.content?.name,
 					email: res.data?.content?.email,
@@ -31,10 +29,10 @@ export class LoginService extends ServiceBase {
 					wallets: res.data?.content?.wallets,
 				};
 
-                dispatch(setAccount(accountData));
+				dispatch(setAccount(accountData));
 
 				window.localStorage.setItem(this.KEY_TOKEN, res.data.token);
-                router.push("/")
+				router.push("/");
 			})
 			.catch((error) => {
 				const errorMessage =
@@ -55,13 +53,14 @@ export class LoginService extends ServiceBase {
 		if (typeof window !== "undefined") {
 			window.localStorage.removeItem(this.KEY_TOKEN);
 			window.localStorage.removeItem(this.KEY_PERSIST_ACCOUNT_CURRENT);
-            router.push("/")
+			router.push("/");
 		}
 	}
 
 	getToken() {
 		if (typeof window !== "undefined") {
-			return window.localStorage.getItem(this.KEY_TOKEN);
+			let token = window.localStorage.getItem(this.KEY_TOKEN);
+			return token;
 		}
 		return null;
 	}
