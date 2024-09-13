@@ -11,7 +11,7 @@ public class CreatePoolRequest {
 
     private String name;
 
-    private BigDecimal totalAmount;
+    private BigDecimal entryFee;
 
     private Long contestId;
 

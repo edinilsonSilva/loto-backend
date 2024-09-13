@@ -1,8 +1,7 @@
 // import PropTypes from 'prop-types';
 
-import Head from 'src/components/Head';
-import CreateGame from 'src/containers/Game/CreateGame';
-
+import Head from "src/components/Head";
+import CreateGame from "src/containers/ManageLottery/Create/Game";
 
 const propTypes = {
 	// classes: PropTypes.object.isRequired,
@@ -17,7 +16,7 @@ const CreateGamePage = (props) => {
 
 	return (
 		<>
-			<Head title="Jogos | Cadastrar" />
+			<Head title="Novo Jogo" />
 			<CreateGame />
 		</>
 	);

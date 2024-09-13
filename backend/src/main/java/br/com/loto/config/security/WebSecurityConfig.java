@@ -47,12 +47,14 @@ public class WebSecurityConfig {
     // Endpoints que requerem autenticação para serem acessados
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
             "/api/v1/accounts/**",
-            "/api/v1/pools",
-            "/api/v1/pools/**",
             "/api/v1/games",
             "/api/v1/games/**",
-            "/api/v1/admins/accounts",
-            "/api/v1/admins/accounts/**"
+            "/api/v1/pools",
+            "/api/v1/pools/**",
+            "/api/v1/contests",
+            "/api/v1/contests/**",
+            "/api/v1/bets",
+            "/api/v1/bets/**"
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de cliente
@@ -66,7 +68,11 @@ public class WebSecurityConfig {
             "/api/v1/games",
             "/api/v1/games/**",
             "/api/v1/pools",
-            "/api/v1/pools/**"
+            "/api/v1/pools/**",
+            "/api/v1/contests",
+            "/api/v1/contests/**",
+            "/api/v1/bets",
+            "/api/v1/bets/**"
     };
 
     @Bean

@@ -2,12 +2,11 @@
 
 import PropTypes from "prop-types";
 
-import { withRouter } from "next/router";
+import { SettingOutlined, SolutionOutlined, UserOutlined } from "@ant-design/icons";
 import { Card, Col, Row } from "antd";
-import styles from "./style.module.less";
-import { UserOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { withRouter } from "next/router";
 import { LoginService } from "src/service/LoginService";
+import styles from "./style.module.less";
 
 const propTypes = {
 	router: PropTypes.object.isRequired,
@@ -91,7 +90,7 @@ const MyAccount = (props) => {
 			>
 				<Row>
 					<Col span={4} className={styles.icon}>
-						<UserOutlined style={{ fontSize: 24 }} />
+						<SolutionOutlined style={{ fontSize: 24 }} />
 					</Col>
 
 					<Col span={20}>
@@ -104,18 +103,18 @@ const MyAccount = (props) => {
 			</div>
 
 			<div
-				onClick={() => router.push(router.asPath + "/jogos")}
+				onClick={() => router.push(router.asPath + "/gerenciar-loterica")}
 				className={styles.buttonDiv}
 			>
 				<Row>
 					<Col span={4} className={styles.icon}>
-						<UserOutlined style={{ fontSize: 24 }} />
+						<SettingOutlined style={{ fontSize: 24 }} />
 					</Col>
 
 					<Col span={20}>
-						<span className={styles.title}>Jogos</span>
+						<span className={styles.title}>Gerenciar Lotérica</span>
 						<span className={styles.subtitle}>
-							Gerencie os jogos da plataforma
+							Gerencie a lotérica - Jogos, Concursos e Bolões (PERFIL ADMIN)
 						</span>
 					</Col>
 				</Row>

@@ -1,4 +1,4 @@
-package br.com.loto.api.controller;
+package br.com.loto.api.controller.customer;
 
 import br.com.loto.api.dto.account.requests.ChangePasswordRequest;
 import br.com.loto.exceptions.CustomResponse;

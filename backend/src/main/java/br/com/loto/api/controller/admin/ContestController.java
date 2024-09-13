@@ -1,11 +1,11 @@
-package br.com.loto.api.controller;
+package br.com.loto.api.controller.admin;
 
-import br.com.loto.api.dto.game.queries.PoolQuery;
-import br.com.loto.api.dto.game.request.CreatePoolRequest;
+import br.com.loto.api.dto.game.queries.ContestQuery;
+import br.com.loto.api.dto.game.request.CreateContestRequest;
 import br.com.loto.domain.entity.Account;
-import br.com.loto.domain.entity.Pool;
+import br.com.loto.domain.entity.Contest;
 import br.com.loto.exceptions.CustomResponse;
-import br.com.loto.service.games.IPoolService;
+import br.com.loto.service.games.IContestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,14 +23,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/pools")
-@Tag(name = "Rotas para o gerenciamento dos bolões")
-public class PoolController {
+@RequestMapping("/api/v1/contests")
+@Tag(name = "Rotas para o gerenciamento dos Concursos")
+public class ContestController {
 
-    private final IPoolService poolService;
+    private final IContestService contestService;
 
     @Operation(
-            summary = "Lista todos os jogos cadastrados",
+            summary = "Lista todos os concursos cadastrados",
             description = "É possível utilizar parametros [name]")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -39,24 +39,26 @@ public class PoolController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
             @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
     @GetMapping(value = "/search", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Page<Pool>> findAllByParams(
+    public ResponseEntity<Page<Contest>> findAllByParams(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
             @RequestParam(value = "limit", defaultValue = "24", required = false) Integer limit,
             @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
             @RequestParam(value = "direction", defaultValue = "DESC", required = false) String direction,
-            @RequestParam(value = "name", required = false) String name) {
+            @RequestParam(value = "number", required = false) Integer contestNumber,
+            @RequestParam(value = "game-id", required = false) Long gameId) {
 
-        return new ResponseEntity<>(poolService.findAllByParams(PoolQuery.builder()
+        return new ResponseEntity<>(contestService.findAllByParams(ContestQuery.builder()
                 .orderBy(orderBy)
                 .direction(direction)
                 .page(page)
                 .limit(limit)
-                .name(name)
+                .contestNumber(contestNumber)
+                .gameId(gameId)
                 .build()), HttpStatus.OK);
     }
 
     @Operation(
-            summary = "Cadastrar um novo bolão")
+            summary = "Cadastrar um novo concurso")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "application/json",
@@ -64,7 +66,7 @@ public class PoolController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
             @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
     @PostMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<CustomResponse<Pool>> create(@RequestBody @Valid CreatePoolRequest request) {
-        return new ResponseEntity<>(poolService.create(request), HttpStatus.OK);
+    public ResponseEntity<CustomResponse<Contest>> create(@RequestBody @Valid CreateContestRequest request) {
+        return new ResponseEntity<>(contestService.create(request), HttpStatus.OK);
     }
 }

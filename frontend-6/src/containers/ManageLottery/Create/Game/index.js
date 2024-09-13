@@ -49,7 +49,6 @@ const MyAccount = (props) => {
 
 	return (
 		<Card className={styles.card}>
-			<span className={styles.cardTitle}>Novo jogo</span>
 
 			<Form
 				name="gameForm"

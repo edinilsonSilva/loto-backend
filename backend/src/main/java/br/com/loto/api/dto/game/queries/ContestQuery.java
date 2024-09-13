@@ -15,6 +15,8 @@ public class ContestQuery {
 
     private String direction;
 
-    private String name;
+    private Integer contestNumber;
+
+    private Long gameId;
 
 }

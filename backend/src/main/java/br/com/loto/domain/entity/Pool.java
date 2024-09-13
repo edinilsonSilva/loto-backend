@@ -1,6 +1,7 @@
 package br.com.loto.domain.entity;
 
 import br.com.loto.enums.PoolStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -54,5 +55,6 @@ public class Pool {
 
     @ManyToOne
     @JoinColumn(name = "contest_id", nullable = false)
+    @JsonIgnoreProperties("pools")
     private Contest contest;
 }

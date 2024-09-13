@@ -4,7 +4,6 @@ import br.com.loto.api.dto.game.queries.ContestQuery;
 import br.com.loto.domain.entity.Contest;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +16,11 @@ public class ContestSpecification {
 
             List<Predicate> predicates = new ArrayList<>();
 
-            if (StringUtils.hasText(request.getName()))
-                predicates.add(builder.equal(builder.lower(root.get("cpf")), "%" + request.getName().toLowerCase() + "%"));
+            if (request.getContestNumber() != null)
+                predicates.add(builder.equal(root.get("contestNumber"), request.getContestNumber()));
+
+            if (request.getGameId() != null)
+                predicates.add(builder.equal(root.get("game").get("id"), request.getGameId()));
 
             query.distinct(true);
             return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();

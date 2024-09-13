@@ -1,9 +1,10 @@
-package br.com.loto.api.controller;
+package br.com.loto.api.controller.customer;
 
-import br.com.loto.api.dto.account.requests.LoginRequest;
-import br.com.loto.api.dto.account.responses.AccountResponse;
-import br.com.loto.api.dto.account.responses.LoginResponse;
-import br.com.loto.service.account.IAccountAuthService;
+import br.com.loto.api.dto.account.requests.ChangePasswordPubRequest;
+import br.com.loto.api.dto.account.requests.CreateAccountRequest;
+import br.com.loto.domain.entity.Account;
+import br.com.loto.exceptions.CustomResponse;
+import br.com.loto.service.account.IAccountPubService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,35 +23,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auth")
-@Tag(name = "Rotas para autenticação")
-public class AccountAuthController {
+@RequestMapping("/api/v1/accounts/p")
+@Tag(name = "Rotas públicas")
+public class AccountPubController {
 
-    private final IAccountAuthService authService;
+    private final IAccountPubService accountPubService;
 
     @Operation(
-            summary = "Gerar token Jwt")
+            summary = "Cadastrar uma nova conta")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = LoginResponse.class))),
+                            schema = @Schema(implementation = CustomResponse.class))),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
             @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
-    @PostMapping(value = "/login", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
-        return new ResponseEntity<>(authService.login(request), HttpStatus.OK);
+    @PostMapping(value = "/create-account", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<CustomResponse<Account>> create(@RequestBody @Valid CreateAccountRequest request) {
+        return new ResponseEntity<>(accountPubService.create(request), HttpStatus.OK);
     }
 
     @Operation(
-            summary = "Consultar conta pelo token jwt")
+            summary = "Alterar senha")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AccountResponse.class))),
+                            schema = @Schema(implementation = CustomResponse.class))),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
             @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
-    @PostMapping(value = "/get-account", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<AccountResponse> getAccount() {
-        return new ResponseEntity<>(authService.getAccount(), HttpStatus.OK);
+    @PostMapping(value = "/change-my-password", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<CustomResponse<Void>> changePassword(@RequestBody @Valid ChangePasswordPubRequest request) {
+        return new ResponseEntity<>(accountPubService.changePassword(request), HttpStatus.OK);
     }
 }

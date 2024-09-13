@@ -1,4 +1,4 @@
-package br.com.loto.api.controller;
+package br.com.loto.api.controller.admin;
 
 import br.com.loto.api.dto.account.query.AccountQuery;
 import br.com.loto.api.dto.account.requests.ChangePasswordRequest;

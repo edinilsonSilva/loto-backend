@@ -2,13 +2,22 @@
 
 import PropTypes from "prop-types";
 
-import { PhoneOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Card, Form, Input, message, Table } from "antd";
+import {
+	Button,
+	Col,
+	Form,
+	Input,
+	message,
+	Row,
+	Space,
+	Spin,
+	Table
+} from "antd";
 import { useForm } from "antd/lib/form/Form";
+import dayjs from "dayjs";
 import { withRouter } from "next/router";
-import { GameService } from "src/service/GameService";
-import styles from "./style.module.less";
 import { useEffect, useState } from "react";
+import { GameService } from "src/service/GameService";
 
 const propTypes = {
 	router: PropTypes.object.isRequired,
@@ -26,8 +35,10 @@ const GameDashboard = (props) => {
 	const gameService = new GameService();
 
 	const [games, setGames] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	const gameSearch = () => {
+		setLoading(true);
 		gameService
 			.getSearch()
 			.then((data) => {
@@ -38,6 +49,9 @@ const GameDashboard = (props) => {
 					error.response?.data?.message || "Erro desconhecido";
 				console.error(error);
 				message.error(errorMessage);
+			})
+			.finally(() => {
+				setLoading(false);
 			});
 	};
 
@@ -47,35 +61,33 @@ const GameDashboard = (props) => {
 
 	const columns = [
 		{
+			title: "Criado em",
+			dataIndex: "createdAt",
+			key: "createdAt",
+			render: (createdAt) => (
+				<span>{dayjs(createdAt).format("DD/MM/YYYY HH:mm")}</span>
+			),
+		},
+		{
 			title: "Nome",
 			dataIndex: "name",
 			key: "name",
 		},
 		{
-			title: "Cadastrado em",
-			dataIndex: "createdAt",
-			key: "createdAt",
-		},
-		{
-			title: "Address",
+			title: "Número máximo",
 			dataIndex: "maxNumberValue",
 			key: "maxNumberValue",
+		},
+		{
+			title: "Concursos",
+			dataIndex: "contests",
+			key: "contests",
+			render: (contests) => <div>{contests?.length}</div>,
 		},
 	];
 
 	return (
-		<Card
-			title={"Todos os jogos"}
-			className={styles.card}
-			extra={
-				<Button
-					onClick={() => router.push(router.asPath + "/cadastrar-jogo")}
-				>
-					Cadastrar novo jogo
-				</Button>
-			}
-			style={{ width: "100%" }}
-		>
+		<Spin spinning={loading} tip="carregando...">
 			<Form
 				name="gameForm"
 				form={gameForm}
@@ -85,7 +97,7 @@ const GameDashboard = (props) => {
 				}}
 				onFinish={gameSearch}
 				style={{
-					width: 350,
+					width: "100%",
 					padding: 20,
 					margin: "0 auto 40px",
 					borderRadius: 4,
@@ -93,18 +105,40 @@ const GameDashboard = (props) => {
 				}}
 				size="large"
 			>
-				<Form.Item name="name">
-					<Input maxLength={250} placeholder="Nome do Jogo" />
-				</Form.Item>
+				<Row>
+					<Space>
+						<Col>
+							<Form.Item name="name">
+								<Input
+									maxLength={250}
+									placeholder="Nome do Jogo"
+								/>
+							</Form.Item>
+						</Col>
 
-				<Form.Item>
-					<div className="text-center">
-						<Button htmlType="submit">Pesquisar</Button>
-					</div>
-				</Form.Item>
+						<Col>
+							<Form.Item>
+								<Space>
+									<Button htmlType="submit">Pesquisar</Button>
+
+									<Button
+										onClick={() =>
+											router.push(
+												router.asPath +
+													"/cadastrar-jogo"
+											)
+										}
+									>
+										Cadastrar novo jogo
+									</Button>
+								</Space>
+							</Form.Item>
+						</Col>
+					</Space>
+				</Row>
 			</Form>
 			<Table dataSource={games} columns={columns} />;
-		</Card>
+		</Spin>
 	);
 };
 

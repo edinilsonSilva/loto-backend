@@ -1,7 +1,7 @@
 // import PropTypes from 'prop-types';
 
 import Head from "src/components/Head";
-import GameDashboard from "src/containers/Game/Dashboard";
+import GameDashboard from "src/containers/ManageLottery/Dashboard";
 
 const propTypes = {
 	// classes: PropTypes.object.isRequired,
@@ -16,7 +16,7 @@ const GameDashboardPage = (props) => {
 
 	return (
 		<>
-			<Head title="Jogos | Dashboard" />
+			<Head title="Gerenciar Lotérica" />
 			<GameDashboard />
 		</>
 	);

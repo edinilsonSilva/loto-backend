@@ -10,7 +10,6 @@ import br.com.loto.exceptions.CustomResponse;
 import br.com.loto.service.games.IContestService;
 import br.com.loto.service.games.IPoolService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,6 +45,7 @@ public class PoolServiceImpl implements IPoolService {
                         .createdAt(null)
                         .name(request.getName())
                         .status(PoolStatus.FECHADO)
+                        .entryFee(request.getEntryFee())
                         .contest(contestService.findByIdWithThrow(request.getContestId()))
                         .build()))
                 .build();
