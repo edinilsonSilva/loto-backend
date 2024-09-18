@@ -11,11 +11,13 @@ public interface ILotteryDrawService {
 
     Page<LotteryDraw> findAllByParams(ContestQuery query);
 
-    CustomResponse<LotteryDraw> create(CreateContestRequest request);
+    CustomResponse<LotteryDraw> createAndUpdate(CreateContestRequest request);
 
     LotteryDraw save(LotteryDraw contest);
 
-    LotteryDraw findByIdWithThrow (Long contestId);
+    LotteryDraw findByIdWithThrow(Long contestId);
 
-    LotteryDraw generateGame (TypeGame typeGame);
+    LotteryDraw generateGame(TypeGame typeGame);
+
+    void checkResults();
 }

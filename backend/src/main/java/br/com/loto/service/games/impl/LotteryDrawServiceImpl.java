@@ -11,6 +11,7 @@ import br.com.loto.domain.specification.LotteryDrawSpecification;
 import br.com.loto.exceptions.CustomResponse;
 import br.com.loto.service.games.ILotteryDrawService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,8 +19,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @AllArgsConstructor(onConstructor_ = @Lazy)
 public class LotteryDrawServiceImpl implements ILotteryDrawService {
@@ -37,7 +40,7 @@ public class LotteryDrawServiceImpl implements ILotteryDrawService {
 
     @Override
     @Transactional
-    public CustomResponse<LotteryDraw> create(CreateContestRequest request) {
+    public CustomResponse<LotteryDraw> createAndUpdate(CreateContestRequest request) {
         return CustomResponse.<LotteryDraw>builder()
                 .status(201)
                 .message("Concurso cadastrado.")
@@ -57,26 +60,43 @@ public class LotteryDrawServiceImpl implements ILotteryDrawService {
                 .orElseThrow(() -> new RuntimeException("Concurso não encontrado."));
     }
 
-    public Optional<LotteryDraw> findByGameTypeAndNumber (TypeGame typeGame, int number) {
+    public Optional<LotteryDraw> findByGameTypeAndNumber(TypeGame typeGame, int number) {
         return lotteryDrawRepository.findByGameTypeAndNumber(typeGame, number);
     }
 
     @Override
     public LotteryDraw generateGame(TypeGame typeGame) {
 
-        if (typeGame.equals(TypeGame.MEGA_SENA))
-            return lotteryDrawRepository.save(LotteryDrawMapper.toLotteryDraw(caixaFeign.getMegaSenaResults()));
+        if (typeGame == null)
+            return null;
 
-        if (typeGame.equals(TypeGame.DUPLA_SENA))
-            return lotteryDrawRepository.save(LotteryDrawMapper.toLotteryDraw(caixaFeign.getDuplasenaResults()));
+        LotteryDraw cxLotteryDraw = LotteryDrawMapper.toLotteryDraw(caixaFeign.getResults(typeGame.getPathName()));
 
-        if (typeGame.equals(TypeGame. ))
-            return lotteryDrawRepository.save(LotteryDrawMapper.toLotteryDraw(caixaFeign.getLotofacilResults()));
+        Optional<LotteryDraw> lotteryDrawFound = findByGameTypeAndNumber(typeGame, cxLotteryDraw.getNumber());
 
-        if (typeGame.equals(TypeGame.QUINA))
-            return lotteryDrawRepository.save(LotteryDrawMapper.toLotteryDraw(caixaFeign.getQuinaResults()));
+        if (lotteryDrawFound.isPresent()) {
 
+            LotteryDraw ldTemp = lotteryDrawFound.get();
+            ldTemp.setDrawNumbers(null);
+            ldTemp.setDrawnNumbersInOrder(null);
+            ldTemp.setPrizeBreakdownList(null);
+            ldTemp.setSecondDrawNumbers(null);
+            lotteryDrawRepository.save(lotteryDrawFound.get());
 
-        return null;
+            LotteryDraw ldTempUpdate = cxLotteryDraw;
+            ldTempUpdate.setId(ldTemp.getId());
+            return lotteryDrawRepository.save(ldTempUpdate);
+        }
+
+        return lotteryDrawRepository.save(cxLotteryDraw);
+    }
+
+    @Override
+    public void checkResults() {
+
+        for (TypeGame typeGame : TypeGame.values()) {
+            generateGame(typeGame);
+            log.info("Atualização jogo " + typeGame.getDescription() + " as " + LocalDateTime.now());
+        }
     }
 }

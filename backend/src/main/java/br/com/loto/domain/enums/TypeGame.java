@@ -12,10 +12,16 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum TypeGame {
 
-    MEGA_SENA("Mega Sena"),
-    LOTOFACIL("Loto Fácil"),
-    QUINA("Quina"),
-    DUPLA_SENA("Dupla Sena");
+    MEGA_SENA("Mega Sena", "megasena"),
+    DUPLA_SENA("Dupla Sena", "duplasena"),
+    LOTOFACIL("Lotofácil", "lotofacil"),
+    QUINA("Quina", "quina"),
+    LOTOMANIA("Lotomania", "lotomania"),
+    TIMEMANIA("Timemania", "timemania"),
+    LOTERIA_FEDERAL("Federal", "federal"),
+    DIA_DE_SORTE("Dia de Sorte", "diadesorte"),
+    SUPER_SETE("Super Sete", "supersete");
 
     private String description;
+    private String pathName;
 }

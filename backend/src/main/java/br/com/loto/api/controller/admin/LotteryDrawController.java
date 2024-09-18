@@ -69,7 +69,7 @@ public class LotteryDrawController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
     @PostMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<CustomResponse<LotteryDraw>> create(@RequestBody @Valid CreateContestRequest request) {
-        return new ResponseEntity<>(lotteryDrawService.create(request), HttpStatus.OK);
+        return new ResponseEntity<>(lotteryDrawService.createAndUpdate(request), HttpStatus.OK);
     }
 
     @Operation(
