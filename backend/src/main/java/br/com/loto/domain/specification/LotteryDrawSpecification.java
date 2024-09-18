@@ -1,16 +1,16 @@
 package br.com.loto.domain.specification;
 
 import br.com.loto.api.dto.game.queries.ContestQuery;
-import br.com.loto.domain.entity.Contest;
+import br.com.loto.domain.entity.LotteryDraw;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContestSpecification {
+public class LotteryDrawSpecification {
 
-    public static Specification<Contest> search(ContestQuery request) {
+    public static Specification<LotteryDraw> search(ContestQuery request) {
 
         return (root, query, builder) -> {
 

@@ -3,7 +3,7 @@ package br.com.loto.api.mappers;
 import br.com.loto.api.dto.account.responses.AccountResponse;
 import br.com.loto.api.dto.account.responses.AccountWalletResponse;
 import br.com.loto.domain.entity.Account;
-import br.com.loto.enums.TypeContact;
+import br.com.loto.domain.enums.TypeContact;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Edinilson Silva - edinilson@nestec.com.br
+ * @author Edinilson Silva - bateraed@gmail.com
  * <p>
- * DATA CRIACAO: 02/03/2022
+ * DATA CRIACAO: 10/09/2024
  */
 
 @Component

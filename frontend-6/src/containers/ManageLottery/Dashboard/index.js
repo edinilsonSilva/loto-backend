@@ -10,8 +10,7 @@ import { useForm } from "antd/lib/form/Form";
 import { withRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { GameService } from "src/service/GameService";
-import ContestDashboard from "./Componests/Contests";
-import GameDashboard from "./Componests/Games";
+import LotteryDraw from "./Componests/LotteryDraw";
 import PoolDashboard from "./Componests/Pools";
 import styles from "./style.module.less";
 
@@ -81,10 +80,6 @@ const ManageLotteryDashboard = (props) => {
 
 	const tabList = [
 		{
-			key: "games",
-			tab: "Jogos",
-		},
-		{
 			key: "contests",
 			tab: "Concursos",
 		},
@@ -102,9 +97,7 @@ const ManageLotteryDashboard = (props) => {
 			onTabChange={onTabChange}
 			className={styles.card}
 		>
-			{activeTabKey === "games" && <GameDashboard />}
-
-			{activeTabKey === "contests" && <ContestDashboard />}
+			{activeTabKey === "contests" && <LotteryDraw />}
 
 			{activeTabKey === "pools" && <PoolDashboard />}
 		</Card>

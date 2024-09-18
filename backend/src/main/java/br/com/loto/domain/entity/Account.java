@@ -45,15 +45,15 @@ public class Account {
     private String cpf;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "admin_id", referencedColumnName = "id")
+    @JoinColumn(name = "admin_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_pedido_cliente"))
     private AccountAdmin accountAdmin;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "lottery_id", referencedColumnName = "id")
+    @JoinColumn(name = "lottery_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_pedido_cliente"))
     private AccountLottery accountLottery;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "config_id", referencedColumnName = "id")
+    @JoinColumn(name = "config_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_pedido_cliente") )
     private AccountConfig config;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "account", fetch = FetchType.EAGER, orphanRemoval = true)

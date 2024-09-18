@@ -9,7 +9,7 @@ import {
 	Typography,
 } from "antd";
 import { useEffect, useState } from "react";
-import { GameService } from "src/service/GameService";
+import { LotteryDrawService } from "src/service/LotteryDrawService";
 import styles from "./style.module.less";
 
 // import PropTypes from 'prop-types';
@@ -40,17 +40,17 @@ const onChange = (currentSlide) => {
 const Index = (props) => {
 	// const { } = props;
 
-	const gameService = new GameService();
+	const lotteryDrawService = new LotteryDrawService();
 
-	const [games, setGames] = useState([]);
+	const [lotteryDraws, setLotteryDraws] = useState([]);
 
 	const { Title, Text } = Typography;
 
-	const gameSearch = () => {
-		gameService
+	const lotteryDrawSearch = () => {
+		lotteryDrawService
 			.getSearch()
 			.then((data) => {
-				setGames(data?.content);
+				setLotteryDraws(data?.content);
 			})
 			.catch((error) => {
 				const errorMessage =
@@ -61,7 +61,7 @@ const Index = (props) => {
 	};
 
 	useEffect(() => {
-		gameSearch();
+		lotteryDrawSearch();
 	}, []);
 
 	return (
@@ -84,34 +84,34 @@ const Index = (props) => {
 			<br />
 
 			<Row gutter={[16, 16]}>
-				{games?.map((game) => (
+				{lotteryDraws?.map((ld) => (
 					<Col span={8}>
 						<Card className={styles.lotteryCard} bordered={false}>
 							<div className={styles.lotteryHeader}>
 								<Text className={styles.lotteryTitle}>
-									{game?.name?.toUpperCase()}
+									{ld?.gameType}
 								</Text>
 								<Text className={styles.lotteryConcurso}>
-									Concurso {game?.contests[0]?.contestNumber}
+									Concurso {ld?.number}
 								</Text>
 							</div>
 
 							<Title className={styles.lotteryValue} level={1}>
-								R$ {game?.contests[0]?.prizeAmount}
+								R$ {ld?.collectedAmount}
 							</Title>
-							<Badge
-								count="Acumulou!"
-								className={styles.lotteryBadge}
-								style={{
-									backgroundColor: "#FFC107",
-									color: "#000",
-								}}
-							/>
+							{ld?.accumulated && (
+								<Badge
+									count="Acumulou!"
+									className={styles.lotteryBadge}
+									style={{
+										backgroundColor: "#FFC107",
+										color: "#000",
+									}}
+								/>
+							)}
 
 							<div className={styles.lotteryDate}>
-								<Text strong>
-									{game?.contests[0]?.drawDate}
-								</Text>
+								<Text strong>{ld?.drawDate}</Text>
 							</div>
 
 							<div className={styles.lotteryButtons}>

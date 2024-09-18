@@ -1,6 +1,6 @@
 package br.com.loto.domain.entity;
 
-import br.com.loto.enums.PoolStatus;
+import br.com.loto.domain.enums.PoolStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -56,5 +56,5 @@ public class Pool {
     @ManyToOne
     @JoinColumn(name = "contest_id", nullable = false)
     @JsonIgnoreProperties("pools")
-    private Contest contest;
+    private LotteryDraw contest;
 }

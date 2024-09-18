@@ -42,6 +42,10 @@ server:
     include-message: always
   port: 8080
 
+loto:
+  game-url:
+    path: https://servicebus2.caixa.gov.br/portaldeloterias/api
+
 feign:
   client:
     config:

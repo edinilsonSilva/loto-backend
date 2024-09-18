@@ -1,6 +1,6 @@
 package br.com.loto.api.dto.account.requests;
 
-import br.com.loto.enums.TypeContact;
+import br.com.loto.domain.enums.TypeContact;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

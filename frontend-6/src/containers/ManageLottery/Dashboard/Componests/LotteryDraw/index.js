@@ -17,7 +17,7 @@ import { useForm } from "antd/lib/form/Form";
 import dayjs from "dayjs";
 import { withRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { GameService } from "src/service/GameService";
+import { LotteryDrawService } from "src/service/LotteryDrawService";
 
 const propTypes = {
 	router: PropTypes.object.isRequired,
@@ -32,14 +32,14 @@ const GameDashboard = (props) => {
 
 	const [gameForm] = useForm();
 
-	const gameService = new GameService();
+	const lotteryDrawService = new LotteryDrawService();
 
 	const [games, setGames] = useState([]);
 	const [loading, setLoading] = useState(true);
 
-	const gameSearch = () => {
+	const lotteryDrawSearch = () => {
 		setLoading(true);
-		gameService
+		lotteryDrawService
 			.getSearch()
 			.then((data) => {
 				setGames(data?.content);
@@ -56,7 +56,7 @@ const GameDashboard = (props) => {
 	};
 
 	useEffect(() => {
-		gameSearch();
+		lotteryDrawSearch();
 	}, []);
 
 	const columns = [

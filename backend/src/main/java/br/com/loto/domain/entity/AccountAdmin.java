@@ -1,6 +1,6 @@
 package br.com.loto.domain.entity;
 
-import br.com.loto.enums.AdminPermission;
+import br.com.loto.domain.enums.AdminPermission;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;

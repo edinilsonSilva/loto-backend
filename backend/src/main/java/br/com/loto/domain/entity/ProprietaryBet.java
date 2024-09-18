@@ -47,6 +47,6 @@ public class ProprietaryBet {
 
     @ManyToOne
     @JoinColumn(name = "game_id")
-    private Game game;
+    private LotteryDraw game;
 
 }

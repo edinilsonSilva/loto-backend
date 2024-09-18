@@ -1,6 +1,6 @@
 package br.com.loto.domain.entity;
 
-import br.com.loto.enums.TypeContact;
+import br.com.loto.domain.enums.TypeContact;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package br.com.loto.domain.entity;
 
-import br.com.loto.enums.TypePhoto;
+import br.com.loto.domain.enums.TypePhoto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;

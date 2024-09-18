@@ -1,12 +1,12 @@
 import { ServiceBase } from './util/ServiceBase';
 
-export class GameService extends ServiceBase {
+export class LotteryDrawService extends ServiceBase {
 
     constructor() {
-        super("/games");
+        super("/contests");
     }
 
-    async postCreateGame(request) {
+    async postCreateContest(request) {
         return this.axiosInstance.post(`${this.url}`, request)
             .then(res => res.data)
     }
