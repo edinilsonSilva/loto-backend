@@ -76,15 +76,8 @@ public class LotteryDrawServiceImpl implements ILotteryDrawService {
 
         if (lotteryDrawFound.isPresent()) {
 
-            LotteryDraw ldTemp = lotteryDrawFound.get();
-            ldTemp.setDrawNumbers(null);
-            ldTemp.setDrawnNumbersInOrder(null);
-            ldTemp.setPrizeBreakdownList(null);
-            ldTemp.setSecondDrawNumbers(null);
-            lotteryDrawRepository.save(lotteryDrawFound.get());
-
             LotteryDraw ldTempUpdate = cxLotteryDraw;
-            ldTempUpdate.setId(ldTemp.getId());
+            ldTempUpdate.setId(lotteryDrawFound.get().getId());
             return lotteryDrawRepository.save(ldTempUpdate);
         }
 
