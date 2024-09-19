@@ -60,8 +60,8 @@ const Sidebar = ({ mode }) => {
 				<span>Bolões</span>
 			</Menu.Item>
 
-			<Menu.Item key="/loterias" onClick={() => router.push('/loterias')}>
-				<span>Loterias</span>
+			<Menu.Item key="/resultados" onClick={() => router.push('/resultados')}>
+				<span>Resultados</span>
 			</Menu.Item>
 
 			<Menu.Item key="/ajuda" onClick={() => router.push('/ajuda')}>

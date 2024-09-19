@@ -9,7 +9,7 @@ import {
 	Typography,
 } from "antd";
 import { useEffect, useState } from "react";
-import { LotteryDrawService } from "src/service/LotteryDrawService";
+import { LotteryDrawPublicService } from "src/service/LotteryDrawPublicService";
 import styles from "./style.module.less";
 
 // import PropTypes from 'prop-types';
@@ -40,14 +40,14 @@ const onChange = (currentSlide) => {
 const Index = (props) => {
 	// const { } = props;
 
-	const lotteryDrawService = new LotteryDrawService();
+	const lotteryDrawPublicService = new LotteryDrawPublicService();
 
 	const [lotteryDraws, setLotteryDraws] = useState([]);
 
 	const { Title, Text } = Typography;
 
 	const lotteryDrawSearch = () => {
-		lotteryDrawService
+		lotteryDrawPublicService
 			.getSearch()
 			.then((data) => {
 				setLotteryDraws(data?.content);

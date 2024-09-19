@@ -3,7 +3,7 @@ import { ServiceBase } from './util/ServiceBase';
 export class LotteryDrawService extends ServiceBase {
 
     constructor() {
-        super("/contests");
+        super("/lotteries");
     }
 
     async postCreateContest(request) {

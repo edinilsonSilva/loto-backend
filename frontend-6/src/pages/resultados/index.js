@@ -1,7 +1,7 @@
 // import PropTypes from 'prop-types';
 
 import Head from 'src/components/Head';
-import Lotteries from 'src/containers/Lotteries';
+import Lotteries from 'src/containers/LotteriesResults';
 
 const propTypes = {
 	// classes: PropTypes.object.isRequired,

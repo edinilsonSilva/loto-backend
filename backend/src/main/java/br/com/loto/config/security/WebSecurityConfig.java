@@ -28,7 +28,7 @@ public class WebSecurityConfig {
     private final AuthEntryPointJwt unauthorizedHandler;
 
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            "/api/v1/accounts/p/**",
+            "/api/v1/public/**",
             "/api/v1/auth/**",
             "/swagger",
             "/swagger-ui.html",
@@ -51,8 +51,8 @@ public class WebSecurityConfig {
             "/api/v1/games/**",
             "/api/v1/pools",
             "/api/v1/pools/**",
-            "/api/v1/contests",
-            "/api/v1/contests/**",
+            "/api/v1/lotteries",
+            "/api/v1/lotteries/**",
             "/api/v1/bets",
             "/api/v1/bets/**"
     };

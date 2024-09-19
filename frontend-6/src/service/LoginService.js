@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { setAccount } from "../redux/accountSlice";
 
 export class LoginService extends ServiceBase {
+	
 	KEY_TOKEN = "@tkloto";
 	KEY_PERSIST_ACCOUNT_CURRENT = "persist:account-current";
 

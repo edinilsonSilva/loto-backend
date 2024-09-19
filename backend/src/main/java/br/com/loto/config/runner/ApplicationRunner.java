@@ -26,7 +26,7 @@ public class ApplicationRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        lotteryDrawService.checkResults();
+        lotteryDrawService.updateGameResults();
     }
 
 }

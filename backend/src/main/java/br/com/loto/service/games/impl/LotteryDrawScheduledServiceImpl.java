@@ -21,25 +21,25 @@ public class LotteryDrawScheduledServiceImpl implements ILotteryDrawScheduledSer
     @Override
     @Scheduled(cron = "0 10 17 * * MON-SAT", zone = zone)
     public void checkResultsAt12pm() {
-        lotteryDrawService.checkResults();
+        lotteryDrawService.updateGameResults();
     }
 
     @Override
     @Scheduled(cron = "0 0 21 * * MON-SAT", zone = zone)
     public void checkResultsAt21pm() {
-        lotteryDrawService.checkResults();
+        lotteryDrawService.updateGameResults();
     }
 
     @Override
     @Scheduled(cron = "0 0 22 * * MON-SAT", zone = zone)
     public void checkResultsAt22pm() {
-        lotteryDrawService.checkResults();
+        lotteryDrawService.updateGameResults();
     }
 
     @Override
     @Scheduled(cron = "0 0 23 * * MON-SAT", zone = zone)
     public void checkResultsAt23pm() {
-        lotteryDrawService.checkResults();
+        lotteryDrawService.updateGameResults();
     }
 
 }

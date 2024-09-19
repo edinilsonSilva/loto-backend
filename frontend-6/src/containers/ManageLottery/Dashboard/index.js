@@ -2,14 +2,10 @@
 
 import PropTypes from "prop-types";
 
-import {
-	Card,
-	message
-} from "antd";
+import { Card } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { withRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { GameService } from "src/service/GameService";
+import { useState } from "react";
 import LotteryDraw from "./Componests/LotteryDraw";
 import PoolDashboard from "./Componests/Pools";
 import styles from "./style.module.less";
@@ -27,52 +23,7 @@ const ManageLotteryDashboard = (props) => {
 
 	const [gameForm] = useForm();
 
-	const gameService = new GameService();
-
-	const [games, setGames] = useState([]);
 	const [activeTabKey, setActiveTabKey] = useState("games");
-
-	const gameSearch = () => {
-		gameService
-			.getSearch()
-			.then((data) => {
-				setGames(data?.content);
-			})
-			.catch((error) => {
-				const errorMessage =
-					error.response?.data?.message || "Erro desconhecido";
-				console.error(error);
-				message.error(errorMessage);
-			});
-	};
-
-	useEffect(() => {
-		gameSearch();
-	}, []);
-
-	const columns = [
-		{
-			title: "Nome",
-			dataIndex: "name",
-			key: "name",
-		},
-		{
-			title: "Cadastrado em",
-			dataIndex: "createdAt",
-			key: "createdAt",
-		},
-		{
-			title: "Número máximo",
-			dataIndex: "maxNumberValue",
-			key: "maxNumberValue",
-		},
-		{
-			title: "Concursos",
-			dataIndex: "contests",
-			key: "contests",
-			render: (contests) => <div>{contests?.length}</div>,
-		},
-	];
 
 	const onTabChange = (key) => {
 		setActiveTabKey(key);
@@ -81,7 +32,7 @@ const ManageLotteryDashboard = (props) => {
 	const tabList = [
 		{
 			key: "contests",
-			tab: "Concursos",
+			tab: "Detalhes dos jogos",
 		},
 		{
 			key: "pools",

@@ -3,11 +3,11 @@ package br.com.loto.service.games.impl;
 import br.com.loto.api.dto.game.queries.PoolQuery;
 import br.com.loto.api.dto.game.request.CreatePoolRequest;
 import br.com.loto.domain.entity.Pool;
+import br.com.loto.domain.enums.PoolStatus;
 import br.com.loto.domain.repository.IPoolRepository;
 import br.com.loto.domain.specification.PoolSpecification;
-import br.com.loto.domain.enums.PoolStatus;
 import br.com.loto.exceptions.CustomResponse;
-import br.com.loto.service.games.ILotteryDrawService;
+import br.com.loto.service.games.ILotteryDrawConsultService;
 import br.com.loto.service.games.IPoolService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
@@ -25,7 +25,7 @@ public class PoolServiceImpl implements IPoolService {
 
     private final IPoolRepository poolRepository;
 
-    private final ILotteryDrawService contestService;
+    private final ILotteryDrawConsultService lotteryDrawConsultService;
 
     @Override
     public Page<Pool> findAllByParams(PoolQuery query) {
@@ -46,7 +46,7 @@ public class PoolServiceImpl implements IPoolService {
                         .name(request.getName())
                         .status(PoolStatus.FECHADO)
                         .entryFee(request.getEntryFee())
-                        .contest(contestService.findByIdWithThrow(request.getContestId()))
+                        .contest(lotteryDrawConsultService.findByIdWithThrow(request.getContestId()))
                         .build()))
                 .build();
     }
