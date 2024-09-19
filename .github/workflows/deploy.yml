@@ -1,0 +1,49 @@
+name: Deploy Spring Boot Application
+
+on:
+  push:
+    branches:
+      - main  # Altere para a branch que deseja monitorar
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout do repositório
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Configuração do JDK
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'  # Altere para a versão do Java que você está usando
+
+    # Compilar o projeto com Maven
+    - name: Build with Maven
+      run: mvn clean package -DskipTests
+
+    # Transferir o artefato para o servidor remoto via SSH
+    - name: Copy files via SSH
+      uses: appleboy/scp-action@v0.0.16
+      with:
+        host: ${{ secrets.REMOTE_HOST }}  # Adicione a variável no GitHub Secrets
+        username: ${{ secrets.REMOTE_USER }}  # Adicione a variável no GitHub Secrets
+        password: ${{ secrets.REMOTE_PASSWORD }}  # Adicione a variável no GitHub Secrets
+        source: "target/*.jar"  # Local do artefato construído
+        target: "/remote/path/on/server/"  # Caminho no servidor remoto onde deseja copiar o artefato
+
+    # Executar o script de deploy no servidor remoto via SSH
+    - name: Execute SSH command
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.REMOTE_HOST }}  # Adicione a variável no GitHub Secrets
+        username: ${{ secrets.REMOTE_USER }}  # Adicione a variável no GitHub Secrets
+        password: ${{ secrets.REMOTE_PASSWORD }}  # Adicione a variável no GitHub Secrets
+        script: |
+          cd /remote/path/on/server/
+          # Parar a aplicação se estiver em execução (exemplo usando um script de stop)
+          ./stop-application.sh || true
+          # Iniciar a nova versão da aplicação (exemplo usando um script de start)
+          ./start-application.sh
