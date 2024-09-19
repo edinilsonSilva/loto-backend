@@ -19,7 +19,7 @@ jobs:
         java-version: 17
 
     - name: Build Spring Boot project
-      run: ./mvnw clean package -DskipTests
+      run: ./backend/mvnw clean package -DskipTests
 
     - name: Log in to DockerHub
       run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
