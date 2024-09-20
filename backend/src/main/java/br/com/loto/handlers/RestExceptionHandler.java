@@ -1,8 +1,6 @@
 package br.com.loto.handlers;
 
-import br.com.loto.exceptions.ErrorFieldResponse;
-import br.com.loto.exceptions.ErrorResponse;
-import br.com.loto.exceptions.TokenException;
+import br.com.loto.exceptions.*;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.TransientPropertyValueException;
@@ -60,7 +58,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(TokenException.class)
     public ResponseEntity<?> handlerTokenException(final TokenException exception,
-                                                                    final ServletRequest request) {
+                                                   final ServletRequest request) {
         return new ResponseEntity<>(ErrorResponse.builder()
                 .status(HttpStatus.BAD_REQUEST.value())
                 .error(HttpStatus.BAD_REQUEST.name())
@@ -77,5 +75,14 @@ public class RestExceptionHandler {
                         .parameter(error.getRejectedValue())
                         .build())
                 .toList();
+    }
+
+    @ExceptionHandler(PoolException.class)
+    public ResponseEntity<CustomResponse> handleAccountValidationException(PoolException e) {
+        return new ResponseEntity<>(CustomResponse.builder()
+                .status(e.getStatusCode())
+                .message(e.getMessage())
+                .content(null)
+                .build(), HttpStatus.OK);
     }
 }

@@ -5,14 +5,14 @@ import lombok.Getter;
 
 /**
  * @author Edinilson Silva - bateraed@gmail.com
- * @date 14/08/2024
+ * @date 19/09/2024
  */
 
 @Getter
 @AllArgsConstructor
-public enum PoolStatus {
+public enum TypeProbability {
 
-    OPEN("Aberto"), CLOSED("Fechado"), FINISHED("Finalizado");
+    GOOD("Boa"), VERY_GOOD("Muito Boa"), HIGH("Alta"), VERY_HIGH("Muito Alta");
 
     private String description;
 }

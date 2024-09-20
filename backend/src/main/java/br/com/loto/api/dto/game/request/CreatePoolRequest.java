@@ -1,5 +1,7 @@
 package br.com.loto.api.dto.game.request;
 
+import br.com.loto.domain.enums.TypeProbability;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,10 +11,16 @@ import java.math.BigDecimal;
 @Getter
 public class CreatePoolRequest {
 
-    private String name;
-
+    @NotNull
     private BigDecimal entryFee;
 
-    private Long contestId;
+    @NotNull
+    private Integer totalShares;
+
+    @NotNull
+    private TypeProbability probability;
+
+    @NotNull
+    private Long lotteryDrawId;
 
 }

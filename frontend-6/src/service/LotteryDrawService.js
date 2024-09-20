@@ -11,8 +11,13 @@ export class LotteryDrawService extends ServiceBase {
             .then(res => res.data)
     }
 
-    async getSearch() {
+    async findAllByParams() {
         return this.axiosInstance.get(`${this.url}/search`)
+            .then(res => res.data)
+    }
+
+    async findAllReduced01() {
+        return this.axiosInstance.get(`${this.url}/reduced-01`)
             .then(res => res.data)
     }
 }

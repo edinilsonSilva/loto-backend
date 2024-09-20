@@ -1,4 +1,4 @@
-package br.com.loto.props;
+package br.com.loto.utils;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

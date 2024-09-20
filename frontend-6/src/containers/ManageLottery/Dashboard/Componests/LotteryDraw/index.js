@@ -2,7 +2,7 @@
 
 import PropTypes from "prop-types";
 
-import { Tabs, Card, Row, Col, Typography, Tag, Table, Spin } from "antd";
+import { Tabs, Card, Row, Col, Typography, Tag, Table, Spin, message } from "antd";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
 import { useForm } from "antd/lib/form/Form";
@@ -31,10 +31,10 @@ const GameDashboard = (props) => {
 	const [games, setGames] = useState([]);
 	const [loading, setLoading] = useState(true);
 
-	const lotteryDrawSearch = () => {
+	const findAllReduced01 = () => {
 		setLoading(true);
 		lotteryDrawService
-			.getSearch()
+			.findAllByParams()
 			.then((data) => {
 				setGames(data?.content);
 			})
@@ -104,7 +104,7 @@ const GameDashboard = (props) => {
 	};
 
 	useEffect(() => {
-		lotteryDrawSearch();
+		findAllReduced01();
 	}, []);
 
 	return (

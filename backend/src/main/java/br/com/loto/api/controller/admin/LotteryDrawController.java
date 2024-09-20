@@ -1,8 +1,8 @@
 package br.com.loto.api.controller.admin;
 
 import br.com.loto.api.dto.game.queries.ContestQuery;
+import br.com.loto.api.dto.game.response.LotteryDrawReduced01Response;
 import br.com.loto.domain.entity.LotteryDraw;
-import br.com.loto.domain.enums.TypeGame;
 import br.com.loto.exceptions.CustomResponse;
 import br.com.loto.service.games.ILotteryDrawConsultService;
 import br.com.loto.service.games.ILotteryDrawService;
@@ -38,7 +38,7 @@ public class LotteryDrawController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
             @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
     @PostMapping(value = "/update-games", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<CustomResponse<LotteryDraw>> updateGames(@PathVariable TypeGame typeGame) {
+    public ResponseEntity<CustomResponse<LotteryDraw>> updateGames() {
         lotteryDrawService.updateGameResults();
         return new ResponseEntity<>(CustomResponse.<LotteryDraw>builder()
                 .status(201)
@@ -66,6 +66,34 @@ public class LotteryDrawController {
             @RequestParam(value = "game-id", required = false) Long gameId) {
 
         return new ResponseEntity<>(lotteryDrawConsultService.findAllByParams(ContestQuery.builder()
+                .orderBy(orderBy)
+                .direction(direction)
+                .page(page)
+                .limit(limit)
+                .contestNumber(contestNumber)
+                .gameId(gameId)
+                .build()), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Lista todos os concursos cadastrados com a quantidade de campos reduzidos",
+            description = "É possível utilizar parametros [name]")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = LotteryDrawReduced01Response.class)))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
+    @GetMapping(value = "/reduced-01", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Page<LotteryDrawReduced01Response>> findAllReduced01(
+            @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
+            @RequestParam(value = "limit", defaultValue = "24", required = false) Integer limit,
+            @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
+            @RequestParam(value = "direction", defaultValue = "DESC", required = false) String direction,
+            @RequestParam(value = "number", required = false) Integer contestNumber,
+            @RequestParam(value = "name", required = false) Long gameId) {
+
+        return new ResponseEntity<>(lotteryDrawConsultService.findAllReduced01(ContestQuery.builder()
                 .orderBy(orderBy)
                 .direction(direction)
                 .page(page)

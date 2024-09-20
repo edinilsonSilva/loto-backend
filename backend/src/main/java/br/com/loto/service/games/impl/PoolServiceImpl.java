@@ -1,19 +1,15 @@
 package br.com.loto.service.games.impl;
 
-import br.com.loto.api.dto.game.queries.PoolQuery;
 import br.com.loto.api.dto.game.request.CreatePoolRequest;
+import br.com.loto.domain.entity.LotteryDraw;
 import br.com.loto.domain.entity.Pool;
 import br.com.loto.domain.enums.PoolStatus;
 import br.com.loto.domain.repository.IPoolRepository;
-import br.com.loto.domain.specification.PoolSpecification;
-import br.com.loto.exceptions.CustomResponse;
 import br.com.loto.service.games.ILotteryDrawConsultService;
 import br.com.loto.service.games.IPoolService;
+import br.com.loto.utils.CodeGenerator;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,27 +24,22 @@ public class PoolServiceImpl implements IPoolService {
     private final ILotteryDrawConsultService lotteryDrawConsultService;
 
     @Override
-    public Page<Pool> findAllByParams(PoolQuery query) {
-        Sort.Direction sortDirection = "desc".equalsIgnoreCase(query.getDirection()) ? Sort.Direction.DESC : Sort.Direction.ASC;
-        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getLimit(), Sort.by(sortDirection, query.getOrderBy()));
-        return poolRepository.findAll(PoolSpecification.search(query), pageRequest);
-    }
-
-    @Override
     @Transactional
-    public CustomResponse<Pool> create(CreatePoolRequest request) {
-        return CustomResponse.<Pool>builder()
-                .status(201)
-                .message("Bolão cadastrado.")
-                .content(save(Pool.builder()
-                        .createdAt(LocalDateTime.now())
-                        .createdAt(null)
-                        .name(request.getName())
-                        .status(PoolStatus.FECHADO)
-                        .entryFee(request.getEntryFee())
-                        .contest(lotteryDrawConsultService.findByIdWithThrow(request.getContestId()))
-                        .build()))
-                .build();
+    public Pool create(CreatePoolRequest request) {
+
+        LotteryDraw lotteryDraw = lotteryDrawConsultService.findByIdWithThrow(request.getLotteryDrawId());
+
+        return save(Pool.builder()
+                .createdAt(LocalDateTime.now())
+                .createdAt(null)
+                .status(PoolStatus.CLOSED)
+                .code(CodeGenerator.generateCode(10))
+                .probability(request.getProbability())
+                .totalShares(request.getTotalShares())
+                .entryFee(request.getEntryFee())
+                .drawNumber(lotteryDraw.getNumber())
+                .lotteryDraw(lotteryDraw)
+                .build());
     }
 
     @Override

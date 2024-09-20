@@ -12,12 +12,14 @@ import {
 	Space,
 	Spin,
 	Table,
+	Tooltip,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { withRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { PoolService } from "src/service/PoolService";
 import dayjs from "dayjs";
+import { EditOutlined } from "@ant-design/icons";
 
 const propTypes = {
 	router: PropTypes.object.isRequired,
@@ -61,6 +63,16 @@ const PoolDashboard = (props) => {
 
 	const columns = [
 		{
+			title: "Ações",
+			dataIndex: "",
+			key: "",
+			render: (createdAt) => (
+				<Tooltip title="Visualiza bolão">
+					<Button icon={<EditOutlined />} />
+				</Tooltip>
+			),
+		},
+		{
 			title: "Criado em",
 			dataIndex: "createdAt",
 			key: "createdAt",
@@ -69,17 +81,33 @@ const PoolDashboard = (props) => {
 			),
 		},
 		{
-			title: "Nome",
-			dataIndex: "name",
-			key: "name",
+			title: "Loteria",
+			dataIndex: "lotteryDraw",
+			key: "lotteryDraw",
 		},
 		{
-			title: "Cadastrado em",
-			dataIndex: "status",
-			key: "status",
+			title: "Concurso",
+			dataIndex: "drawNumber",
+			key: "drawNumber",
 		},
 		{
-			title: "Número máximo",
+			title: "Código",
+			dataIndex: "code",
+			key: "code",
+		},
+		{
+			title: "Total de Cotas",
+			dataIndex: "totalShares",
+			key: "totalShares",
+		},
+		{
+			title: "Probabilidade",
+			dataIndex: "probability",
+			key: "probability",
+		},
+
+		{
+			title: "Valor da aposta",
 			dataIndex: "entryFee",
 			key: "entryFee",
 		},
@@ -94,6 +122,11 @@ const PoolDashboard = (props) => {
 			dataIndex: "participants",
 			key: "participants",
 			render: (participants) => <div>{participants?.length}</div>,
+		},
+		{
+			title: "Situação",
+			dataIndex: "status",
+			key: "status",
 		},
 	];
 

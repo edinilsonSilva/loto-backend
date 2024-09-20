@@ -1,4 +1,4 @@
-package br.com.loto.api.controller.customer;
+package br.com.loto.api.controller.publics;
 
 import br.com.loto.api.dto.account.requests.LoginRequest;
 import br.com.loto.api.dto.account.responses.AccountResponse;

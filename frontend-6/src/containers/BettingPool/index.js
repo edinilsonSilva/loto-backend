@@ -1,8 +1,27 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import { withRouter } from 'next/router';
-import { Card, Col, Divider, Input, Row } from 'antd';
-import styles from './style.module.less';
+import { withRouter } from "next/router";
+
+import {
+	Layout,
+	Button,
+	Pagination,
+	Select,
+	Checkbox,
+	Radio,
+	Card,
+	Col,
+	Divider,
+	Input,
+	Row,
+	Spin,
+} from "antd";
+import { SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import styles from "./style.module.less";
+import { useState } from "react";
+
+const { Header, Content, Sider } = Layout;
+const { Option } = Select;
 
 const propTypes = {
 	router: PropTypes.object.isRequired,
@@ -13,154 +32,142 @@ const defaultProps = {
 };
 
 const BettingPool = (props) => {
-
 	const { router, userList = [] } = props;
 
+	const [currentPage, setCurrentPage] = useState(1);
+	const [loading, setLoading] = useState(false);
+
+	// Exemplo de dados
+	const lotteryGroups = [
+		{
+			gameType: "Mega-Sena",
+			groupName: "MS-LEG-002",
+			probability: "Boa",
+			price: "R$ 20",
+			date: "19/09/2024",
+			concurso: "2776",
+			status: "Premiada!",
+		},
+		// Mais grupos de bolão...
+	];
+
 	return (
-		<Card className="row" style={{ width: '100%' }}>
-			<span>Bolões</span>
-			<Row style={{ width: '100%' }}>
+		<Layout style={{ minHeight: "100vh" }}>
+			{/* Filtros Laterais */}
+			<Sider width={250} style={{ background: "#fff", padding: "20px" }}>
+				<h3>Filtre sua sorte</h3>
+				<Checkbox.Group style={{ width: "100%" }}>
+					<Row>
+						<Col span={24}>
+							<Checkbox value="chance">+Chances</Checkbox>
+						</Col>
+						<Col span={24}>
+							<Checkbox value="acumulada">Acumulada</Checkbox>
+						</Col>
+						<Col span={24}>
+							<Checkbox value="premiada">Premiada</Checkbox>
+						</Col>
+					</Row>
+				</Checkbox.Group>
 
-				<Col span={6} style={{ paddingRight: '10px' }}>
-					<p><Input /></p>
-					<p><Input /></p>
-					<p><Input /></p>
-				</Col>
+				<h3>Preço</h3>
+				<Radio.Group style={{ display: "block" }}>
+					<Radio value={10}>Até R$ 10,00</Radio>
+					<Radio value={20}>De R$ 10,01 a R$ 20,00</Radio>
+					<Radio value={50}>De R$ 20,01 a R$ 50,00</Radio>
+					<Radio value={100}>Acima de R$ 100,00</Radio>
+				</Radio.Group>
 
-				<Col span={18}>
-					<div className={styles.gameContainer}>
-						<div className={styles.gameInfo}>
-							<div className={styles.gameTitle}>Dia de Sorte</div>
-							<div className={styles.gameDetails}>
-								<span className={styles.group}>Grupo: ST-HAA-006</span>
-								<span className={styles.probability}>
-									<span className={styles.probabilityIcons}>
-										<i className={styles.icon}></i>
-										<i className={styles.icon}></i>
-										<i className={styles.icon}></i>
-										<i className={styles.iconInactive}></i>
-									</span>
-									<span>Muito Boa</span>
-								</span>
-							</div>
-							<div className={styles.gameStatus}>
-								<span className={styles.statusBadge}>Premiada!</span>
-								<span className={styles.details}>Ver detalhes</span>
-								<span className={styles.remaining}>
-									restam <span className={styles.remainingCount}>2/25</span>
-								</span>
-							</div>
-						</div>
-						<div className={styles.gamePurchase}>
-							<div className={styles.price}>R$10</div>
-							<div className={styles.cartButton}>
-								<i className={styles.cartIcon}></i>
-							</div>
-						</div>
-					</div>
+				<h3>Lotterias</h3>
+				<Checkbox.Group style={{ width: "100%" }}>
+					<Row>
+						<Col span={24}>
+							<Checkbox value="mega-sena">Mega-Sena</Checkbox>
+						</Col>
+						<Col span={24}>
+							<Checkbox value="quina">Quina</Checkbox>
+						</Col>
+						<Col span={24}>
+							<Checkbox value="lotofacil">Lotofácil</Checkbox>
+						</Col>
+						{/* Adicione mais opções de loteria */}
+					</Row>
+				</Checkbox.Group>
 
-					<Divider dashed />
+				<Button type="primary" style={{ marginTop: "20px" }} block>
+					Aplicar Filtros
+				</Button>
+				<Button style={{ marginTop: "10px" }} block>
+					Limpar Filtros
+				</Button>
+			</Sider>
 
-					<div className={styles.gameContainer}>
-						<div className={styles.gameInfo}>
-							<div className={styles.gameTitle}>Dia de Sorte</div>
-							<div className={styles.gameDetails}>
-								<span className={styles.group}>Grupo: ST-HAA-006</span>
-								<span className={styles.probability}>
-									<span className={styles.probabilityIcons}>
-										<i className={styles.icon}></i>
-										<i className={styles.icon}></i>
-										<i className={styles.icon}></i>
-										<i className={styles.iconInactive}></i>
-									</span>
-									<span>Muito Boa</span>
-								</span>
-							</div>
-							<div className={styles.gameStatus}>
-								<span className={styles.statusBadge}>Premiada!</span>
-								<span className={styles.details}>Ver detalhes</span>
-								<span className={styles.remaining}>
-									restam <span className={styles.remainingCount}>2/25</span>
-								</span>
-							</div>
-						</div>
-						<div className={styles.gamePurchase}>
-							<div className={styles.price}>R$10</div>
-							<div className={styles.cartButton}>
-								<i className={styles.cartIcon}></i>
-							</div>
-						</div>
-					</div>
+			{/* Conteúdo principal */}
+			<Layout>
+				<Header style={{ background: "#fff", padding: "20px" }}>
+					<Input
+						size="large"
+						placeholder="Buscar por grupo de bolão"
+						prefix={<SearchOutlined />}
+						style={{ width: "50%", marginRight: "20px" }}
+					/>
+					<Select defaultValue="Ordenar" style={{ width: 150 }}>
+						<Option value="recentes">Mais recentes</Option>
+						<Option value="preco">Menor preço</Option>
+					</Select>
+				</Header>
 
-					<Divider dashed />
+				<Content style={{ padding: "20px" }}>
+					<Row gutter={[16, 16]}>
+						{lotteryGroups.map((group, index) => (
+							<Col span={24} key={index}>
+								<Card>
+									<Row justify="space-between" align="middle">
+										<Col>
+											<h3>{group.gameType}</h3>
+											<p>Grupo: {group.groupName}</p>
+											<p>
+												Probabilidade:{" "}
+												{group.probability}
+											</p>
+										</Col>
+										<Col>
+											<p>Conc.: {group.concurso}</p>
+											<p>Data: {group.date}</p>
+											<p>Preço: {group.price}</p>
+										</Col>
+										<Col>
+											<Button icon={<SearchOutlined />}>
+												Ver detalhes
+											</Button>
+											<Button
+												icon={<ShoppingCartOutlined />}
+												style={{
+													marginLeft: "10px",
+												}}
+											>
+												{group.status}
+											</Button>
+										</Col>
+									</Row>
+								</Card>
+							</Col>
+						))}
+					</Row>
 
-					<div className={styles.gameContainer}>
-						<div className={styles.gameInfo}>
-							<div className={styles.gameTitle}>Dia de Sorte</div>
-							<div className={styles.gameDetails}>
-								<span className={styles.group}>Grupo: ST-HAA-006</span>
-								<span className={styles.probability}>
-									<span className={styles.probabilityIcons}>
-										<i className={styles.icon}></i>
-										<i className={styles.icon}></i>
-										<i className={styles.icon}></i>
-										<i className={styles.iconInactive}></i>
-									</span>
-									<span>Muito Boa</span>
-								</span>
-							</div>
-							<div className={styles.gameStatus}>
-								<span className={styles.statusBadge}>Premiada!</span>
-								<span className={styles.details}>Ver detalhes</span>
-								<span className={styles.remaining}>
-									restam <span className={styles.remainingCount}>2/25</span>
-								</span>
-							</div>
-						</div>
-						<div className={styles.gamePurchase}>
-							<div className={styles.price}>R$10</div>
-							<div className={styles.cartButton}>
-								<i className={styles.cartIcon}></i>
-							</div>
-						</div>
-					</div>
-
-					<Divider dashed />
-
-					<div className={styles.gameContainer}>
-						<div className={styles.gameInfo}>
-							<div className={styles.gameTitle}>Dia de Sorte</div>
-							<div className={styles.gameDetails}>
-								<span className={styles.group}>Grupo: ST-HAA-006</span>
-								<span className={styles.probability}>
-									<span className={styles.probabilityIcons}>
-										<i className={styles.icon}></i>
-										<i className={styles.icon}></i>
-										<i className={styles.icon}></i>
-										<i className={styles.iconInactive}></i>
-									</span>
-									<span>Muito Boa</span>
-								</span>
-							</div>
-							<div className={styles.gameStatus}>
-								<span className={styles.statusBadge}>Premiada!</span>
-								<span className={styles.details}>Ver detalhes</span>
-								<span className={styles.remaining}>
-									restam <span className={styles.remainingCount}>2/25</span>
-								</span>
-							</div>
-						</div>
-						<div className={styles.gamePurchase}>
-							<div className={styles.price}>R$10</div>
-							<div className={styles.cartButton}>
-								<i className={styles.cartIcon}></i>
-							</div>
-						</div>
-					</div>
-
-				</Col>
-			</Row>
-		</Card >
+					{/* Paginação */}
+					<Pagination
+						style={{
+							marginTop: "20px",
+							textAlign: "center",
+						}}
+						current={currentPage}
+						onChange={(page) => setCurrentPage(page)}
+						total={50}
+					/>
+				</Content>
+			</Layout>
+		</Layout>
 	);
 };
 

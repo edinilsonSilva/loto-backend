@@ -23,7 +23,7 @@ const ManageLotteryDashboard = (props) => {
 
 	const [gameForm] = useForm();
 
-	const [activeTabKey, setActiveTabKey] = useState("games");
+	const [activeTabKey, setActiveTabKey] = useState("contests");
 
 	const onTabChange = (key) => {
 		setActiveTabKey(key);

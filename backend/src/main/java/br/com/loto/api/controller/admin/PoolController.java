@@ -2,9 +2,10 @@ package br.com.loto.api.controller.admin;
 
 import br.com.loto.api.dto.game.queries.PoolQuery;
 import br.com.loto.api.dto.game.request.CreatePoolRequest;
-import br.com.loto.domain.entity.Account;
+import br.com.loto.api.dto.game.response.PoolResponse;
 import br.com.loto.domain.entity.Pool;
 import br.com.loto.exceptions.CustomResponse;
+import br.com.loto.service.games.IPoolConsultService;
 import br.com.loto.service.games.IPoolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 public class PoolController {
 
     private final IPoolService poolService;
+    private final IPoolConsultService poolConsultService;
 
     @Operation(
             summary = "Lista todos os jogos cadastrados",
@@ -35,18 +37,18 @@ public class PoolController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = Account.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = PoolResponse.class)))),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
             @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
     @GetMapping(value = "/search", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Page<Pool>> findAllByParams(
+    public ResponseEntity<Page<PoolResponse>> findAllByParams(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
             @RequestParam(value = "limit", defaultValue = "24", required = false) Integer limit,
             @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
             @RequestParam(value = "direction", defaultValue = "DESC", required = false) String direction,
             @RequestParam(value = "name", required = false) String name) {
 
-        return new ResponseEntity<>(poolService.findAllByParams(PoolQuery.builder()
+        return new ResponseEntity<>(poolConsultService.findAllByParams(PoolQuery.builder()
                 .orderBy(orderBy)
                 .direction(direction)
                 .page(page)
@@ -65,6 +67,10 @@ public class PoolController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
     @PostMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<CustomResponse<Pool>> create(@RequestBody @Valid CreatePoolRequest request) {
-        return new ResponseEntity<>(poolService.create(request), HttpStatus.OK);
+        return new ResponseEntity<>(CustomResponse.<Pool>builder()
+                .status(201)
+                .message("Bolão cadastrado.")
+                .content(poolService.create(request))
+                .build(), HttpStatus.OK);
     }
 }

@@ -1,4 +1,4 @@
-package br.com.loto.api.controller.admin;
+package br.com.loto.api.controller.publics;
 
 import br.com.loto.api.dto.game.queries.ContestQuery;
 import br.com.loto.api.dto.game.response.LotteryDrawPublicResponse;

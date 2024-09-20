@@ -1,6 +1,7 @@
 package br.com.loto.domain.entity;
 
 import br.com.loto.domain.enums.PoolStatus;
+import br.com.loto.domain.enums.TypeProbability;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,13 +40,19 @@ public class Pool {
     @JoinColumn(name = "created_by")
     private Account createdBy;
 
-    private String name;
-
     @Enumerated(EnumType.STRING)
     private PoolStatus status; // Status do bolão (ABERTO, FECHADO, FINALIZADO)
 
-    @Column(nullable = false)
+    private String code;
+
+    private Integer totalShares;  // Total de cotas
+
+    private Integer drawNumber;  // Número do concurso onde este balão foi executado
+
     private BigDecimal entryFee;  // Valor da entrada no bolão
+
+    @Enumerated(EnumType.STRING)
+    private TypeProbability probability;
 
     @OneToMany(mappedBy = "pool", fetch = FetchType.EAGER)
     private List<Participant> participants;
@@ -54,7 +61,7 @@ public class Pool {
     private List<Bet> bets;
 
     @ManyToOne
-    @JoinColumn(name = "contest_id", nullable = false)
+    @JoinColumn(name = "lottery_draw_id", nullable = false)
     @JsonIgnoreProperties("pools")
-    private LotteryDraw contest;
+    private LotteryDraw lotteryDraw;
 }
