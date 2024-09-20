@@ -29,7 +29,6 @@ public class WebSecurityConfig {
 
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
             "/api/v1/public/**",
-            "/api/v1/auth/**",
             "/swagger",
             "/swagger-ui.html",
             "/swagger-ui/**",

@@ -11,7 +11,7 @@ export class LoginService extends ServiceBase {
 	KEY_PERSIST_ACCOUNT_CURRENT = "persist:account-current";
 
 	constructor() {
-		super("/auth");
+		super("/public/auth");
 	}
 
 	getAccount() {

@@ -1,4 +1,4 @@
-package br.com.loto.api.controller.customer;
+package br.com.loto.api.controller.publics;
 
 import br.com.loto.api.dto.account.requests.ChangePasswordPubRequest;
 import br.com.loto.api.dto.account.requests.CreateAccountRequest;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/public/accounts")
-@Tag(name = "Rotas públicas")
+@Tag(name = "Rotas públicas para contas")
 public class AccountPublicController {
 
     private final IAccountPubService accountPubService;

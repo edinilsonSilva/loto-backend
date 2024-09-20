@@ -1,9 +1,9 @@
 import { ServiceBase } from './util/ServiceBase';
 
-export class AccountPbService extends ServiceBase {
+export class AccountPublicService extends ServiceBase {
 
     constructor() {
-        super("/accounts/p");
+        super("/public/accounts");
     }
 
     async postCreateAccountPb(request) {

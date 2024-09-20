@@ -5,7 +5,7 @@ import { CreditCardOutlined, LockOutlined, MailOutlined, PhoneFilled, PhoneOutli
 import { Button, Form, Input, message, Modal } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import Logo from "src/components/Layout/Logo";
-import { AccountPbService } from "src/service/AccountPbService";
+import { AccountPublicService } from "src/service/AccountPublicService";
 import { LoginService } from "src/service/LoginService";
 import classes from "./style.module.less";
 
@@ -22,7 +22,7 @@ const LoginModal = ({ visible, onClose }) => {
 	const [newAccountForm] = useForm();
 
 	const loginService = new LoginService();
-	const accountPbService = new AccountPbService();
+	const accountPbService = new AccountPublicService();
 
 	const [enabledCreateNewAccount, setEnabledCreateNewAccount] =
 		useState(false);

@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/public/lotteries")
-@Tag(name = "Rotas para o gerenciamento dos Concursos")
+@Tag(name = "Rotas públicas para as loterias")
 public class LotteryDrawPublicController {
 
     private final ILotteryDrawConsultService lotteryDrawConsultService;

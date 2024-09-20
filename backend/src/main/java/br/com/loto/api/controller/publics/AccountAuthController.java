@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auth")
-@Tag(name = "Rotas para autenticação")
+@RequestMapping("/api/v1/public/auth")
+@Tag(name = "Rotas públicas para autenticação")
 public class AccountAuthController {
 
     private final IAccountAuthService authService;
@@ -39,18 +39,5 @@ public class AccountAuthController {
     @PostMapping(value = "/login", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
         return new ResponseEntity<>(authService.login(request), HttpStatus.OK);
-    }
-
-    @Operation(
-            summary = "Consultar conta pelo token jwt")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AccountResponse.class))),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
-    @PostMapping(value = "/get-account", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<AccountResponse> getAccount() {
-        return new ResponseEntity<>(authService.getAccount(), HttpStatus.OK);
     }
 }
