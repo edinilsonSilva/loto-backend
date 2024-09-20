@@ -1,0 +1,52 @@
+name: Deploy Spring Boot App to On-premise Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 17
+
+    - name: Build Spring Boot project
+      run: ./backend/mvnw clean package -DskipTests
+
+    - name: Log in to DockerHub
+      run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+    - name: Build Docker image
+      run: docker build -t edinilsonsilva/loto:latest .
+
+    - name: Push Docker image to DockerHub
+      run: docker push edinilsonsilva/loto:latest
+
+    - name: Install sshpass
+      run: sudo apt-get install -y sshpass
+      
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to On-premise Server
+      run: |
+        sshpass -p "${{ secrets.REMOTE_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << EOF
+          cd /home/depoy
+          docker-compose -f dc-loto.yml down
+          docker-compose -f dc-loto.yml pull
+          docker-compose -f dc-loto.yml up -d
+        EOF
+      env:
+        SSH_PASSWORD: ${{ secrets.REMOTE_PASSWORD }}
+        SSH_USER: ${{ secrets.REMOTE_USER }}
+        SSH_HOST: ${{ secrets.REMOTE_HOST }}
