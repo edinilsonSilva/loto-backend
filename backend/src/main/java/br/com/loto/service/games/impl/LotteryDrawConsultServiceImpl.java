@@ -4,7 +4,6 @@ import br.com.loto.api.dto.game.queries.ContestQuery;
 import br.com.loto.api.dto.game.response.LotteryDrawPublicResponse;
 import br.com.loto.api.dto.game.response.LotteryDrawReduced01Response;
 import br.com.loto.api.mappers.LotteryDrawMapper;
-import br.com.loto.client.ICaixaFeign;
 import br.com.loto.domain.entity.LotteryDraw;
 import br.com.loto.domain.enums.TypeGame;
 import br.com.loto.domain.repository.ILotteryDrawRepository;
@@ -26,8 +25,6 @@ import java.util.Optional;
 public class LotteryDrawConsultServiceImpl implements ILotteryDrawConsultService {
 
     private final ILotteryDrawRepository lotteryDrawRepository;
-
-    private final ICaixaFeign caixaFeign;
 
     private final LotteryDrawMapper lotteryDrawMapper;
 

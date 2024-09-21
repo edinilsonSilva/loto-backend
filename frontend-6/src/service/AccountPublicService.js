@@ -11,6 +11,11 @@ export class AccountPublicService extends ServiceBase {
             .then(res => res.data)
     }
 
+    async postResetPassword(cpf) {
+        return this.axiosInstance.post(`${this.url}/reset-password`, { cpf: cpf })
+            .then(res => res.data)
+    }
+
     async uploadImagens(obj) {
         const formData = new FormData();
         formData.append('idProduto', obj.idProduto);

@@ -2,7 +2,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
   application:
-    name: loto
+    name: ${APPLICATION_NAME:loto}
   jpa:
     hibernate:
       ddl-auto: none
@@ -15,9 +15,8 @@ spring:
           lob:
             non_contextual_creation: true
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-    show-sql: ${JPA_SHOW_SQL:true}
+    show-sql: ${JPA_SHOW_SQL:false}
     open-in-view: false
-
   datasource:
     url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/Loto}
     username: ${DATASOURCE_USERNAME:postgres}
@@ -36,20 +35,46 @@ spring:
     multipart:
       max-request-size: 200MB
       max-file-size: 200MB
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:bateraed@gmail.com}
+    #password: '@loto123@'
+    password: ${MAIL_PASSWORD:npgc rdeh gjst prwl}
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        debug: true
+        smtp:
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          auth: ${MAIL_SMTP_AUTH:true}
+          starttls:
+            required: true
+            enable: ${MAIL_SMTP_AUTH_STARTTLS_ENABLE:true}
+          ssl:
+            enable: ${MAIL_SMTP_AUTH_SSL_ENABLE:false}
+
 server:
   error:
     include-stacktrace: never
     include-message: always
-  port: 8080
+  port: ${SERVER_PORT:8080}
 
 loto:
-  game-url:
-    path: https://servicebus2.caixa.gov.br/portaldeloterias/api
+  caixa:
+    api-path: ${LOTO_CAIXA_API_PATH:https://servicebus2.caixa.gov.br/portaldeloterias/api}
+  auth:
+    expiration-in-minutes: ${LOTO_AUTH_EXPIRATION_IN_MINUTES:60}
+    secret-key: ${LOTO_AUTH_SECRET_KEY:4Z^XrroxR@dWxqf$mTTKwW$!@#qGr4P}
+    issuer: ${LOTO_AUTH_ISSUER:loto-api}
 
 feign:
   client:
     config:
       default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
+        connectTimeout: ${FEIGN_CONNECT_TIMEOUT:5000}
+        readTimeout: ${FEIGN_READ_TIMEOUT:5000}
+        loggerLevel: ${FEIGN_LOGGER_LEVEL:basic}

@@ -50,11 +50,12 @@ export class LoginService extends ServiceBase {
 		return this.getToken() !== null;
 	}
 
-	doLogout(router) {
+	doLogout() {
 		if (typeof window !== "undefined") {
 			window.localStorage.removeItem(this.KEY_TOKEN);
 			window.localStorage.removeItem(this.KEY_PERSIST_ACCOUNT_CURRENT);
-			router.push("/");
+			//router.push("/");
+			window.location.href = "/";
 		}
 	}
 

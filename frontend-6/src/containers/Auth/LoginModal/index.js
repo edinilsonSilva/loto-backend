@@ -20,6 +20,7 @@ const LoginModal = ({ visible, onClose }) => {
 
 	const [loginForm] = useForm();
 	const [newAccountForm] = useForm();
+	const [resetPasswordForm] = useForm();
 
 	const loginService = new LoginService();
 	const accountPbService = new AccountPublicService();
@@ -81,6 +82,22 @@ const LoginModal = ({ visible, onClose }) => {
 				showMessageError(errorMessage);
 			});
 	};
+
+	const resetPassword = () => {
+
+		accountPbService
+			.postResetPassword(resetPasswordForm.getFieldValue("cpf"))
+			.then((data) => {
+				message.success(data?.message);
+				resetPasswordForm.resetFields();
+			})
+			.catch((error) => {
+				const errorMessage = error.response?.data?.message || "Erro desconhecido";
+				console.error(error);
+				showMessageError(errorMessage);
+			});
+	};
+
 
 	const showMessageSuccess = (success) => {
 		message.success(success);
@@ -365,13 +382,10 @@ const LoginModal = ({ visible, onClose }) => {
 
 			{enabledForgotPasswordAccount && (
 				<Form
-					name="newAccountForm"
-					form={newAccountForm}
+					name="resetPasswordForm"
+					form={resetPasswordForm}
 					className="login-form"
-					initialValues={{
-						remember: true,
-					}}
-					onFinish={createAccount}
+					onFinish={resetPassword}
 					style={{
 						width: 350,
 						padding: 20,
@@ -383,21 +397,17 @@ const LoginModal = ({ visible, onClose }) => {
 				>
 					<div style={{ textAlign: "center" }}>
 						<h3>
-							Insira seu e-mail para continuar com o processo da
+							Insira seu CPF para continuar com o processo da
 							troca de sua senha.
 						</h3>
 					</div>
 
 					<Form.Item
-						name="contact"
+						name="cpf"
 						rules={[
 							{
-								type: "email",
-								message: "Não é um e-mail válido",
-							},
-							{
 								required: true,
-								message: "Digite seu E-mail",
+								message: "Campo obrigatório",
 							},
 						]}
 					>
@@ -406,7 +416,7 @@ const LoginModal = ({ visible, onClose }) => {
 							prefix={
 								<UserOutlined className="site-form-item-icon" />
 							}
-							placeholder="E-mail"
+							placeholder="Digite seu CPF"
 						/>
 					</Form.Item>
 
@@ -417,7 +427,7 @@ const LoginModal = ({ visible, onClose }) => {
 						className="login-form-button"
 						loading={loading}
 					>
-						Criar
+						Enviar
 					</Button>
 
 					<div className="mt-5" style={{ textAlign: "center" }}>

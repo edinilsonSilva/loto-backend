@@ -1,13 +1,17 @@
 package br.com.loto.service.account.impl;
 
-import br.com.loto.api.dto.account.requests.ChangePasswordPubRequest;
+import br.com.loto.api.dto.account.requests.ChangePasswordPublicRequest;
 import br.com.loto.api.dto.account.requests.CreateAccountContactRequest;
 import br.com.loto.api.dto.account.requests.CreateAccountRequest;
+import br.com.loto.api.dto.account.requests.ResetPasswordPublicRequest;
 import br.com.loto.domain.entity.*;
 import br.com.loto.domain.enums.LotteryPermission;
+import br.com.loto.domain.enums.TypeContact;
 import br.com.loto.domain.enums.TypeCurrency;
+import br.com.loto.exceptions.AccountException;
 import br.com.loto.exceptions.CustomResponse;
 import br.com.loto.service.account.*;
+import br.com.loto.service.infra.IEmailService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,11 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor(onConstructor_ = @Lazy)
-public class AccountPubServiceImpl implements IAccountPubService {
+public class AccountPublicServiceImpl implements IAccountPublicService {
 
     private final IAccountService accountService;
     private final IAccountConfigService configService;
@@ -28,11 +34,41 @@ public class AccountPubServiceImpl implements IAccountPubService {
     private final IAccountLotteryWalletService accountLotteryWalletService;
     private final IAccountContactService contactService;
     private final IAccountPasswordService passwordService;
+    private final IEmailService emailService;
 
     final PasswordEncoder passwordEncoder;
 
     @Override
-    public CustomResponse<Void> changePassword(ChangePasswordPubRequest request) {
+    @Transactional
+    public void resetPassword(ResetPasswordPublicRequest request) {
+
+        Account account = accountService.findByCpfWithThrow(request.getCpf());
+
+        AccountPassword requestNewPassword = account.getPasswords().stream()
+                .filter(p -> p.getTokenForgetPassword() != null)
+                .filter(p -> !p.isActive())
+                .filter(p -> p.getExpiredAt() == null)
+                .findFirst()
+                .orElse(null);
+
+        if (requestNewPassword == null)
+            requestNewPassword = passwordService.createRequestNewPassword(null, account);
+        else
+            requestNewPassword = passwordService.createRequestNewPassword(requestNewPassword, account);
+
+        Map<String, Object> templateModel = new HashMap<>();
+        templateModel.put("name", account.getName());
+        templateModel.put("resetLink", "http://localhost:3000/alterar-senha?token=" + requestNewPassword.getTokenForgetPassword());
+
+        String email = account.getContacts().stream()
+                .filter(c -> c.getType().equals(TypeContact.EMAIL))
+                .filter(c -> c.getValue() != null)
+                .map(c -> c.getValue())
+                .findFirst()
+                .orElseThrow(() -> new AccountException("Esta conta não possui um e-mail cadastrado. por favor, entre em contato com o suporte para a resolução do seu problema.", 404));
+
+        emailService.sendPasswordResetEmail(email, "Redefina sua senha", templateModel);
+
 
         //        Account accountBanco = pessoaRepository.findByEmailAndCodigoRecuperacaoSenha(account.getEmail(),
 //                account.getCodigoRecuperacaoSenha());
@@ -50,11 +86,27 @@ public class AccountPubServiceImpl implements IAccountPubService {
 //        } else {
 //            return "Email ou código não encontrado!";
 //        }
+    }
 
-        return CustomResponse.<Void>builder()
-                .status(200)
-                .message("Senha alterada com sucesso.")
-                .build();
+    @Override
+    @Transactional
+    public void changePassword(ChangePasswordPublicRequest request) {
+
+        AccountPassword accountPassword = passwordService.update(request);
+        Account account = accountPassword.getAccount();
+
+        Map<String, Object> templateModel = new HashMap<>();
+        templateModel.put("name", account.getName());
+        templateModel.put("info", "Sua senha foi alterada as " + accountPassword.getUpdatedAt().toString() + ".");
+
+        String email = account.getContacts().stream()
+                .filter(c -> c.getType().equals(TypeContact.EMAIL))
+                .filter(c -> c.getValue() != null)
+                .map(c -> c.getValue())
+                .findFirst()
+                .orElseThrow(() -> new AccountException("Esta conta não possui um e-mail cadastrado. por favor, entre em contato com o suporte para a resolução do seu problema.", 404));
+
+        emailService.sendPasswordResetEmail(email, "Senha alterada.", templateModel);
     }
 
     @Override
@@ -89,7 +141,7 @@ public class AccountPubServiceImpl implements IAccountPubService {
                     .account(account)
                     .build());
 
-        passwordService.create(request.getPassword(), account);
+        passwordService.createWithOnlyPassword(request.getPassword(), account);
 
         return CustomResponse.<Account>builder()
                 .status(201)

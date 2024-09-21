@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ChangePasswordPubRequest {
+public class ChangePasswordPublicRequest {
 
     private String newPassword;
 

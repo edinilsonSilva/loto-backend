@@ -5,6 +5,7 @@ import br.com.loto.config.security.JwtUtil;
 import br.com.loto.domain.entity.Account;
 import br.com.loto.domain.repository.IAccountRepository;
 import br.com.loto.domain.specification.AccountSpecification;
+import br.com.loto.exceptions.AccountException;
 import br.com.loto.service.account.IAccountService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -35,13 +36,13 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public Account findByCpfWithThrow(String username) {
         return accountRepository.findByCpf(username)
-                .orElseThrow(() -> new BadCredentialsException("Conta não encontrada"));
+                .orElseThrow(() -> new AccountException("Conta não encontrada", 404));
     }
 
     @Override
     public Account findByIdWithThrow(Long accountId) {
         return accountRepository.findById(accountId)
-                .orElseThrow(() -> new BadCredentialsException("Conta não encontrada"));
+                .orElseThrow(() -> new AccountException("Conta não encontrada", 404));
     }
 
     @Override

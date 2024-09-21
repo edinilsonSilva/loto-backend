@@ -37,9 +37,11 @@ export class ServiceBase {
 					error.response.status === 401 &&
 					typeof window !== "undefined"
 				) {
-					if (!error.request.response.includes("auth/login")) {
-						new LoginService().sair();
-						window.location.href = "/";
+
+					let response = JSON.parse(error.request.response);
+					
+					if (response.status === 401) {
+						new LoginService().doLogout();
 					}
 				}
 				return Promise.reject(error);

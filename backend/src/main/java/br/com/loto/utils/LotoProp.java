@@ -20,12 +20,28 @@ import org.springframework.validation.annotation.Validated;
 public class LotoProp {
 
     @NotNull
-    private GameUrl gameUrl;
+    private Caixa caixa;
+
+    @NotNull
+    private Auth auth;
 
     @Data
-    public static class GameUrl {
+    public static class Caixa {
 
         @NotBlank
-        private String path;
+        private String apiPath;
+    }
+
+    @Data
+    public static class Auth {
+
+        @NotNull
+        private int expirationInMinutes;
+
+        @NotBlank
+        private String secretKey;
+
+        @NotBlank
+        private String issuer;
     }
 }

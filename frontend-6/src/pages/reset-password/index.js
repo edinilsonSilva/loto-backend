@@ -1,17 +1,9 @@
-/* --------------------------------------------------------
-* Author Trần Đức Tiến
-* Email tientran0019@gmail.com
-* Phone 0972970075
-*
-* Created: 2020-04-07 10:09:53
-*------------------------------------------------------- */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import Head from 'src/components/Head';
 
-import SetPassword from 'src/containers/Auth/SetPassword/';
+import SetPassword from 'src/containers/Auth/ResetPassword';
 
 const propTypes = {
 	router: PropTypes.object.isRequired,
