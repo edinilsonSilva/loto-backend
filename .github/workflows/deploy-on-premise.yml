@@ -19,16 +19,16 @@ jobs:
         java-version: 17
 
     - name: Build Spring Boot project
-      run: ./mvnw clean package -DskipTests
+      run: sudo ./mvnw clean package -DskipTests
 
     - name: Log in to DockerHub
-      run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      run: sudo echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
     - name: Build Docker image
-      run: docker build -t edinilsonsilva/loto:latest .
+      run: sudo docker build -t edinilsonsilva/loto:latest .
 
     - name: Push Docker image to DockerHub
-      run: docker push edinilsonsilva/loto:latest
+      run: sudo docker push edinilsonsilva/loto:latest
 
     - name: Install sshpass
       run: sudo apt-get install -y sshpass
