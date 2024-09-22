@@ -1,0 +1,46 @@
+version: '3'
+services:
+  api-loto:
+    image: edinilsonsilva/loto-backend:latest
+    container_name: api-loto
+    ports:
+      - "8080:8080"
+    environment:
+      # CONFIG NAME AND PORT
+      - SPRING_APPLICATION_NAME=loto
+      - SERVER_PORT=8080 #Esta porta tem que está de acordo com a porta ports.
+      # CONFIG JPA
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none #create-drop | create | none | update | validate
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_SHOW_SQL=false
+      # CONFIG DATASOURCE
+      - SPRING_DATASOURCE_FLYWAY_ENABLED=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/Loto
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=@102030@
+      # CONFIG MAIL
+      - SPRING_MAIL_HOST=smtp.gmail.com
+      - SPRING_MAIL_PORT=587
+      - SPRING_MAIL_USERNAME=bateraed@gmail.com
+      - SPRING_MAIL_PASSWORD=npgc rdeh gjst prwl
+      - SPRING_MAIL_SMTP_AUTH_STARTTLS_ENABLE=true
+      - SPRING_MAIL_SMTP_AUTH_SSL_ENABLE=false
+      # CONFIG SEND REQUEST AND FILES
+      - SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE=200MB
+      - SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE=200MB
+      # CONFIG API CAIXA
+      - LOTO_CAIXA_API_PATH=https://servicebus2.caixa.gov.br/portaldeloterias/api
+      # CONFIG TOKEN JWT LOGIN
+      - LOTO_AUTH_EXPIRATION_IN_MINUTES=60
+      - LOTO_AUTH_SECRET_KEY=4Z^XrroxR@dWxqf$mTTKwW$!@#qGr4P
+      - LOTO_AUTH_ISSUER=loto-api
+      # CONFIG FEIGN - Serviço que faz a comuinicação desta api com apis externas. EX.: api caixa
+      - FEIGN_CONNECT_TIMEOUT=5000
+      - FEIGN_READ_TIMEOUT=5000
+      - FEIGN_LOGGER_LEVEL=basic
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

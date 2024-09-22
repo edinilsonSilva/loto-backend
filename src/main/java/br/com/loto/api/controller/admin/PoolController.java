@@ -73,4 +73,21 @@ public class PoolController {
                 .content(poolService.create(request))
                 .build(), HttpStatus.OK);
     }
+
+    @Operation(
+            summary = "Consultar um bolão")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CustomResponse.class))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
+    @GetMapping(value = "/{pooId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<CustomResponse<Pool>> findById(@PathVariable Long pooId) {
+        return new ResponseEntity<>(CustomResponse.<Pool>builder()
+                .status(200)
+                .message("Bolão cadastrado.")
+                .content(poolConsultService.findByIdWithThow(pooId))
+                .build(), HttpStatus.OK);
+    }
 }

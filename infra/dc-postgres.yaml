@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+   postgres:
+      container_name: postgres
+      image: postgres
+      # build:
+      #    context: /postgres
+      #    dockerfile: Dockerfile
+      restart: always
+      command: postgres -c 'max_connections=300'
+      logging:
+         options:
+            max-size: 10m
+            max-file: '3'
+      ports:
+         - 5432:5432
+      environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=@102030@
+        - TZ=America/Fortaleza
+      volumes:
+         - pgdata:/var/lib/postgresql/data
+#         - ./postgres-conf:/var/lib/postgresql/data
+      networks:
+        - app-network
+
+volumes:
+   pgdata:
+      external: true

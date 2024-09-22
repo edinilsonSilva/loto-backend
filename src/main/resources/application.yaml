@@ -2,27 +2,27 @@ spring:
   main:
     allow-bean-definition-overriding: true
   application:
-    name: ${APPLICATION_NAME:loto}
+    name: ${SPRING_APPLICATION_NAME:loto}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:none}
     properties:
-      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate.dialect: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
       hibernate:
         temp:
           use_jdbc_metadata_defaults: false
         jdbc:
           lob:
             non_contextual_creation: true
-    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-    show-sql: ${JPA_SHOW_SQL:false}
+    database-platform: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
+    show-sql: ${SPRING_JPA_SHOW_SQL:false}
     open-in-view: false
   datasource:
-    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/Loto}
-    username: ${DATASOURCE_USERNAME:postgres}
-    password: ${DATASOURCE_PASSWORD:@nestec123@}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/Loto}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:@nestec123@}
   flyway:
-    enabled: true
+    enabled: ${SPRING_DATASOURCE_FLYWAY_ENABLED:true}
     locations: classpath:db/migration
     baseline-on-migrate: true
     out-of-order: false
@@ -33,14 +33,14 @@ spring:
     sql-migration-suffixes: .sql
   servlet:
     multipart:
-      max-request-size: 200MB
-      max-file-size: 200MB
+      max-request-size: ${SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE:200MB}
+      max-file-size: ${SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE:200MB}
   mail:
-    host: ${MAIL_HOST:smtp.gmail.com}
-    port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME:bateraed@gmail.com}
+    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME:bateraed@gmail.com}
     #password: '@loto123@'
-    password: ${MAIL_PASSWORD:npgc rdeh gjst prwl}
+    password: ${SPRING_MAIL_PASSWORD:npgc rdeh gjst prwl}
     properties:
       mail:
         transport:
@@ -53,9 +53,9 @@ spring:
           auth: ${MAIL_SMTP_AUTH:true}
           starttls:
             required: true
-            enable: ${MAIL_SMTP_AUTH_STARTTLS_ENABLE:true}
+            enable: ${SPRING_MAIL_SMTP_AUTH_STARTTLS_ENABLE:true}
           ssl:
-            enable: ${MAIL_SMTP_AUTH_SSL_ENABLE:false}
+            enable: ${SPRING_MAIL_SMTP_AUTH_SSL_ENABLE:false}
 
 server:
   error:
