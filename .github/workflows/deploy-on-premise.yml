@@ -59,3 +59,4 @@ jobs:
         SSH_PASSWORD: ${{ secrets.REMOTE_PASSWORD }}
         SSH_USER: ${{ secrets.REMOTE_USER }}
         SSH_HOST: ${{ secrets.REMOTE_HOST }}
+        SSH_PORT: ${{ secrets.REMOTE_PORT }}
