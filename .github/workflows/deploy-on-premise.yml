@@ -49,7 +49,7 @@ jobs:
     steps:
     - name: Deploy to On-premise Server
       run: |
-        sshpass -p "${{ secrets.REMOTE_PASSWORD }}" -P "${{ secrets.REMOTE_PORT }}" ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << EOF
+        sshpass -p "${{ secrets.REMOTE_PASSWORD }}" ssh -p "${{ secrets.REMOTE_PORT }}" -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << EOF
           cd /home/depoy
           docker-compose -f dc-loto.yml down
           docker-compose -f dc-loto.yml pull
