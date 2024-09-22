@@ -18,8 +18,11 @@ jobs:
       with:
         java-version: 17
 
-    - name: Build Spring Boot project
-      run: sudo ./mvnw clean package -DskipTests
+   # - name: Build Spring Boot project
+   #   run: sudo ./mvnw clean package -DskipTests
+
+    - name: Build using maven
+      run: mvn clean package -DskipTests
 
     - name: Log in to DockerHub
       run: sudo echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
