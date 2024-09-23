@@ -36,11 +36,11 @@ spring:
       max-request-size: ${SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE:200MB}
       max-file-size: ${SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE:200MB}
   mail:
-    host: ${SPRING_MAIL_HOST:smtp.gmail.com}
-    port: ${SPRING_MAIL_PORT:587}
-    username: ${SPRING_MAIL_USERNAME:bateraed@gmail.com}
+    host: ${SPRING_MAIL_HOST:null}
+    port: ${SPRING_MAIL_PORT:null}
+    username: ${SPRING_MAIL_USERNAME:null}
     #password: '@loto123@'
-    password: ${SPRING_MAIL_PASSWORD:npgc rdeh gjst prwl}
+    password: ${SPRING_MAIL_PASSWORD:null}
     properties:
       mail:
         transport:
