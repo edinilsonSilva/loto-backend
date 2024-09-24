@@ -107,7 +107,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://messejana.conectalot.com.br:19880")); // Adicione suas origens permitidas
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://messejana.conectalot.com.br:19880/")); // Adicione suas origens permitidas
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // Métodos permitidos
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // Cabeçalhos permitidos
         configuration.setAllowCredentials(true); // Permite credenciais (cookies, headers de autorização)
