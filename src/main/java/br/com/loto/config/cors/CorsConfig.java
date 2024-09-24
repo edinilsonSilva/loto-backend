@@ -10,8 +10,8 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Permitir todas as rotas
-                .allowedOrigins("http://messejana.conectalot.com.br:19880") // Permitir o frontend
-                .allowedMethods("GET", "POST", "PUT", "DELETE") // Métodos permitidos
+                .allowedOrigins("*") // Permitir o frontend "http://messejana.conectalot.com.br:19880"
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT") // Métodos permitidos
                 .allowedHeaders("Content-Type", "Authorization") // Cabeçalhos permitidos
                 .allowCredentials(true); // Permitir cookies ou credenciais
     }
