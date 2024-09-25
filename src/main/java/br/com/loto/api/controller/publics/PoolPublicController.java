@@ -48,7 +48,7 @@ public class PoolPublicController {
             @RequestParam(value = "direction", defaultValue = "DESC", required = false) String direction,
             @RequestParam(value = "name", required = false) String name) {
 
-        return new ResponseEntity<>(poolConsultService.findAllByParams(PoolQuery.builder()
+        return new ResponseEntity<>(poolConsultService.findAllByParamsPublic(PoolQuery.builder()
                 .orderBy(orderBy)
                 .direction(direction)
                 .page(page)

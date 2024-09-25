@@ -1,7 +1,6 @@
 package br.com.loto.api.dto.game.response;
 
 import br.com.loto.domain.entity.Bet;
-import br.com.loto.domain.entity.Participant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +33,7 @@ public class PoolResponse {
 
     private String probability;
 
-    private List<Participant> participants;
+    private List<PoolParticipantPublicResponse> participants;
 
     private List<Bet> bets;
 

@@ -9,5 +9,7 @@ public interface IPoolConsultService {
 
     Page<PoolResponse> findAllByParams(PoolQuery query);
 
+    Page<PoolResponse> findAllByParamsPublic(PoolQuery query);
+
     Pool findByIdWithThow (Long poolId);
 }

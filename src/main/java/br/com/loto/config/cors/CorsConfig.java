@@ -13,7 +13,7 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://187.19.153.210:19880",
                         "http://messejana.conectalot.com.br:19880",
-                        "http://localhost:19880"
+                        "http://localhost:3000"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT") // Métodos permitidos
                 .allowedHeaders("Content-Type", "Authorization") // Cabeçalhos permitidos

@@ -5,6 +5,7 @@ import br.com.loto.api.dto.game.response.PoolResponse;
 import br.com.loto.api.mappers.PoolMapper;
 import br.com.loto.domain.entity.Pool;
 import br.com.loto.domain.repository.IPoolRepository;
+import br.com.loto.domain.specification.PoolPublicSpecification;
 import br.com.loto.domain.specification.PoolSpecification;
 import br.com.loto.exceptions.PoolException;
 import br.com.loto.service.games.IPoolConsultService;
@@ -28,6 +29,14 @@ public class PoolConsultServiceImpl implements IPoolConsultService {
         Sort.Direction sortDirection = "desc".equalsIgnoreCase(query.getDirection()) ? Sort.Direction.DESC : Sort.Direction.ASC;
         PageRequest pageRequest = PageRequest.of(query.getPage(), query.getLimit(), Sort.by(sortDirection, query.getOrderBy()));
         Page<Pool> pages = poolRepository.findAll(PoolSpecification.search(query), pageRequest);
+        return pages.map(poolMapper::convertEntityToResponse);
+    }
+
+    @Override
+    public Page<PoolResponse> findAllByParamsPublic(PoolQuery query) {
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(query.getDirection()) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        PageRequest pageRequest = PageRequest.of(query.getPage(), query.getLimit(), Sort.by(sortDirection, query.getOrderBy()));
+        Page<Pool> pages = poolRepository.findAll(PoolPublicSpecification.search(query), pageRequest);
         return pages.map(poolMapper::convertEntityToResponse);
     }
 
