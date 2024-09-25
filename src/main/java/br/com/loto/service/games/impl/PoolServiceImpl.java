@@ -1,12 +1,14 @@
 package br.com.loto.service.games.impl;
 
 import br.com.loto.api.dto.game.request.CreatePoolRequest;
+import br.com.loto.api.dto.game.request.UpdatePoolRequest;
 import br.com.loto.domain.entity.LotteryDraw;
 import br.com.loto.domain.entity.Pool;
 import br.com.loto.domain.enums.PoolStatus;
 import br.com.loto.domain.repository.IPoolRepository;
 import br.com.loto.service.account.IAccountService;
 import br.com.loto.service.games.ILotteryDrawConsultService;
+import br.com.loto.service.games.IPoolConsultService;
 import br.com.loto.service.games.IPoolService;
 import br.com.loto.utils.CodeGenerator;
 import lombok.AllArgsConstructor;
@@ -23,6 +25,7 @@ public class PoolServiceImpl implements IPoolService {
     private final IPoolRepository poolRepository;
 
     private final ILotteryDrawConsultService lotteryDrawConsultService;
+    private final IPoolConsultService poolConsultService;
     private final IAccountService accountService;
 
     @Override
@@ -42,6 +45,26 @@ public class PoolServiceImpl implements IPoolService {
                 .drawNumber(lotteryDraw.getNumber())
                 .lotteryDraw(lotteryDraw)
                 .build());
+    }
+
+    @Override
+    @Transactional
+    public Pool update(UpdatePoolRequest request, Long poolId) {
+
+        Pool pool = poolConsultService.findByIdWithThow(poolId);
+        pool.setStatus(request.getStatus());
+        pool.setProbability(request.getProbability());
+        pool.setTotalShares(request.getTotalShares());
+        pool.setEntryFee(request.getEntryFee());
+        return save(pool);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long poolId) {
+
+        Pool pool = poolConsultService.findByIdWithThow(poolId);
+        poolRepository.deleteById(pool.getId());
     }
 
     @Override
