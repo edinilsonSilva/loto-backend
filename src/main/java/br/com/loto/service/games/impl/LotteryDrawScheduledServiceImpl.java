@@ -19,7 +19,13 @@ public class LotteryDrawScheduledServiceImpl implements ILotteryDrawScheduledSer
     private final String zone = "America/Sao_Paulo";
 
     @Override
-    @Scheduled(cron = "0 10 17 * * MON-SAT", zone = zone)
+    @Scheduled(cron = "0 0 8 * * MON-SAT", zone = zone)
+    public void checkResultsAt08pm() {
+        lotteryDrawService.updateGameResults();
+    }
+
+    @Override
+    @Scheduled(cron = "0 0 12 * * MON-SAT", zone = zone)
     public void checkResultsAt12pm() {
         lotteryDrawService.updateGameResults();
     }
