@@ -1,5 +1,6 @@
 package br.com.loto.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,7 +23,10 @@ public class Bet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ElementCollection
+    @ElementCollection(targetClass = Integer.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "bet_chosen_numbers")
+    @JoinColumn(name = "bet_id")
+    @Column(name = "chosen_numbers")
     private List<Integer> chosenNumbers; // Números escolhidos (Mega-Sena tem 6 números)
 
     private BigDecimal amount; // Valor da aposta
@@ -33,5 +37,6 @@ public class Bet {
 
     @ManyToOne
     @JoinColumn(name = "pool_id")
+    @JsonIgnoreProperties({"bets"})
     private Pool pool;
 }

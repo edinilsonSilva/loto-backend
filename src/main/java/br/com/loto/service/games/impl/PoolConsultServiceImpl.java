@@ -3,11 +3,14 @@ package br.com.loto.service.games.impl;
 import br.com.loto.api.dto.game.queries.PoolQuery;
 import br.com.loto.api.dto.game.response.PoolResponse;
 import br.com.loto.api.mappers.PoolMapper;
+import br.com.loto.domain.entity.Account;
 import br.com.loto.domain.entity.Pool;
 import br.com.loto.domain.repository.IPoolRepository;
 import br.com.loto.domain.specification.PoolPublicSpecification;
 import br.com.loto.domain.specification.PoolSpecification;
+import br.com.loto.exceptions.AccountException;
 import br.com.loto.exceptions.PoolException;
+import br.com.loto.service.account.IAccountService;
 import br.com.loto.service.games.IPoolConsultService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
@@ -22,10 +25,18 @@ public class PoolConsultServiceImpl implements IPoolConsultService {
 
     private final IPoolRepository poolRepository;
 
+    private final IAccountService accountService;
+
     private final PoolMapper poolMapper;
 
     @Override
     public Page<PoolResponse> findAllByParams(PoolQuery query) {
+
+        Account accountCurrent = accountService.findAccountCurrent();
+
+        if (accountCurrent.getAccountAdmin() == null)
+            throw new AccountException("Sua conta não tem permissão para acessar este recurso.", 4003);
+
         Sort.Direction sortDirection = "desc".equalsIgnoreCase(query.getDirection()) ? Sort.Direction.DESC : Sort.Direction.ASC;
         PageRequest pageRequest = PageRequest.of(query.getPage(), query.getLimit(), Sort.by(sortDirection, query.getOrderBy()));
         Page<Pool> pages = poolRepository.findAll(PoolSpecification.search(query), pageRequest);

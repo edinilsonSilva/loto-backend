@@ -2,10 +2,12 @@ package br.com.loto.service.games.impl;
 
 import br.com.loto.api.dto.game.request.CreatePoolRequest;
 import br.com.loto.api.dto.game.request.UpdatePoolRequest;
+import br.com.loto.domain.entity.Account;
 import br.com.loto.domain.entity.LotteryDraw;
 import br.com.loto.domain.entity.Pool;
 import br.com.loto.domain.enums.PoolStatus;
 import br.com.loto.domain.repository.IPoolRepository;
+import br.com.loto.exceptions.AccountException;
 import br.com.loto.service.account.IAccountService;
 import br.com.loto.service.games.ILotteryDrawConsultService;
 import br.com.loto.service.games.IPoolConsultService;
@@ -32,11 +34,16 @@ public class PoolServiceImpl implements IPoolService {
     @Transactional
     public Pool create(CreatePoolRequest request) {
 
+        Account accountCurrent = accountService.findAccountCurrent();
+
+        if (accountCurrent.getAccountAdmin() == null)
+            throw new AccountException("Sua conta não tem permissão para acessar este recurso.", 4003);
+
         LotteryDraw lotteryDraw = lotteryDrawConsultService.findByIdWithThrow(request.getLotteryDrawId());
 
         return save(Pool.builder()
                 .createdAt(LocalDateTime.now())
-                .createdBy(accountService.findAccountCurrent())
+                .createdBy(accountCurrent)
                 .status(PoolStatus.CLOSED)
                 .code(CodeGenerator.generateCode(10))
                 .probability(request.getProbability())
@@ -51,6 +58,11 @@ public class PoolServiceImpl implements IPoolService {
     @Transactional
     public Pool update(UpdatePoolRequest request, Long poolId) {
 
+        Account accountCurrent = accountService.findAccountCurrent();
+
+        if (accountCurrent.getAccountAdmin() == null)
+            throw new AccountException("Sua conta não tem permissão para acessar este recurso.", 4003);
+
         Pool pool = poolConsultService.findByIdWithThow(poolId);
         pool.setStatus(request.getStatus());
         pool.setProbability(request.getProbability());
@@ -62,6 +74,11 @@ public class PoolServiceImpl implements IPoolService {
     @Override
     @Transactional
     public void deleteById(Long poolId) {
+
+        Account accountCurrent = accountService.findAccountCurrent();
+
+        if (accountCurrent.getAccountAdmin() == null)
+            throw new AccountException("Sua conta não tem permissão para acessar este recurso.", 4003);
 
         Pool pool = poolConsultService.findByIdWithThow(poolId);
         poolRepository.deleteById(pool.getId());

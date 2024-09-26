@@ -58,6 +58,7 @@ public class Pool {
     private List<Participant> participants;
 
     @OneToMany(mappedBy = "pool", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("pool")
     private List<Bet> bets;
 
     @ManyToOne
