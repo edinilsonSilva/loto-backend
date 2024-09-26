@@ -21,7 +21,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public FilterRegistrationBean<CorsFilter> corsFilterRegistrationBean() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("http://api-loto-frontend:3000", "http://localhost:3000"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://api-loto-frontend:3000", "http://messejana.conectalot.com.br:19880", "http://187.19.153.210:19880", "http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTION"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
