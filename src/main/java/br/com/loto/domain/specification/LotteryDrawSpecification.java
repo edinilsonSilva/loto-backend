@@ -5,6 +5,7 @@ import br.com.loto.domain.entity.LotteryDraw;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class LotteryDrawSpecification {
             if (request.getGameId() != null)
                 predicates.add(builder.equal(root.get("game").get("id"), request.getGameId()));
 
+            predicates.add(builder.greaterThanOrEqualTo(root.get("drawDate"), LocalDate.now()));
             query.distinct(true);
             return query.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
         };
