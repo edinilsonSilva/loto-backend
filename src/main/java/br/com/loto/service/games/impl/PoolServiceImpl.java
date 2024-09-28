@@ -7,8 +7,7 @@ import br.com.loto.domain.entity.LotteryDraw;
 import br.com.loto.domain.entity.Pool;
 import br.com.loto.domain.enums.PoolStatus;
 import br.com.loto.domain.repository.IPoolRepository;
-import br.com.loto.exceptions.AccountException;
-import br.com.loto.service.account.IAccountService;
+import br.com.loto.service.account.IAccountValidateService;
 import br.com.loto.service.games.ILotteryDrawConsultService;
 import br.com.loto.service.games.IPoolConsultService;
 import br.com.loto.service.games.IPoolService;
@@ -28,16 +27,13 @@ public class PoolServiceImpl implements IPoolService {
 
     private final ILotteryDrawConsultService lotteryDrawConsultService;
     private final IPoolConsultService poolConsultService;
-    private final IAccountService accountService;
+    private final IAccountValidateService accountValidateService;
 
     @Override
     @Transactional
     public Pool create(CreatePoolRequest request) {
 
-        Account accountCurrent = accountService.findAccountCurrent();
-
-        if (accountCurrent.getAccountAdmin() == null)
-            throw new AccountException("Sua conta não tem permissão para acessar este recurso.", 4003);
+        Account accountCurrent = accountValidateService.verifyIfAccountCurrenIsAdmin();
 
         LotteryDraw lotteryDraw = lotteryDrawConsultService.findByIdWithThrow(request.getLotteryDrawId());
 
@@ -58,10 +54,7 @@ public class PoolServiceImpl implements IPoolService {
     @Transactional
     public Pool update(UpdatePoolRequest request, Long poolId) {
 
-        Account accountCurrent = accountService.findAccountCurrent();
-
-        if (accountCurrent.getAccountAdmin() == null)
-            throw new AccountException("Sua conta não tem permissão para acessar este recurso.", 4003);
+        accountValidateService.verifyIfAccountCurrenIsAdmin();
 
         Pool pool = poolConsultService.findByIdWithThow(poolId);
         pool.setStatus(request.getStatus());
@@ -75,10 +68,7 @@ public class PoolServiceImpl implements IPoolService {
     @Transactional
     public void deleteById(Long poolId) {
 
-        Account accountCurrent = accountService.findAccountCurrent();
-
-        if (accountCurrent.getAccountAdmin() == null)
-            throw new AccountException("Sua conta não tem permissão para acessar este recurso.", 4003);
+        accountValidateService.verifyIfAccountCurrenIsAdmin();
 
         Pool pool = poolConsultService.findByIdWithThow(poolId);
         poolRepository.deleteById(pool.getId());

@@ -11,6 +11,7 @@ import br.com.loto.domain.specification.PoolSpecification;
 import br.com.loto.exceptions.AccountException;
 import br.com.loto.exceptions.PoolException;
 import br.com.loto.service.account.IAccountService;
+import br.com.loto.service.account.IAccountValidateService;
 import br.com.loto.service.games.IPoolConsultService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
@@ -25,17 +26,14 @@ public class PoolConsultServiceImpl implements IPoolConsultService {
 
     private final IPoolRepository poolRepository;
 
-    private final IAccountService accountService;
+    private final IAccountValidateService accountValidateService;
 
     private final PoolMapper poolMapper;
 
     @Override
     public Page<PoolResponse> findAllByParams(PoolQuery query) {
 
-        Account accountCurrent = accountService.findAccountCurrent();
-
-        if (accountCurrent.getAccountAdmin() == null)
-            throw new AccountException("Sua conta não tem permissão para acessar este recurso.", 4003);
+        accountValidateService.verifyIfAccountCurrenIsAdmin();
 
         Sort.Direction sortDirection = "desc".equalsIgnoreCase(query.getDirection()) ? Sort.Direction.DESC : Sort.Direction.ASC;
         PageRequest pageRequest = PageRequest.of(query.getPage(), query.getLimit(), Sort.by(sortDirection, query.getOrderBy()));

@@ -2,6 +2,7 @@ package br.com.loto.config.security;
 
 import br.com.loto.domain.entity.Account;
 import br.com.loto.exceptions.TokenException;
+import br.com.loto.service.account.IAccountConsultService;
 import br.com.loto.service.account.IAccountService;
 import br.com.loto.service.userDetails.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
@@ -24,7 +25,7 @@ public class AuthFilterToken extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
-    private final IAccountService accountService;
+    private final IAccountConsultService accountConsultService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -39,7 +40,7 @@ public class AuthFilterToken extends OncePerRequestFilter {
                 throw new TokenException("O token está ausente.");
 
             String subject = jwtUtil.getUsername(token);
-            Account account = accountService.findByCpfWithThrow(subject);
+            Account account = accountConsultService.findByCpfWithThrow(subject);
             UserDetailsImpl userDetails = new UserDetailsImpl(account);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());

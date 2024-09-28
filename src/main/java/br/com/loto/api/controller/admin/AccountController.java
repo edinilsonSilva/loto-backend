@@ -2,6 +2,7 @@ package br.com.loto.api.controller.admin;
 
 import br.com.loto.api.dto.account.query.AccountQuery;
 import br.com.loto.domain.entity.Account;
+import br.com.loto.service.account.IAccountConsultService;
 import br.com.loto.service.account.IAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Rotas para o gerenciamento das contas")
 public class AccountController {
 
-    private final IAccountService accountService;
+    private final IAccountConsultService accountConsultService;
 
     @Operation(
             summary = "Lista todas as contas",
@@ -57,6 +58,6 @@ public class AccountController {
                 .cpf(cpf)
                 .build();
 
-        return new ResponseEntity<>(accountService.findAllByParams(accountQuery), HttpStatus.OK);
+        return new ResponseEntity<>(accountConsultService.findAllByParams(accountQuery), HttpStatus.OK);
     }
 }

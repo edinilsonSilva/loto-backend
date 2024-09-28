@@ -29,6 +29,7 @@ import java.util.Map;
 public class AccountPublicServiceImpl implements IAccountPublicService {
 
     private final IAccountService accountService;
+    private final IAccountConsultService accountConsultService;
     private final IAccountConfigService configService;
     private final IAccountLotteryService accountLotteryService;
     private final IAccountLotteryWalletService accountLotteryWalletService;
@@ -42,7 +43,7 @@ public class AccountPublicServiceImpl implements IAccountPublicService {
     @Transactional
     public void resetPassword(ResetPasswordPublicRequest request) {
 
-        Account account = accountService.findByCpfWithThrow(request.getCpf());
+        Account account = accountConsultService.findByCpfWithThrow(request.getCpf());
 
         AccountPassword requestNewPassword = account.getPasswords().stream()
                 .filter(p -> p.getTokenForgetPassword() != null)
@@ -127,7 +128,7 @@ public class AccountPublicServiceImpl implements IAccountPublicService {
                 .accountLottery(lottery)
                 .build());
 
-        Account account = accountService.saveAndFlush(Account.builder()
+        Account account = accountService.save(Account.builder()
                 .name(request.getName())
                 .cpf(request.getCpf())
                 .config(config)

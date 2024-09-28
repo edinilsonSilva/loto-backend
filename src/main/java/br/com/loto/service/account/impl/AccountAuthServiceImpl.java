@@ -6,7 +6,9 @@ import br.com.loto.api.dto.account.responses.LoginResponse;
 import br.com.loto.api.mappers.AccountMapper;
 import br.com.loto.config.security.JwtUtil;
 import br.com.loto.service.account.IAccountAuthService;
+import br.com.loto.service.account.IAccountConsultService;
 import br.com.loto.service.account.IAccountService;
+import br.com.loto.service.account.IAccountValidateService;
 import br.com.loto.service.userDetails.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor(onConstructor_ = @Lazy)
 public class AccountAuthServiceImpl implements IAccountAuthService {
 
-    private final IAccountService accountService;
+    private final IAccountConsultService accountConsultService;
 
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
@@ -35,12 +37,12 @@ public class AccountAuthServiceImpl implements IAccountAuthService {
 
         return LoginResponse.builder()
                 .token(jwtUtil.generateToken(userDetails))
-                .content(accountMapper.convertEntityToResponse(accountService.findByCpfWithThrow(userDetails.getUsername())))
+                .content(accountMapper.convertEntityToResponse(accountConsultService.findByCpfWithThrow(userDetails.getUsername())))
                 .build();
     }
 
     @Override
     public AccountResponse getAccount() {
-        return accountMapper.convertEntityToResponse(accountService.findAccountCurrent());
+        return accountMapper.convertEntityToResponse(accountConsultService.findAccountCurrent());
     }
 }

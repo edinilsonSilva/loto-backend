@@ -5,6 +5,7 @@ import br.com.loto.api.dto.account.requests.ChangePasswordRequest;
 import br.com.loto.api.dto.account.requests.CreateAccountRequest;
 import br.com.loto.domain.entity.Account;
 import br.com.loto.exceptions.CustomResponse;
+import br.com.loto.service.account.IAccountConsultService;
 import br.com.loto.service.account.IAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Rotas para o gerenciamento das contas administrativas")
 public class AccountAdminController {
 
-    private final IAccountService accountService;
+    private final IAccountConsultService accountConsultService;
 
     @Operation(
             summary = "Lista todas as contas admins",
@@ -58,7 +59,7 @@ public class AccountAdminController {
                 .cpf(cpf)
                 .build();
 
-        return new ResponseEntity<>(accountService.findAllByParams(accountQuery), HttpStatus.OK);
+        return new ResponseEntity<>(accountConsultService.findAllByParams(accountQuery), HttpStatus.OK);
     }
 
     @Operation(
