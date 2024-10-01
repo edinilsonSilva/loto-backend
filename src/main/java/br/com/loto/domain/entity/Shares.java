@@ -3,9 +3,9 @@ package br.com.loto.domain.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.math.BigDecimal;
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * Entidade que representa uma aposta criada pelo administrador
@@ -23,9 +23,21 @@ public class Shares {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private Account createdBy;
+
     @ManyToOne
     @JoinColumn(name = "participant_id")
     private Participant participant;
+
+    @OneToOne
+    @JoinColumn(name = "shares_file_id")
+    private SharesFile sharesFile;
 
     @ManyToOne
     @JoinColumn(name = "pool_id")
