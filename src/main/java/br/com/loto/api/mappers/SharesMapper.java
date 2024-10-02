@@ -25,7 +25,12 @@ public class SharesMapper {
 
     public SharesResponse convertEntityToResponse(Shares shares) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        return modelMapper.map(shares, SharesResponse.class);
+        SharesResponse response = modelMapper.map(shares, SharesResponse.class);
+        response.setName(shares.getSharesFile().getName());
+        response.setContentType(shares.getSharesFile().getContentType());
+        response.setSize(shares.getSharesFile().getSize());
+        response.setBase64(shares.getSharesFile().getBase64());
+        return response;
     }
 
     @SneakyThrows

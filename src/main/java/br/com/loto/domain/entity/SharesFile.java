@@ -30,7 +30,8 @@ public class SharesFile {
     @Column(name = "base_64", length = 10000000)
     private String base64;
 
-    @Lob
+//    @Lob
+//    @Column(name = "data", columnDefinition="bytea")
     private byte[] data;
 
     @Column(name = "name")

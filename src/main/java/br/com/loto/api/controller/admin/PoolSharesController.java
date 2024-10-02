@@ -51,7 +51,7 @@ public class PoolSharesController {
             @RequestParam(value = "limit", defaultValue = "24", required = false) Integer limit,
             @RequestParam(value = "orderBy", defaultValue = "id", required = false) String orderBy,
             @RequestParam(value = "direction", defaultValue = "DESC", required = false) String direction,
-            @RequestParam(value = "pool-id", required = true) Long poolId) {
+            @RequestParam(value = "poolId", required = true) Long poolId) {
 
         return new ResponseEntity<>(sharesConsultService.findAllByParams(SharesQuery.builder()
                 .orderBy(orderBy)

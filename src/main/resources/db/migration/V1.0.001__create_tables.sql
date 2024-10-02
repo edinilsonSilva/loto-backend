@@ -220,9 +220,8 @@ CREATE TABLE public.pools
     status          VARCHAR(20)  NOT NULL,
     code            VARCHAR(50)  NOT NULL,
     probability     VARCHAR(100) NOT NULL,
-    total_shares    INT          NOT NULL,
     draw_number     INT          NOT NULL,
-    entry_fee       VARCHAR(255) NOT NULL,
+    entry_fee       VARCHAR(255),
     lottery_draw_id BIGINT       NOT NULL,
     CONSTRAINT pools_pkey PRIMARY KEY (id),
     CONSTRAINT fk_pool_account FOREIGN KEY (created_by) REFERENCES accounts (id),
@@ -291,7 +290,7 @@ CREATE TABLE public.shares_files
     content_type varchar(255)      NULL,
     size         int8              NULL,
     base_64      varchar(10000000) NULL,
-    data         BYTEA             NOT NULL,
+    data         BYTEA             NULL,
     type_photo   varchar(255)      NULL,
     CONSTRAINT shares_files_pkey PRIMARY KEY (id)
 );

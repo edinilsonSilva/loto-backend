@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -51,12 +52,15 @@ public class SharesServiceImpl implements ISharesService {
             SharesFile sharesFile = null;
 
             try {
+                String encodedBase64 = Base64.getEncoder().encodeToString(file.getBytes());
+
                 sharesFile = sharesFileRepository.save(SharesFile.builder()
                         .createdAt(LocalDateTime.now())
                         .name(file.getOriginalFilename())
                         .contentType(file.getContentType())
                         .size(file.getSize())
-                        .data(file.getBytes())
+                        .data(null)
+                        .base64(encodedBase64)
                         .build());
             } catch (IOException e) {
                 throw new SharesException("Ocorreu um erro ao tentar gravar a imagem da cota.", 4004);

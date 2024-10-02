@@ -1,12 +1,16 @@
 package br.com.loto.api.dto.game.response;
 
-import br.com.loto.domain.entity.Bet;
+import br.com.loto.domain.entity.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
@@ -19,26 +23,15 @@ public class SharesResponse {
 
     private String createdAt;
 
-    private String updatedAt;
-
     private String createdBy;
 
-    private String status;
+    private String base64;
 
-    private String code;
+    private String name;
 
-    private Integer totalShares;
+    private String description;
 
-    private BigDecimal entryFee;
+    private String contentType;
 
-    private String probability;
-
-    private List<PoolParticipantPublicResponse> participants;
-
-    private List<Bet> bets;
-
-    private String lotteryDraw;
-
-    private Integer drawNumber;
-
+    private Long size;
 }

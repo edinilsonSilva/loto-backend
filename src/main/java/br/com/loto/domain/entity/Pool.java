@@ -45,8 +45,6 @@ public class Pool {
 
     private String code;
 
-    private Integer totalShares;  // Total de cotas
-
     private Integer drawNumber;  // Número do concurso onde este balão foi executado
 
     private BigDecimal entryFee;  // Valor da entrada no bolão

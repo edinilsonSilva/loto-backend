@@ -12,13 +12,10 @@ import java.math.BigDecimal;
 public class CreatePoolRequest {
 
     @NotNull
-    private BigDecimal entryFee;
-
-    @NotNull
-    private Integer totalShares;
-
-    @NotNull
     private TypeProbability probability;
+
+    @NotNull
+    private BigDecimal entryFee;
 
     @NotNull
     private Long lotteryDrawId;

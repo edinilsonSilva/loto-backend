@@ -43,10 +43,9 @@ public class PoolServiceImpl implements IPoolService {
                 .status(PoolStatus.CLOSED)
                 .code(CodeGenerator.generateCode(10))
                 .probability(request.getProbability())
-                .totalShares(request.getTotalShares())
-                .entryFee(request.getEntryFee())
                 .drawNumber(lotteryDraw.getNumber())
                 .lotteryDraw(lotteryDraw)
+                .entryFee(request.getEntryFee())
                 .build());
     }
 
@@ -59,7 +58,6 @@ public class PoolServiceImpl implements IPoolService {
         Pool pool = poolConsultService.findByIdWithThow(poolId);
         pool.setStatus(request.getStatus());
         pool.setProbability(request.getProbability());
-        pool.setTotalShares(request.getTotalShares());
         pool.setEntryFee(request.getEntryFee());
         return save(pool);
     }
