@@ -70,6 +70,12 @@ loto:
     expiration-in-minutes: ${LOTO_AUTH_EXPIRATION_IN_MINUTES:60}
     secret-key: ${LOTO_AUTH_SECRET_KEY:4Z^XrroxR@dWxqf$mTTKwW$!@#qGr4P}
     issuer: ${LOTO_AUTH_ISSUER:loto-api}
+  efiCredential:
+    clientId: ${LOTO_EFI_CREDENTIAL_CLIENT_ID:Client_Id_13f6bd7d7006a2f03621414db9e40899b9dd0796}
+    clientSecret: ${LOTO_EFI_CREDENTIAL_CLIENT_SECRET:Client_Secret_a9a073331319289acc02c4969ddceed49911b003}
+    certificate: ${LOTO_EFI_CREDENTIAL_CERTIFICATE:certificate}
+    sandbox: ${LOTO_EFI_CREDENTIAL_SENDBOX:true}
+    debug: ${LOTO_EFI_CREDENTIAL_DEBUG:true}
 
 feign:
   client:

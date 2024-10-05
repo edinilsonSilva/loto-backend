@@ -25,6 +25,7 @@ public class PoolMapper {
         PoolResponse response = modelMapper.map(pool, PoolResponse.class);
         response.setStatus(pool.getStatus().getDescription());
         response.setLotteryDraw(pool.getLotteryDraw().getGameType().getDescription());
+        response.setTotalShares(pool.getShares() == null ? 0 : pool.getShares().size());
         return response;
     }
 }

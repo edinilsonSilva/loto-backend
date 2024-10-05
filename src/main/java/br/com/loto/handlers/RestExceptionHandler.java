@@ -132,4 +132,13 @@ public class RestExceptionHandler {
                 .content(null)
                 .build(), HttpStatus.OK);
     }
+
+    @ExceptionHandler(EfiLotoException.class)
+    public ResponseEntity<CustomResponse> handleAccountException(EfiLotoException e) {
+        return new ResponseEntity<>(CustomResponse.builder()
+                .status(e.getStatusCode())
+                .message(e.getMessage())
+                .content(null)
+                .build(), HttpStatus.OK);
+    }
 }

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/public/pools")
 @Tag(name = "Rotas públicas para os bolões")
-public class PoolPublicController {
+public class PPoolController {
 
     private final IPoolService poolService;
     private final IPoolConsultService poolConsultService;

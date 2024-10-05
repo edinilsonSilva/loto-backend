@@ -1,7 +1,6 @@
 package br.com.loto.api.controller.publics;
 
 import br.com.loto.api.dto.account.requests.LoginRequest;
-import br.com.loto.api.dto.account.responses.AccountResponse;
 import br.com.loto.api.dto.account.responses.LoginResponse;
 import br.com.loto.service.account.IAccountAuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/public/auth")
 @Tag(name = "Rotas públicas para autenticação")
-public class AccountAuthController {
+public class PAccountAuthController {
 
     private final IAccountAuthService authService;
 
