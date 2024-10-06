@@ -41,4 +41,8 @@ public class PoolResponse {
 
     private Integer drawNumber;
 
+    private String drawDate;
+
+    private String collectedAmount;
+
 }

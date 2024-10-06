@@ -26,6 +26,8 @@ public class PoolMapper {
         response.setStatus(pool.getStatus().getDescription());
         response.setLotteryDraw(pool.getLotteryDraw().getGameType().getDescription());
         response.setTotalShares(pool.getShares() == null ? 0 : pool.getShares().size());
+        response.setDrawDate(pool.getLotteryDraw().getDrawDate().toString());
+        response.setCollectedAmount(pool.getLotteryDraw().getCollectedAmount());
         return response;
     }
 }
