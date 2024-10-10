@@ -35,7 +35,7 @@ public class PoolResponse {
 
     private List<PoolParticipantPublicResponse> participants;
 
-    private List<Bet> bets;
+    private List<BetResponse> bets;
 
     private String lotteryDraw;
 

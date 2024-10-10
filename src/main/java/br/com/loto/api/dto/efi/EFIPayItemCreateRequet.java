@@ -16,4 +16,6 @@ public class EFIPayItemCreateRequet {
     private int amount;
 
     private int value;
+
+    private Long poolId;
 }

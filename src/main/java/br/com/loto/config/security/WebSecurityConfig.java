@@ -48,7 +48,9 @@ public class WebSecurityConfig {
             "/api/v1/lotteries",
             "/api/v1/lotteries/**",
             "/api/v1/bets",
-            "/api/v1/bets/**"
+            "/api/v1/bets/**",
+            "/api/v1/orders",
+            "/api/v1/orders/**"
     };
 
     // Endpoints que só podem ser acessador por usuários com permissão de cliente
