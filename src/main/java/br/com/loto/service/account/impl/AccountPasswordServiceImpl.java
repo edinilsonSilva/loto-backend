@@ -47,7 +47,7 @@ public class AccountPasswordServiceImpl implements IAccountPasswordService {
     public AccountPassword createWithOnlyPassword(String password, Account account) {
         return saveAndFlush(AccountPassword.builder()
                 .password(passwordEncoder.encode(password))
-                .active(false)
+                .active(true)
                 .samePasswordLimit(0L)
                 .createPasswordNextLogin(false)
                 .account(account)

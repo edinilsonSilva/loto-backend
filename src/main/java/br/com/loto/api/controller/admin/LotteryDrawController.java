@@ -2,7 +2,10 @@ package br.com.loto.api.controller.admin;
 
 import br.com.loto.api.dto.game.queries.ContestQuery;
 import br.com.loto.api.dto.game.response.LotteryDrawReduced01Response;
+import br.com.loto.api.dto.game.response.TypeGameResponse;
+import br.com.loto.api.mappers.LotteryDrawMapper;
 import br.com.loto.domain.entity.LotteryDraw;
+import br.com.loto.domain.enums.TypeGame;
 import br.com.loto.exceptions.CustomResponse;
 import br.com.loto.service.games.ILotteryDrawConsultService;
 import br.com.loto.service.games.ILotteryDrawService;
@@ -28,6 +31,7 @@ public class LotteryDrawController {
 
     private final ILotteryDrawService lotteryDrawService;
     private final ILotteryDrawConsultService lotteryDrawConsultService;
+    private final LotteryDrawMapper lotteryDrawMapper;
 
     @Operation(
             summary = "Gerar jogo")
@@ -101,5 +105,22 @@ public class LotteryDrawController {
                 .contestNumber(contestNumber)
                 .gameId(gameId)
                 .build()), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Consultar configuração de um tipo jogo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TypeGameResponse.class))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content)})
+    @GetMapping(value = "/{typeGame}/type-game", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<CustomResponse<TypeGameResponse>> getConfigByTypeGame(@PathVariable TypeGame typeGame) {
+        return new ResponseEntity<>(CustomResponse.<TypeGameResponse>builder()
+                .status(200)
+                .message("")
+                .content(lotteryDrawMapper.convertTypeGameToResponse(typeGame))
+                .build(), HttpStatus.OK);
     }
 }

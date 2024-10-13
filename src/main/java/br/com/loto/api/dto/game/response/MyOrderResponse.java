@@ -13,19 +13,13 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderResponse {
+public class MyOrderResponse {
 
     private Long id;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
-    private String name;
-
-    private String cpf;
-
-    private String email;
 
     private List<MyOrderItemResponse> items;
 

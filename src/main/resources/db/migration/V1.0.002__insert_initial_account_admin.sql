@@ -32,15 +32,15 @@ VALUES (1, 'ALLOW_CREATE_BETTING');
 
 INSERT INTO public.accounts
 (created_at, activated_at, name, cpf, admin_id, lottery_id, config_id)
-VALUES (now(), now(), 'Edinilson Silva', '01966601301',  1, 1, 1);
+VALUES (now(), now(), 'ADMIN CONECTALOT', '09103997006',  1, 1, 1);
 
 INSERT INTO public.accounts_contacts
 (created_at, validated_at, type, value, account_id)
-VALUES (now(), now(), 'EMAIL', 'bateraed@gmail.com', 1);
+VALUES (now(), now(), 'EMAIL', 'admin-loto@conectalot.com', 1);
 
 INSERT INTO public.accounts_contacts
 (created_at, validated_at, type, value, account_id)
-VALUES (now(), now(), 'MOBILE_PHONE', '85986454794', 1);
+VALUES (now(), now(), 'MOBILE_PHONE', '85999999999', 1);
 
 INSERT INTO public.accounts_passwords
 (created_at, active, create_password_next_login,same_password_limit, password, account_id)

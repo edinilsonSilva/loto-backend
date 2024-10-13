@@ -1,6 +1,5 @@
 package br.com.loto.api.dto.game.response;
 
-import br.com.loto.domain.entity.Bet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +27,8 @@ public class PoolResponse {
     private String code;
 
     private Integer totalShares;
+
+    private Integer totalSharesUse;
 
     private BigDecimal entryFee;
 

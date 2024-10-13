@@ -63,6 +63,10 @@ public class Pool {
     @JsonIgnoreProperties("pool")
     private List<Shares> shares;
 
+    @OneToMany(mappedBy = "pool", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("pool")
+    private List<OrderItem> orderItems;
+
     @ManyToOne
     @JoinColumn(name = "lottery_draw_id", nullable = false)
     @JsonIgnoreProperties("pools")

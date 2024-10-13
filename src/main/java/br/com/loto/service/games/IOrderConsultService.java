@@ -2,10 +2,11 @@ package br.com.loto.service.games;
 
 import br.com.loto.api.dto.game.queries.OrderQuery;
 import br.com.loto.api.dto.game.response.MyOrderResponse;
+import br.com.loto.api.dto.game.response.OrderResponse;
 import org.springframework.data.domain.Page;
 
-public interface IMyOrderConsultService {
+public interface IOrderConsultService {
 
-    Page<MyOrderResponse> findAllByParams(OrderQuery query);
+    Page<OrderResponse> findAllByParams(OrderQuery query);
 
 }

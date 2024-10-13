@@ -31,10 +31,19 @@ public class Order {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @UpdateTimestamp
+    @Column(name = "paid_at")
+    private LocalDateTime paidAt;
+
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     @JsonIgnore
     private Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "paid_by_account_id", nullable = false)
+    @JsonIgnore
+    private Account paidByaccount;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<OrderItem> items;
@@ -49,4 +58,8 @@ public class Order {
     private String paymentMethod;
 
     private String amount;
+
+    private boolean awarded;
+
+    private boolean paid;
 }

@@ -1,6 +1,7 @@
 
 package br.com.loto.api.mappers;
 
+import br.com.loto.api.dto.game.response.MyOrderResponse;
 import br.com.loto.api.dto.game.response.OrderResponse;
 import br.com.loto.domain.entity.Order;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,17 @@ public class OrderMapper {
 
     private final ModelMapper modelMapper;
 
+    public MyOrderResponse convertEntityToMyResponse(Order order) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        return modelMapper.map(order, MyOrderResponse.class);
+    }
+
     public OrderResponse convertEntityToResponse(Order order) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        return modelMapper.map(order, OrderResponse.class);
+        OrderResponse response = modelMapper.map(order, OrderResponse.class);
+        response.setName(order.getAccount().getName());
+        response.setCpf(order.getAccount().getCpf());
+        response.setEmail(null);
+        return response;
     }
 }
